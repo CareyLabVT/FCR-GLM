@@ -1,0 +1,3 @@
+par,lb,ub,x0
+Fsed_nit,-1,-0.001,-0.1
+Ksed_nit,0.1,210,50

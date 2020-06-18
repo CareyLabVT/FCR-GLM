@@ -1,0 +1,9 @@
+par,lb,ub,x0
+Fsed_oxy,-2,-40,-21
+Fsed_oxy,-2,-40,-21
+Ksed_oxy,1,15,7
+theta_sed_oxy,0.8,1.2,1.08
+Rdom_minerl,1e-04,0.1,0.001
+Rpom_hydrol,1e-04,0.1,0.03
+Rdomr_minerl,1e-05,0.1,1e-04
+Rcpom_bdown,1e-04,0.1,0.001

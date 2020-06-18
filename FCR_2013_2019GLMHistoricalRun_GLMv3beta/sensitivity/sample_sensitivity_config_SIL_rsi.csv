@@ -1,0 +1,4 @@
+par,lb,ub,x0
+Fsed_rsi,0.1,100,25
+Ksed_rsi,0.1,300,50
+theta_sed_rsi,1,1.15,1.08

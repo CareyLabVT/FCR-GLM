@@ -1,0 +1,441 @@
+quantile(data,c(0.025,0.50,0.975))
+sd(data)
+plot(data)
+hist(data)
+5days = data - 5
+5days
+data
+5days = data-5
+days5 = data-5
+days5
+pnorm(16,mean(days5),sd(days5))
+hist(days5)
+plot(density(days5))
+pnorm(17,mean(days5),sd(days5))
+pnorm(18,mean(days5),sd(days5))
+obs = 17#
+#
+pnorm(obs,mean(days5),sd(days5))*0.76 + pnorm(obs,mean(data-4),sd(data-4))*0.96 +#
+pnorm(obs,mean(data-4),sd(data-4))*0.96 + pnorm(obs,mean(data-3),sd(data-3))*0.99 +#
+pnorm(obs,mean(data-3),sd(data-3))*0.99 + pnorm(obs,mean(data-2),sd(data-2))*0.99 +#
+pnorm(obs,mean(data-1),sd(data-1))*0.99
+pnorm(obs,mean(data-1),sd(data-1))*0.99
+pnorm(obs,mean(days5),sd(days5))*0.76 + pnorm(obs,mean(data-4),sd(data-4))*0.96 +#
+pnorm(obs,mean(data-4),sd(data-4))*0.96 + pnorm(obs,mean(data-3),sd(data-3))*0.99 +#
+pnorm(obs,mean(data-3),sd(data-3))*0.99 + pnorm(obs,mean(data-2),sd(data-2))*0.99 +#
+pnorm(obs,mean(data-1),sd(data-1))*0.99
+obs = 18#
+#
+pnorm(obs,mean(days5),sd(days5))*0.76 + pnorm(obs,mean(data-4),sd(data-4))*0.96 +#
+pnorm(obs,mean(data-4),sd(data-4))*0.96 + pnorm(obs,mean(data-3),sd(data-3))*0.99 +#
+pnorm(obs,mean(data-3),sd(data-3))*0.99 + pnorm(obs,mean(data-2),sd(data-2))*0.99 +#
+pnorm(obs,mean(data-1),sd(data-1))*0.99
+pnorm(30,mean(days5),sd(days5))
+test = c(0.99,0.99,0.99,0.96,0.96,0.76,0.00,0.00,0.00,0.00)#
+#
+p = 0#
+for(i in 1:9){#
+	p = p + pnorm(obs,mean(data - i),sd(data- i))-pnorm(obs,mean(data -(i+1)),sd(data-(i+1)))*test[i]	#
+}
+p
+test = c(0.99,0.99,0.99,0.96,0.96,0.76,0.00,0.00,0.00,0.00)#
+#
+p = 0#
+for(i in 1:9){#
+	p = p + (pnorm(obs,mean(data -(i+1)),sd(data-(i+1)))- pnorm(obs,mean(data - i),sd(data- i)))*test[i]	#
+}
+p
+obs = 18#
+p = 0#
+for(i in 1:9){#
+	p = p + (pnorm(obs,mean(data -(i+1)),sd(data-(i+1)))- pnorm(obs,mean(data - i),sd(data- i)))*test[i]	#
+}
+p
+obs = 19#
+p = 0#
+for(i in 1:9){#
+	p = p + (pnorm(obs,mean(data -(i+1)),sd(data-(i+1)))- pnorm(obs,mean(data - i),sd(data- i)))*test[i]	#
+}
+p
+obs = 20#
+p = 0#
+for(i in 1:9){#
+	p = p + (pnorm(obs,mean(data -(i+1)),sd(data-(i+1)))- pnorm(obs,mean(data - i),sd(data- i)))*test[i]	#
+}
+p
+obs = 30#
+p = 0#
+for(i in 1:9){#
+	p = p + (pnorm(obs,mean(data -(i+1)),sd(data-(i+1)))- pnorm(obs,mean(data - i),sd(data- i)))*test[i]	#
+}
+p
+obs = 23#
+p = 0#
+for(i in 1:9){#
+	p = p + (pnorm(obs,mean(data -(i+1)),sd(data-(i+1)))- pnorm(obs,mean(data - i),sd(data- i)))*test[i]	#
+}
+p
+i
+obs = 19
+(pnorm(obs,mean(data -(i+1)),sd(data-(i+1)))
+pnorm(obs,mean(data -(i+1)),sd(data-(i+1)))
+pnorm(obs,mean(data - i),sd(data- i))
+data -(i+1)
+i
+obs
+mean(data -(i+1))
+sd(data-(i+1))
+obs = 19#
+p = 0#
+for(i in 1:9){#
+	p = p + (pnorm(obs,mean(data -(i+1)),sd(data-(i+1)))- pnorm(obs,mean(data - i),sd(data- i)))*test[i]	#
+}
+p
+days = seq(15,25,1)#
+prob = rep(NA,length(days))#
+for(d in 1:length(days)){#
+p = 0#
+obs = days[d]#
+for(i in 1:9){#
+	p = p + (pnorm(obs,mean(data -(i+1)),sd(data-(i+1)))- pnorm(obs,mean(data - i),sd(data- i)))*test[i]	#
+}#
+prob[d] = p#
+}
+plot(days,prob)
+plot(days,prob,type='l')
+prob_test = approxfunc(days,prob,rule = 2)
+?approx_func
+approxfun
+prob_test = approxfun(days,prob,rule = 2)
+prob_test(17)
+prob_test(18)
+library(glmtools)
+glm_version()
+install.packages('dams')
+library(dams)
+library(glmtools)
+?glmtools
+get_var
+library(glmtools)
+install.packages('pacman')
+install.packages('relaimpo')
+library(glmtools)
+?compare_to_field
+install.packages('rgdal')
+library(rgdal)
+install.packages('devtools')
+library(GLMr)
+glm_version()
+library(GLMr)
+glm_version()
+install.packages('tidyverse')
+library("devtools")
+install_github("pablobarbera/scholarnetwork")
+d <- extractNetwork(id="ZGoLxF8AAAAJ", n=500)
+str(d)
+library(scholarnetwork)
+install.packages('igraph')
+install.packages('scholar')
+library(scholarnetwork)
+library(scholar)
+d <- extractNetwork(id="ZGoLxF8AAAAJ", n=500)
+library("devtools")
+install_github("pablobarbera/scholarnetwork")
+library(scholarnetwork)
+d <- extractNetwork(id="ZGoLxF8AAAAJ", n=500)
+str(d)
+plotNetwork(d$nodes, d$edges, file="network.html")
+library(ggplot2)#
+library(igraph)
+network <- graph_from_data_frame(d$edges, directed=FALSE)
+set.seed(123)#
+l <- layout.fruchterman.reingold(network, niter=1500) # layout#
+fc <- walktrap.community(network) # community detection
+nodes <- data.frame(l); names(nodes) <- c("x", "y")#
+nodes$cluster <- factor(fc$membership)#
+nodes$label <- fc$names#
+nodes$degree <- degree(network)
+edgelist <- get.edgelist(network, names=FALSE)#
+edges <- data.frame(nodes[edgelist[,1],c("x", "y")], nodes[edgelist[,2],c("x", "y")])#
+names(edges) <- c("x1", "y1", "x2", "y2")
+p <- ggplot(nodes, aes(x=x, y=y, color=cluster, label=label, size=degree))#
+pq <- p + geom_text(color="black", aes(label=label, size=degree),#
+                    show_guide=FALSE) +#
+  # nodes#
+  geom_point(color="grey20", aes(fill=cluster),#
+             shape=21, show_guide=FALSE, alpha=1/2) +#
+  # edges#
+  geom_segment(#
+    aes(x=x1, y=y1, xend=x2, yend=y2, label=NA),#
+    data=edges, size=0.25, color="grey20", alpha=1/5) +#
+  ## note that here I add a border to the points#
+  scale_fill_discrete(labels=labels) +#
+  scale_size_continuous(range = c(5, 8)) +#
+  theme(#
+    panel.background = element_rect(fill = "white"),#
+    plot.background = element_rect(fill="white"),#
+    axis.line = element_blank(), axis.text = element_blank(),#
+    axis.ticks = element_blank(),#
+    axis.title = element_blank(), panel.border = element_blank(),#
+    panel.grid.major = element_blank(),#
+    panel.grid.minor = element_blank(),#
+    legend.background = element_rect(colour = F, fill = "black"),#
+    legend.key = element_rect(fill = "black", colour = F),#
+    legend.title = element_text(color="white"),#
+    legend.text = element_text(color="white")#
+  ) +#
+  ## changing size of points in legend#
+  guides(fill = guide_legend(override.aes = list(size=5)))#
+#
+pq
+install.packages('beepr')
+help(beepr)
+library(beepr)
+help(beepr)
+beep(1)
+beep(2)
+beep(3)
+beep(4)
+beep(5)
+beep(6)
+beep(7)
+beep(8)
+beep(9)
+beep(10)
+beep(11)
+beep(12)
+beep(11
+)
+help(beepr)
+beep(8)
+beep(7)
+beep(9)
+beep(10)
+beep(11)
+beep(12)
+beep(13)
+help(beepr)
+beep(9)
+beep(6)
+install.packages('biwavelet')
+install.packages("WaveletComp")
+install.packages('mixOmics')
+library('mixOmics')
+?color.jet
+crust<-c(36.71991834,101.7254074,89.59598342,127.8167336,49.02836482)
+CV<-function(crust) sqrt(var(crust))/mean(crust)
+CV(crust)
+sqrt(var(crust))/mean(crust)
+boot<-numeric(1000)
+boot
+CV(sample(crust,replace=T, size=3))
+for (i in 1:1000) boot[i] <-CV(sample(crust,replace=T, size=3))
+boot
+mean(boot)
+#install.packages("devtools")#
+library(devtools)#
+#
+# Install and load EMLassemblyline#
+install_github("EDIorg/EMLassemblyline")#
+library(EMLassemblyline)
+install.packages('readxl')
+install.packages('naniar')
+install.packages('rMR')
+library(RCurl)#
+library(lubridate)#
+library(raster)#
+library(ncdf4)#
+library(rgdal)#
+library(httr)
+getwd()
+out = seq.POSIXt(as.POSIXct('2013-01-01 00:00',tz = 'GMT'),as.POSIXct('2018-01-01 23:00',tz='GMT'),by = 'hour')#
+vars = c('PEVAPsfc_110_SFC_acc1h', 'DLWRFsfc_110_SFC', 'DSWRFsfc_110_SFC', 'CAPE180_0mb_110_SPDY',#
+         'CONVfracsfc_110_SFC_acc1h', 'APCPsfc_110_SFC_acc1h', 'SPFH2m_110_HTGL', #
+         'VGRD10m_110_HTGL', 'UGRD10m_110_HTGL', 'TMP2m_110_HTGL', 'PRESsfc_110_SFC')
+output = list()
+install.packages("mvtnorm")
+y
+library(mvtnorm)
+install.packages('drc')
+library(drc)
+install.packages('car')
+install.packages('cowplot')
+install.packages('ncdf4')
+library(ncdfr)
+library(ncdf4)
+install.packages("plot3D")
+library("plot3D")
+install.packages("RVAideMemoire")
+install.packages('pacman')
+install.packages('RVAideMemoire')
+install.packages('tidyverse')
+install.packages('ncdf4')
+install.packages('rLakeAnalyzer')
+install.packages('akima')
+install.packages('zoo')
+install.packages('rMR')
+install.packages('caTools')
+install.packages('bitops')
+install.packages('rprojroot')
+install.packages('ncdf4')
+install.packages('likert')
+install.packages('cowplot')
+install.packages('ggmosaic)
+install.packages('ggmosaic')
+install.packages('EMLassemblyline')
+install.packages('shiny')
+install.packages('plyr')
+install.packages('dplyr')
+install.packages('ggplot2')
+install.packages('DT')
+install.packages('rgdal')
+install.packages('reshape2')
+install.packages('rgdal')
+install.packages('caTools')
+install.packages('mvtnorm')
+install.packages('wesanderson')
+install.packages('dplR')
+install.packages('GenABEL')
+library(GenABEL)
+install.packages("RVAideMemoire")
+install.packages('janitor')
+install.packages('skimr')
+library(plotly)
+install.packages('plotly')
+install.packages('styler')
+sample(c(2:190),19,replace=T))
+sample(c(2:190),19,replace=T)
+sort(sample(c(2:190),19,replace=T))
+sort(sample(c(2:220),22,replace=T))
+sort(sample(c(2:85),9,replace=T))
+sort(sample(c(2:85),9,replace=F))
+install.packages('Hmisc')
+install.packages('MALDIquant')
+library(MALDIquant)
+getwd()
+data <- read.csv("calib_results_RMSE_temp.csv", header=T)
+str(data)
+for(i in 1:length(colnames(data))){#
+	plot(data$DateTime, data[,i])#
+}
+par(mfrow=c(3,4))#
+for(i in 1:length(colnames(data))){#
+	plot(data$DateTime, data[,i], ylab=colnames(data)[i])	#
+}
+par(mfrow=c(3,4))#
+for(i in 1:length(colnames(data))){#
+	plot(as.numeric(rownames(data$DateTime)), data[,i], ylab=colnames(data)[i])	#
+}
+par(mfrow=c(3,4))#
+for(i in 1:length(colnames(data))){#
+	plot(as.numeric(rownames(data$DateTime)), data[,i], ylab=colnames(data)[i])	#
+}
+as.numeric(rownames(data$DateTime))
+rownames(data$DateTime)
+names(data)
+nrow(data$DateTime)
+(data$DateTime)
+plot(as.numeric(nrow(data[,i]), data[,i], ylab=colnames(data)[i])
+i=1
+nrow(data[,i])
+?nrow
+as.numeric(rownames(data))
+par(mfrow=c(3,4))#
+for(i in 1:length(colnames(data))){#
+	plot(as.numeric(rownames(data)), data[,i], ylab=colnames(data)[i])	#
+}
+rev(order(as.numeric(rownames(data))))
+par(mfrow=c(3,4))#
+for(i in 1:length(colnames(data))){#
+	plot(rev(order(as.numeric(rownames(data)))), data[,i], ylab=colnames(data)[i])	#
+}
+par(mfrow=c(3,4))#
+for(i in 1:length(colnames(data))){#
+	plot(rev(order(as.numeric(rownames(data)))), data[,i], ylab=colnames(data)[i], xlim="# iteration")	#
+}
+for(i in 1:length(colnames(data))){#
+	plot(rev(order(as.numeric(rownames(data)))), data[,i], ylab=colnames(data)[i], xlab="iteration")	#
+}
+par(mfrow=c(3,4))#
+for(i in 1:length(colnames(data))){#
+	plot(rev(order(as.numeric(rownames(data)))), data[,i], ylab=colnames(data)[i], xlab="iteration")	#
+}
+length(rownames(data))
+for(i in 1:length(colnames(data))){#
+	plot(rev(order(as.numeric(rownames(data)))), data[,i], ylab=colnames(data)[i], xlab="iteration")	#
+}
+data$RMSE[1]
+data <- read.csv("calib_results_RMSE_temp.csv", header=T)#
+par(mfrow=c(3,4))#
+length(rownames(data))#
+data$RMSE[1]#
+for(i in 1:length(colnames(data))){#
+	plot(rev(order(as.numeric(rownames(data)))), data[,i], ylab=colnames(data)[i], xlab="iteration")	#
+}
+data <- read.csv("calib_results_RMSE_temp.csv", header=T)#
+par(mfrow=c(3,4))#
+length(rownames(data))#
+data$RMSE[1]#
+for(i in 1:length(colnames(data))){#
+	plot(rev(order(as.numeric(rownames(data)))), data[,i], ylab=colnames(data)[i], xlab="iteration")	#
+}
+data <- read.csv("calib_results_RMSE_temp.csv", header=T)#
+par(mfrow=c(3,4))#
+length(rownames(data))#
+data$RMSE[1]#
+for(i in 1:length(colnames(data))){#
+	plot(rev(order(as.numeric(rownames(data)))), data[,i], ylab=colnames(data)[i], xlab="iteration")	#
+}
+data <- read.csv("calib_results_RMSE_temp.csv", header=T)#
+par(mfrow=c(3,4))#
+length(rownames(data))#
+data$RMSE[1]#
+for(i in 1:length(colnames(data))){#
+	plot(rev(order(as.numeric(rownames(data)))), data[,i], ylab=colnames(data)[i], xlab="iteration")	#
+}
+min(data$RMSE)
+data <- read.csv("calib_results_RMSE_temp.csv", header=T)#
+par(mfrow=c(3,4))#
+length(rownames(data))#
+data$RMSE[1]#
+for(i in 1:length(colnames(data))){#
+	plot(rev(order(as.numeric(rownames(data)))), data[,i], ylab=colnames(data)[i], xlab="iteration")	#
+}
+data <- read.csv("calib_results_RMSE_temp.csv", header=T)#
+par(mfrow=c(3,4))#
+length(rownames(data))#
+data$RMSE[1]#
+for(i in 1:length(colnames(data))){#
+	plot(rev(order(as.numeric(rownames(data)))), data[,i], ylab=colnames(data)[i], xlab="iteration")	#
+}
+data <- read.csv("calib_results_RMSE_temp.csv", header=T)#
+par(mfrow=c(3,4))#
+length(rownames(data))#
+data$RMSE[1]#
+for(i in 1:length(colnames(data))){#
+	plot(rev(order(as.numeric(rownames(data)))), data[,i], ylab=colnames(data)[i], xlab="iteration")	#
+}
+min(data$RMSE)
+data <- read.csv("calib_results_RMSE_OXY_oxy.csv", header=T)
+par(mfrow=c(3,4))#
+length(rownames(data))#
+data$RMSE[1]#
+for(i in 1:length(colnames(data))){#
+	plot(rev(order(as.numeric(rownames(data)))), data[,i], ylab=colnames(data)[i], xlab="iteration")	#
+}
+par(mfrow=c(3,3))#
+length(rownames(data))#
+data$RMSE[1]#
+for(i in 1:length(colnames(data))){#
+	plot(rev(order(as.numeric(rownames(data)))), data[,i], ylab=colnames(data)[i], xlab="iteration")	#
+}
+76*32/1000
+data <- read.csv("calib_results_RMSE_OXY_oxy.csv", header=T)#
+par(mfrow=c(3,3))#
+length(rownames(data))#
+data$RMSE[1]#
+for(i in 1:length(colnames(data))){#
+	plot(rev(order(as.numeric(rownames(data)))), data[,i], ylab=colnames(data)[i], xlab="iteration")	#
+}
+min(data$RMSE)
+70*32/1000

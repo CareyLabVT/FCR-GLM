@@ -1,0 +1,4 @@
+par,lb,ub,x0
+Fsed_dic,0.001,100,4
+Ksed_dic,1,100,30
+theta_sed_dic,0.9,1.2,1.08

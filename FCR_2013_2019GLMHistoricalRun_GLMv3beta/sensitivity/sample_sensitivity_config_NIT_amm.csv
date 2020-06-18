@@ -1,0 +1,13 @@
+par,lb,ub,x0
+Rnitrif,0.001,1,0.075
+Knitrif,1,80,20
+theta_nitrif,1,1.15,1.08
+Rnh4o2,1e-04,2,1
+Rnh4no2,1e-04,2,0.001
+Ranammox,1e-04,2,0.001
+Kanmx_amm,0.001,5,2
+Rdnra,1e-04,2,0.001
+Kdnra_oxy,0.01,5,2
+Fsed_amm,1,30,4
+Ksed_amm,1,30,10
+theta_sed_amm,1,1.15,1.08

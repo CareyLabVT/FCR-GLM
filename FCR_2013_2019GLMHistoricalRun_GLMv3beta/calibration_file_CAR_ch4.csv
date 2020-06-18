@@ -1,0 +1,4 @@
+par,lb,ub,x0
+Fsed_ch4,1,500,250
+Fsed_ch4,1,500,150
+Ksed_ch4,0.001,100,1

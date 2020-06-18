@@ -1,0 +1,12 @@
+par,lb,ub,x0
+Rdom_minerl,1e-04,0.1,0.001
+Rpom_hydrol,1e-04,0.1,0.03
+theta_minerl,1,1.15,1.08
+theta_hydrol,1,1.15,1.08
+Kdom_minerl,1,100,31.25
+Kpom_hydrol,1,100,31.25
+Rdomr_minerl,1e-05,0.1,1e-04
+Rcpom_bdown,1e-04,0.1,0.001
+w_pom,-2,0,-0.06
+sedimentOMfrac,1e-04,1,2e-04
+Fsed_doc,0.1,50,10

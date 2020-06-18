@@ -1,0 +1,5 @@
+par,lb,ub,x0
+Rdom_minerl,0.0001,0.1,0.001
+Fsed_doc,0.1,100,10
+Fsed_doc,0.1,100,30
+Kdom_minerl,1,100,31.25
