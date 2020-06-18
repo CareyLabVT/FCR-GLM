@@ -3,4 +3,5 @@
 .RData
 .Ruserdata
 .nc
+output.nc
 /FCR_2013_2019GLMHistoricalRun_GLMv3beta/output/output.nc
