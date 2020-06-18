@@ -7,7 +7,7 @@
 &aed2_sed_const2d
    n_zones = 2
    Fsed_oxy = -34.1613205, -15.92258046
-   Fsed_ch4 = 43.3407302689583, 1
+   Fsed_ch4 = 199.804146952339, 80.5621335068372
 /
 &aed2_noncohesive
    num_ss = 1
@@ -44,7 +44,7 @@
    Rch4ox = 0.1
    Kch4ox = 0.2
    vTch4ox = 1.2
-   Ksed_ch4 = 20.4985
+   Ksed_ch4 = 1.437817349!0.5336537
    theta_sed_ch4 = 1.2
    methane_reactant_variable = 'OXY_oxy'
    atm_ch4 = 1.76e-06
