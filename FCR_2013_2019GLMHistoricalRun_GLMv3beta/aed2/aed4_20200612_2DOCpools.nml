@@ -43,7 +43,8 @@
 &aed2_sed_const2d
    n_zones  = 2
    Fsed_oxy = -34.1613205,-15.92258046
-   Fsed_ch4 = 199.804146952339, 80.5621335068372
+   Fsed_ch4 = 199.804146952339,80.5621335068372
+   Fsed_amm = 25.56295172,1!22.45527115,9.438855025
 /
 !###############################################################################
 ! aed2_sed_constant
@@ -326,8 +327,8 @@
    !simWetDeposition = .true.
    !atm_din_conc = 0.5
   !-- Sediment fluxes
-   Fsed_amm = 25.56295172!4 !3 !!!! manual 3.5 Paul 20
-   Ksed_amm = 1.897990933!10 !!!! 25
+!   Fsed_amm = 25.56295172!4 !3 !!!! manual 3.5 Paul 20
+   Ksed_amm = 1.15447635!1.897990933!10 !!!! 25
    Fsed_nit = -0.083112835!-0.17111! -0.353194296! -0.01!-1.937417788!-7.078329303!-9.340307115!-0.35!-0.35 !-1.755 !!!! manual -4.5 Kinneret -0.5 Paul -8
    Ksed_nit = 73.26014646!67.9799101!121.5780415!100 !!!! Kinneret +manual 100; paul 15
    Fsed_n2o =   0.0 !!! man -4.5
@@ -335,7 +336,7 @@
    theta_sed_amm = 1.004420683!1.08
    theta_sed_nit = 1.08
 !  denit_product_variable=''  !'NIT_N20'
-!  Fsed_amm_variable='SDF_Fsed_amm'
+  Fsed_amm_variable='SDF_Fsed_amm'
 !  Fsed_nit_variable='SDF_Fsed_nit'
 /
 
@@ -509,9 +510,9 @@
      X_cpom_p     = 0.001 !0.0001 !Paul had 0.001
 
     !-- Light related parameters
-     KeDOM         = 0.0005 !paul had 0.0005; manual had 0.000005
-     KePOM         = 0.0015!paul had 0.001, 
-     KeDOMR        = 0.10000    ! paul had 0.05 formerly 0.1 = 1 (assuming KeDOMR is applied to CDOM in /m)
+     KeDOM         = 0.06247136!0.0005 !paul had 0.0005; manual had 0.000005
+     KePOM         = 0.28!0.0015!paul had 0.001, 
+     KeDOMR        = 0.175!0.10000    ! paul had 0.05 formerly 0.1 = 1 (assuming KeDOMR is applied to CDOM in /m)
      KeCPOM        = 0.00096    ! = 0.08 (/m)/(mg/L)  /83.3  (mmol/m3)/(mg/L)
      simphotolysis = .false.    ! .true.
     !photo_fmin
