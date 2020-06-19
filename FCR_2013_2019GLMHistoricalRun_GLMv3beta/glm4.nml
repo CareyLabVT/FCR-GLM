@@ -28,7 +28,7 @@
    coef_mix_shear = 0.3
    coef_mix_turb = 0.51
    coef_mix_KH = 0.3
-   coef_mix_hyp = 0.212878783
+   coef_mix_hyp = 0.316735602!0.212878783
    deep_mixing = .true.
    coef_mix_shreq = 0
 /
@@ -82,14 +82,14 @@
    meteo_fl = 'inputs/FCR_GLM_NLDAS_010113_123119_GMTadjusted.csv'
    subdaily = .true.
    wind_factor = 1
-   sw_factor = 1.029799837
-   lw_factor = 1.217459018
+   sw_factor = 0.839275117!1.029799837
+   lw_factor = 0.982999002!1.217459018
    at_factor = 1
    rh_factor = 1
    rain_factor = 1
    cd = 0.0013
    ce = 0.0013
-   ch = 0.001898698
+   ch = 0.001634376!0.001898698
    rain_threshold = 0.04
    runoff_coef = 0.2
    time_fmt = 'YYYY-MM-DD hh:mm:ss'
@@ -127,7 +127,7 @@
    zone_heights = 5, 9.5
    sed_heat_Ksoil = 1.8, 1.8
    sed_temp_depth = 0.2, 0.2
-   sed_temp_mean = 8.982533531, 8.614077839
-   sed_temp_amplitude = 3.828005548, 6.770951105
-   sed_temp_peak_doy = 260.7401994, 268.5430713
+   sed_temp_mean = 11.09137447,13.49593699!8.982533531, 8.614077839
+   sed_temp_amplitude = 3.090273694,8.223867241!3.828005548, 6.770951105
+   sed_temp_peak_doy = 263.9436016,264.8249604!260.7401994, 268.5430713
 /

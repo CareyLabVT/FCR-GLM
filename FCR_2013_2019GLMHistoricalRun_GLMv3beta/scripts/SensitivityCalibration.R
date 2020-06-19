@@ -4,7 +4,7 @@
 
 rm(list = ls()) #let's clean up that workspace!
 
-setwd("../") #if pulling from github, sets it to proper wd, which should be "/FCR_2013_2019GLMHistoricalRun_GLMv3beta"
+setwd("./FCR_2013_2019GLMHistoricalRun_GLMv3beta") #if pulling from github, sets it to proper wd
 source('scripts/functions-glm.R') #source the helper functions
 read.packages() 
 
@@ -13,7 +13,7 @@ filename = 'FCR'
 out = 'output/output.nc' 
 sim_vars(out)
 
-sim_folder<-"/Users/cayelan/Dropbox/ComputerFiles/SCC/FCR-GLM/FCR_2013_2017GLMHistoricalRun_GLMv3beta"
+sim_folder<-getwd()
 
 run_glm('Compiled') #pulling from Cayelan's version
 plot_temp(out, col_lim = c(0,30))
@@ -400,7 +400,7 @@ method = 'cmaes'
 calib.metric = 'RMSE'
 os = 'Compiled' #Changed from Unix
 target_fit = -Inf#1.55
-target_iter = 1000 #1000*length(init.val)^2
+target_iter = 750 #1000*length(init.val)^2
 nml_file = 'glm3.nml'
 run_calibvalid(var, var_unit = 'degreesC', var_seq = seq(-5,35,1), cal_pars, pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c()) #var_seq is contour color plot range
@@ -509,7 +509,7 @@ calib.metric = 'RMSE'
 os = "Compiled"
 target_fit = -Inf#2.50 * 1000/32
 target_iter = 500#1000*length(init.val)^2
-nml_file = 'aed2/aed2_20200602.nml'
+nml_file = 'aed2/aed2_20200612_2DOCpools.nml'
 run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,1000,50), pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
 
@@ -526,14 +526,14 @@ pars <- cal_pars$par
 ub <- cal_pars$ub
 lb <- cal_pars$lb
 #Create initial files
-init.val <- (c(0.075, 20, 2, 2, 4, 10) - lb) *10 /(ub-lb) # EDIT THESE
+init.val <- (c(25, 1, 10) - lb) *10 /(ub-lb) # EDIT THESE
 obs <- read_field_obs('field_data/field_chem.csv', var)
 method = 'cmaes'
 calib.metric = 'RMSE'
 os = "Compiled"
 target_fit = -Inf#2.50 * 1000/32
 target_iter = 500#1000*length(init.val)^2
-nml_file = 'aed2/aed2_20200602.nml'
+nml_file = 'aed2/aed2_20200612_2DOCpools.nml'
 run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,250,25), pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
 
@@ -557,7 +557,7 @@ calib.metric = 'RMSE'
 os = "Compiled"
 target_fit = -Inf#2.50 * 1000/32
 target_iter = 250#1000*length(init.val)^2
-nml_file = 'aed2/aed2_20200602.nml'
+nml_file = 'aed2/aed2_20200612_2DOCpools.nml'
 run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,50,5), pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
 
@@ -582,7 +582,7 @@ calib.metric = 'RMSE'
 os = "Compiled"
 target_fit = -Inf#2.50 * 1000/32
 target_iter = 500#1000*length(init.val)^2
-nml_file = 'aed2/aed2_20200602.nml'
+nml_file = 'aed2/aed2_20200612_2DOCpools.nml'
 run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,1000,100), pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
 
@@ -607,7 +607,7 @@ calib.metric = 'RMSE'
 os = "Compiled"
 target_fit = -Inf#2.50 * 1000/32
 target_iter = 500#1000*length(init.val)^2
-nml_file = 'aed2/aed2_20200602.nml'
+nml_file = 'aed2/aed2_20200612_2DOCpools.nml'
 run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,500,50), pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
 
@@ -631,7 +631,7 @@ calib.metric = 'RMSE'
 os = "Compiled"
 target_fit = -Inf#2.50 * 1000/32
 target_iter = 300#1000*length(init.val)^2
-nml_file = 'aed2/aed2_20200611_1DOCpool.nml'
+nml_file = 'aed2/aed2_20200612_2DOCpools.nml'
 run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,100,10), pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
 
@@ -641,7 +641,8 @@ file.copy('aed2/aed4_20200612_2DOCpools.nml', 'aed2/aed2_20200612_2DOCpools.nml'
 var = 'extc_coef'
 calib <- matrix(c('par', 'lb', 'ub', 'x0',
                   'KeDOM',0.00001,0.5,0.0025,
-                  'KePOM',0.00001,0.5,0.0015), nrow = 3, ncol = 4, byrow = TRUE)
+                  'KePOM',0.00001,0.5,0.0015,
+                  'KeDOMR', 0.00001, 0.5, 0.01), nrow = 4, ncol = 4, byrow = TRUE)
 cal_pars = data.frame(calib)
 colnames(cal_pars) <- as.character(unlist(cal_pars[1,]))
 cal_pars <- cal_pars[-1,]
@@ -659,8 +660,8 @@ calib.metric = 'RMSE'
 os = "Compiled"
 target_fit = -Inf#2.50 * 1000/32
 target_iter = 300#1000*length(init.val)^2
-nml_file = 'aed2/aed2_20200602.nml'
-run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,100,10), pars, ub, lb, init.val, obs, method, 
+nml_file = 'aed2/aed2_20200612_2DOCpools.nml'
+run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,1,10), pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
 
 

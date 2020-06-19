@@ -10,13 +10,13 @@ library(tidyverse)
 library(lubridate)
 library(ncdf4)
 
-setwd("~/Dropbox/ComputerFiles/SCC/FCR-GLM/FCR_2013_2019GLMHistoricalRun_GLMv3beta")
+setwd("./FCR_2013_2019GLMHistoricalRun_GLMv3beta")
 #setwd("../") #if pulling from github, sets it to proper wd, which should be "/FCR_2013_2019GLMHistoricalRun_GLMv3beta"
 sim_folder <- getwd()
 
 #look at glm and aed nml files
 nml_file <- paste0(sim_folder,"/glm3.nml")
-aed_file <- paste0(sim_folder,"/aed2/aed2_20200611_1DOCpool.nml")
+aed_file <- paste0(sim_folder,"/aed2/aed2_20200612_2DOCpools.nml")
 aed_phytos_file <- paste0(sim_folder,"/aed2/aed2_phyto_pars_ForQuinn_3groups_30Oct2019.nml")
 nml <- read_nml(nml_file) 
 aed <- read_nml(aed_file) #you may get a warning about an incomplete final line but it doesn't matter
@@ -664,97 +664,6 @@ obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=0.1 & ne
 RMSE(mod,obs)
 
 
-
-#trying to figure out the inflows situation!!
-docr1 <- get_var(file=nc_file,var_name = 'OGM_docr',z_out=0.1,reference = 'surface') %>%
-  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
-  rename(mod_docr = OGM_docr_0.1)
-
-obs <- read.csv('field_data/field_chem.csv', header=TRUE) %>% #read in observed chemistry data
-  select(DateTime, Depth, OGM_docr) %>%
-  dplyr::filter(Depth == 0.1) %>%
-  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
-  rename(obs_docr = OGM_docr) %>%
-  select(DateTime, obs_docr)%>%
-  na.omit()
-
-residuals <- merge(obs, docr1, by="DateTime") %>% 
-  mutate(resids = obs_docr - mod_docr) 
-
-inflow<-read.csv("inputs/FCR_wetland_inflow_newEDI_2013_2019_20200616_allfractions_2DOCpools.csv", header=T) %>%
-  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
-  rename(DateTime = time) %>%
-  select(DateTime, OGM_docr, FLOW) 
-
-more <- merge(residuals, inflow, by="DateTime") %>% 
-  mutate(DOY = yday(DateTime))
-
-plot(more$FLOW, more$resids)
-plot(more$OGM_docr, more$resids)
-model1 <- lm(resids ~ DOY, data=more)
-
-
-
-
-model2 <- lm(resids ~ DOY, data=residuals)
-summary(model2)
-DOY = residuals$DOY
-plot(residuals$resids ~ residuals$DOY)
-
-residuals <- merge(obs, docr1, by="DateTime") %>% 
-  mutate(resids = obs_docr - mod_docr) %>%
-  filter(DateTime > "2014-12-31") %>% 
-  mutate(DOY = yday(DateTime)) %>% 
-  group_by(DOY) %>%
-  summarise(resids=mean(resids)) %>% 
-  filter(DOY>125 & DOY <325)
-
-library(segmented)
-attempt <- segmented.lm(obj=model1, seg.Z=~DOY, psi=150)
-summary.segmented(attempt)
-plot(attempt, add=T, res=T)
-
-  
-
-plot(residuals$DateTime, residuals$resids)
-summary(lm(residuals$obs_docr ~residuals$mod_docr))
-
-
-
-inflow<-read.csv("inputs/FCR_weir_inflow_2013_2019_20200607_allfractions_2poolsDOC.csv", header=T) %>%
-  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
-  rename(DateTime = time) %>%
-  select(DateTime, OGM_docr, FLOW) 
-
-more <- merge(residuals, inflow, by="DateTime")
-
-plot(more$obs_docr ~ more$OGM_docr, ylim=c(0,600),xlim=c(0,600))
-abline(0,1)
-plot(more$obs_docr ~more$FLOW)
-
-wetland<-read.csv("inputs/FCR_wetland_inflow_newEDI_2013_2019_20200615_allfractions_2DOCpools.csv", header=T)
-plot(as.POSIXct(strptime(wetland$time,"%Y-%m-%d", tz="EST")), wetland$OGM_docr,type='l')
-lines(as.POSIXct(docr1$DateTime),docr1$mod_docr,col="red")
-lines(as.POSIXct(obs$DateTime), obs$obs_docr, col= "orange")
-
-
-
-
-
-
-lines(as.POSIXct(wetland$time), wetland$OGM_docr, col="blue")
-lines(as.POSIXct(docr6.2$DateTime),docr6.2$OGM_docr_6.2,col="blue")
-lines(as.POSIXct(docr9$DateTime),docr9$OGM_docr_9,col="green")
-lines(as.POSIXct(inflow$time),inflow$FLOW*inflow$OGM_docr, col="purple")
-lines(as.POSIXct(wetland$time),wetland$FLOW*wetland$OGM_docr, col="pink")
-
-
-poc <- get_var(file=nc_file,var_name = 'OGM_poc',z_out=0.1,reference = 'surface') 
-poc9 <- get_var(file=nc_file,var_name = 'OGM_poc',z_out=9,reference = 'surface') 
-plot(as.POSIXct(poc$DateTime),poc$OGM_poc_0.1,col="red")
-plot(as.POSIXct(poc9$DateTime),poc9$OGM_poc_9,col="red")
-
-
 #######################################################
 #### dissolved organic carbon: labile ###########
 
@@ -823,7 +732,7 @@ obs<-read.csv('field_data/CleanedObsChla.csv', header=TRUE) %>% #read in observe
   select(DateTime, Depth, var) %>%
   na.omit()
 
-plot_var_compare(nc_file,field_file,var_name = var, precision="days",col_lim = c(0,1000)) #compare obs vs modeled
+#plot_var_compare(nc_file,field_file,var_name = var, precision="days",col_lim = c(0,50)) #compare obs vs modeled
 
 #get modeled concentrations for focal depths
 depths<- sort(as.numeric(unique(obs$Depth)))
@@ -991,4 +900,5 @@ legend("topleft", c("Baseline","+2 degrees"), fill=c("black","red"))
 
 nc_close(nc)
 
-
+ads <- get_var(file=nc_file,var_name = 'PHS_frp_ads',z_out=c(1,5,9),reference = 'surface') 
+plot(ads$DateTime, ads$PHS_frp_ads_9)

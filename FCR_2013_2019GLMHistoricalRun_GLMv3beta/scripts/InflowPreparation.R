@@ -1,7 +1,7 @@
 #originally written by CCC on 16 July 2018 to create weir and wetland inflow files + outflow for FCR GLM model
 #updated 1 June 2020 to be made "tidy" and update nutrient fractions for inflows
 
-setwd("../inputs")
+setwd("./inputs")
 sim_folder <- getwd()
 
 #load packages
@@ -177,6 +177,9 @@ weir_inflow <- alldata %>%
   mutate(PHS_frp_ads = PHS_frp) %>% #Following Farrell et al. 2020 EcolMod
   mutate(CAR_dic = DIC_mgL*1000*(1/52.515)) #Long-term avg pH of FCR is 6.5, at which point CO2/HCO3 is about 50-50
 #given this disparity, using a 50-50 weighted molecular weight (44.01 g/mol and 61.02 g/mol, respectively)
+#note: we are not using a DONr recalcitrant pool for inflows because "bacterial utilization of these 
+  #compounds [i.e. DON] is extremely rapid" Wetzel p. 220
+#because we have added the pool of PHS_frp_ads, which functionally is DOPr, not adding a DOPr pool
   
 #reality check of mass balance: these histograms should be at zero minus rounding errors
 hist(weir_inflow$TP_ugL - (weir_inflow$PHS_frp + weir_inflow$OGM_dop + weir_inflow$OGM_pop))
