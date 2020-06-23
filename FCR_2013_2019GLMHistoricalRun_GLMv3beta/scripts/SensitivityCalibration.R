@@ -427,9 +427,9 @@ ub <- cal_pars$ub
 lb <- cal_pars$lb
 #Create initial files
 #init.val <- rep(5, nrow(cal_pars))
-init.val <- (c(7,-21,-9) - lb) *10 /(ub-lb) # Paul's values
+init.val <- (c(7,-30,-15) - lb) *10 /(ub-lb) # Paul's values
 #obs <- read_field_obs('field_data/field_FCR.csv', var)
-obs <- read_field_obs('field_data/CleanedObsOxy.csv',var)
+obs <- read_field_obs('field_data/CleanedObsOxy_hypo.csv',var)
 method = 'cmaes'
 calib.metric = 'RMSE'
 os = "Compiled" #Changed from Unix

@@ -28,7 +28,7 @@
    coef_mix_shear = 0.3
    coef_mix_turb = 0.51
    coef_mix_KH = 0.3
-   coef_mix_hyp = 0.2128788
+   coef_mix_hyp = 0.316735602!0.212878783
    deep_mixing = .true.
    coef_mix_shreq = 0
 /
@@ -82,14 +82,14 @@
    meteo_fl = 'inputs/FCR_GLM_NLDAS_010113_123119_GMTadjusted.csv'
    subdaily = .true.
    wind_factor = 1
-   sw_factor = 1.0298
-   lw_factor = 1.217459
+   sw_factor = 0.839275117!1.029799837
+   lw_factor = 0.982999002!1.217459018
    at_factor = 1
    rh_factor = 1
    rain_factor = 1
    cd = 0.0013
    ce = 0.0013
-   ch = 0.001898698
+   ch = 0.001634376!0.001898698
    rain_threshold = 0.04
    runoff_coef = 0.2
    time_fmt = 'YYYY-MM-DD hh:mm:ss'
@@ -100,8 +100,8 @@
    subm_flag = .false., .false., .true.
    strm_hf_angle = 55, 55, -15
    strmbd_slope = 0.05, 0.05, 15
-   strmbd_drag = 0.03, 0.016, 0.009
-   inflow_factor = 1, 1, 0.5
+   strmbd_drag = 0.03, 0.016, 1.2
+   inflow_factor = 1, 1, 0.75
    inflow_fl = 'inputs/FCR_weir_inflow_2013_2019_20200607_allfractions_2poolsDOC.csv','inputs/FCR_wetland_inflow_newEDI_2013_2019_20200618_allfractions_2DOCpools.csv','inputs/FCR_SSS_inflow_2013_2019_20200607_allfractions_2DOCpools.csv'
    inflow_varnum = 18
    inflow_vars = 'FLOW','TEMP','SALT','OXY_oxy','NIT_amm','NIT_nit','PHS_frp','OGM_doc','OGM_docr','OGM_poc','OGM_don','OGM_pon','OGM_dop','OGM_pop','PHS_frp_ads','CAR_dic','CAR_ch4','SIL_rsi'
@@ -109,11 +109,11 @@
 &outflow
    num_outlet = 2
    flt_off_sw = .false., .false.
-   outl_elvs = 506.9, 500.13
+   outl_elvs = 506.9, 498.883
    bsn_len_outl = 711.699, 100
    bsn_wid_outl = 226.03, 10
    outflow_fl = 'inputs/FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv','inputs/FCR_SSS_outflow_2013_2019_20200601.csv'
-   outflow_factor = 1, 0.5
+   outflow_factor = 1, 0.75
 /
 &snowice
    snow_albedo_factor = 1
@@ -127,7 +127,7 @@
    zone_heights = 5, 9.5
    sed_heat_Ksoil = 1.8, 1.8
    sed_temp_depth = 0.2, 0.2
-   sed_temp_mean = 8.982533531, 8.614077839
-   sed_temp_amplitude = 3.828005548, 6.770951105
-   sed_temp_peak_doy = 260.7401994, 268.5430713
+   sed_temp_mean = 11.09137447,13.49593699!8.982533531, 8.614077839
+   sed_temp_amplitude = 3.090273694,8.223867241!3.828005548, 6.770951105
+   sed_temp_peak_doy = 263.9436016,264.8249604!260.7401994, 268.5430713
 /
