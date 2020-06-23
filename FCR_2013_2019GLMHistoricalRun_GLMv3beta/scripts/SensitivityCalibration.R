@@ -479,12 +479,12 @@ ub <- cal_pars$ub
 lb <- cal_pars$lb
 #Create initial files
 init.val <- (c(250, 150, 1) - lb) *10 /(ub-lb) # EDIT THESE
-obs <- read_field_obs('field_data/field_gases.csv', var)
+obs <- read_field_obs('field_data/field_gases_hypo.csv', var)
 method = 'cmaes'
 calib.metric = 'RMSE'
 os = "Compiled"
 target_fit = -Inf#2.50 * 1000/32
-target_iter = 300#1000#1000*length(init.val)^2
+target_iter = 500#1000#1000*length(init.val)^2
 nml_file = 'aed2/aed2_20200612_2DOCpools.nml'
 run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,500,25), pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
