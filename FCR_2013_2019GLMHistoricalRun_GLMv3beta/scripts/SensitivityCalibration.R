@@ -453,7 +453,7 @@ pars <- cal_pars$par
 ub <- cal_pars$ub
 lb <- cal_pars$lb
 #Create initial files
-init.val <- (c(1, 30, 1.08) - lb) *10 /(ub-lb) # Paul's values
+init.val <- (c(1, 50, 1.08) - lb) *10 /(ub-lb) # Paul's values
 obs <- read_field_obs('field_data/field_chem.csv', var)
 obs <- na.omit(obs)
 method = 'cmaes'
@@ -575,7 +575,7 @@ ub <- cal_pars$ub
 lb <- cal_pars$lb
 #Create initial files
 #init.val <- rep(5, nrow(cal_pars))
-init.val <- (c(0.118, 24) - lb) *10 /(ub-lb) # EDIT THESE
+init.val <- (c(0.118, 25) - lb) *10 /(ub-lb) # EDIT THESE
 obs <- read_field_obs('field_data/field_chem.csv', var)
 method = 'cmaes'
 calib.metric = 'RMSE'
@@ -587,7 +587,7 @@ run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,1000,100), p
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
 
 
-# 7) dissolved organic carbon - recalicitrant fraction
+# 7) dissolved organic carbon - recalcitrant fraction
 file.copy('glm4.nml', 'glm3.nml', overwrite = TRUE)
 file.copy('aed2/aed4_20200612_2DOCpools.nml', 'aed2/aed2_20200612_2DOCpools.nml', overwrite = TRUE)
 var = 'OGM_docr'
