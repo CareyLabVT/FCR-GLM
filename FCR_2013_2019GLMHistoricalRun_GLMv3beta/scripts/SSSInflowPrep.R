@@ -134,18 +134,20 @@ SSS_inflow <- alldata %>%
   mutate(TP_ugL = TP_ugL*1000*0.001*(1/30.97)) %>% 
   mutate(DRSI_mgL = rep(median(silica$DRSI_mgL),length(SSS_inflow$time))) %>% #setting inflow to median 9m concentration from 2014
   mutate(OGM_poc = 0.1*(OGM_doc+OGM_docr)) %>% #assuming that 10% of DOC is POC (Wetzel page 755)
-  mutate(OGM_don = (5/6)*(TN_ugL-(NIT_amm+NIT_nit))) %>% #DON is ~5x greater than PON (Wetzel page 220)
+  mutate(OGM_don = (5/6)*(TN_ugL-(NIT_amm+NIT_nit))*0.1) %>% #DON is ~5x greater than PON (Wetzel page 220)
+  mutate(OGM_donr = (5/6)*(TN_ugL-(NIT_amm+NIT_nit))*0.9) %>% 
   mutate(OGM_pon = (1/6)*(TN_ugL-(NIT_amm+NIT_nit))) %>%
-  mutate(OGM_dop = 0.3*(TP_ugL-PHS_frp)) %>% #Wetzel page 241, 70% of total organic P = particulate organic; 30% = dissolved organic P
+  mutate(OGM_dop = 0.3*(TP_ugL-PHS_frp)*0.1) %>% #Wetzel page 241, 70% of total organic P = particulate organic; 30% = dissolved organic P
+  mutate(OGM_dopr = 0.3*(TP_ugL-PHS_frp)*0.9) %>% #using this pool instead of frp_ads to keep stoichiometric balance between recalcitrant & labile pools of CNP
   mutate(OGM_pop = 0.7*(TP_ugL-PHS_frp)) %>% 
-  mutate(PHS_frp_ads = PHS_frp) %>% #Following Farrell et al. 2020 EcolMod
+  #mutate(PHS_frp_ads = PHS_frp) %>% #Following Farrell et al. 2020 EcolMod
   mutate(CAR_dic = DIC_mgL*1000*(1/52.515)) %>% #Long-term avg pH of FCR is 6.5, at which point CO2/HCO3 is about 50-50
       #given this disparity, using a 50-50 weighted molecular weight (44.01 g/mol and 61.02 g/mol, respectively)
   mutate(SIL_rsi = DRSI_mgL*1000*(1/60.08))  #setting the Silica concentration to the median 2014 inflow concentration for consistency
     
 #reality check of mass balance: these histograms should be at zero minus rounding errors
-hist(SSS_inflow$TP_ugL - (SSS_inflow$PHS_frp + SSS_inflow$OGM_dop + SSS_inflow$OGM_pop))
-hist(SSS_inflow$TN_ugL - (SSS_inflow$NIT_amm + SSS_inflow$NIT_nit + SSS_inflow$OGM_don + SSS_inflow$OGM_pon))
+hist(SSS_inflow$TP_ugL - (SSS_inflow$PHS_frp + SSS_inflow$OGM_dop + SSS_inflow$OGM_dopr + SSS_inflow$OGM_pop))
+hist(SSS_inflow$TN_ugL - (SSS_inflow$NIT_amm + SSS_inflow$NIT_nit + SSS_inflow$OGM_don + SSS_inflow$OGM_donr + SSS_inflow$OGM_pon))
 
 SSS_inflow <- SSS_inflow %>%
   select(time:SALT, OXY_oxy:CAR_dic, CAR_ch4, SIL_rsi)
@@ -213,9 +215,11 @@ SSS_inflowALL[which(duplicated(SSS_inflowALL$time)),] #identify if there are rep
 SSS_inflowALL <- SSS_inflowALL[(!duplicated(SSS_inflowALL$time)),] #remove repeated dates
 
 #et voila! the final inflow file for the SSS for 2 pools of DOC
-write.csv(SSS_inflowALL, "FCR_SSS_inflow_2013_2019_20200607_allfractions_2DOCpools.csv", row.names = FALSE)
+write.csv(SSS_inflowALL, "FCR_SSS_inflow_2013_2019_20200624_allfractions_2DOCpools.csv", row.names = FALSE)
 
-#NOW NEED TO MAKE file for 1 pool of DOC
+
+
+#NOW NEED TO MAKE SSS inflow file for 1 pool of DOC
 #need to convert mass observed data into mmol/m3 units for two DOC pools
 SSS_inflow <- alldata %>% 
   select(time, FLOW, SALT, TN_ugL:CAR_ch4, OXY_oxy) %>%

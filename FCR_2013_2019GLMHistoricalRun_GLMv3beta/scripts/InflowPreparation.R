@@ -170,11 +170,13 @@ weir_inflow <- alldata %>%
   mutate(TN_ugL = TN_ugL*1000*0.001*(1/14)) %>% 
   mutate(TP_ugL = TP_ugL*1000*0.001*(1/30.97)) %>% 
   mutate(OGM_poc = 0.1*(OGM_doc+OGM_docr)) %>% #assuming that 10% of DOC is POC (Wetzel page 755)
-  mutate(OGM_don = (5/6)*(TN_ugL-(NIT_amm+NIT_nit))) %>% #DON is ~5x greater than PON (Wetzel page 220)
+  mutate(OGM_don = (5/6)*(TN_ugL-(NIT_amm+NIT_nit))*0.10) %>% #DON is ~5x greater than PON (Wetzel page 220)
+  mutate(OGM_donr = (5/6)*(TN_ugL-(NIT_amm+NIT_nit))*0.90) %>% #to keep mass balance with DOC, DONr is 90% of total DON
   mutate(OGM_pon = (1/6)*(TN_ugL-(NIT_amm+NIT_nit))) %>%
-  mutate(OGM_dop = 0.3*(TP_ugL-PHS_frp)) %>% #Wetzel page 241, 70% of total organic P = particulate organic; 30% = dissolved organic P
+  mutate(OGM_dop = 0.3*(TP_ugL-PHS_frp)*0.10) %>% #Wetzel page 241, 70% of total organic P = particulate organic; 30% = dissolved organic P
+  mutate(OGM_dopr = 0.3*(TP_ugL-PHS_frp)*0.90) %>% #Wetzel page 241, 70% of total organic P = particulate organic; 30% = dissolved organic P
   mutate(OGM_pop = 0.7*(TP_ugL-PHS_frp)) %>% 
-  mutate(PHS_frp_ads = PHS_frp) %>% #Following Farrell et al. 2020 EcolMod
+  #mutate(PHS_frp_ads = PHS_frp) %>% #Following Farrell et al. 2020 EcolMod
   mutate(CAR_dic = DIC_mgL*1000*(1/52.515)) #Long-term avg pH of FCR is 6.5, at which point CO2/HCO3 is about 50-50
 #given this disparity, using a 50-50 weighted molecular weight (44.01 g/mol and 61.02 g/mol, respectively)
 #note: we are not using a DONr recalcitrant pool for inflows because "bacterial utilization of these 
@@ -182,8 +184,8 @@ weir_inflow <- alldata %>%
 #because we have added the pool of PHS_frp_ads, which functionally is DOPr, not adding a DOPr pool
   
 #reality check of mass balance: these histograms should be at zero minus rounding errors
-hist(weir_inflow$TP_ugL - (weir_inflow$PHS_frp + weir_inflow$OGM_dop + weir_inflow$OGM_pop))
-hist(weir_inflow$TN_ugL - (weir_inflow$NIT_amm + weir_inflow$NIT_nit + weir_inflow$OGM_don + weir_inflow$OGM_pon))
+hist(weir_inflow$TP_ugL - (weir_inflow$PHS_frp + weir_inflow$OGM_dop + weir_inflow$OGM_dopr + weir_inflow$OGM_pop))
+hist(weir_inflow$TN_ugL - (weir_inflow$NIT_amm + weir_inflow$NIT_nit + weir_inflow$OGM_don + weir_inflow$OGM_donr + weir_inflow$OGM_pon))
 
 #creating OXY_oxy column using RMR package, assuming that oxygen is at 100% saturation in this very well-mixed stream
 for(i in 1:length(weir_inflow$TEMP)){
@@ -201,13 +203,14 @@ weir_inflow <- weir_inflow %>%
   mutate_if(is.numeric, round, 4) #round to 4 digits 
 
 #write file for inflow for the weir, with 2 pools of OC (DOC + DOCR)  
-write.csv(weir_inflow, "FCR_weir_inflow_2013_2019_20200612_allfractions_2poolsDOC.csv", row.names = F)
+write.csv(weir_inflow, "FCR_weir_inflow_2013_2019_20200624_allfractions_2poolsDOC.csv", row.names = F)
 
 #copying dataframe in workspace to be used later
 alltdata = alldata
 
 ########SKIP THIS STEP IF YOU WANT TO USE 2 POOLS OF OC! 
-#This is making the weir inflow with only *1* pool of OC
+#note, because there is no recalcitrant DOC, there similarly isn't any recalcitrant DON or DOP
+#This is making the weir inflow with only *1* pool of DOC
 #need to convert mass observed data into mmol/m3 units for ONE pool of organic carbon
 weir_inflow <- alldata %>% 
   mutate(NIT_amm = NH4_ugL*1000*0.001*(1/18.04)) %>% 
@@ -368,10 +371,10 @@ plot(FCRchem$time, FCRchem$DIC) #no outliers
 
 TNratio <- median(FCRchem$TN)
 TPratio <- median(FCRchem$TP)
-NH4ratio <- median(FCRchem$NH4)
-NO3ratio <- median(FCRchem$NO3)
-SRPratio <- median(FCRchem$SRP)
-DOCratio <- sort(FCRchem$DOC)[6]#note that this is a MAXIMUM, because median doesn't give enough DOC to system
+NH4ratio <- median(FCRchem$NH4)#range is from 0.111 to 1.8; median = 0.32, mean = 0.399; [23] = 0.9
+NO3ratio <- median(FCRchem$NO3) #median = 0.766
+SRPratio <- median(FCRchem$SRP)#range is from 0.33 to 4.75, median = 1.75, mean = 1.98
+DOCratio <- sort(FCRchem$DOC)[6]#note that this is from tuning
 DICratio <- median(FCRchem$DIC)
 
 #read in lab dataset of CH4 from 2015-2019
@@ -415,18 +418,20 @@ wetland_inflow <- data1 %>% #using weir chemistry in workspace for multiplying r
   mutate(TN_ugL = TN_ugL*1000*0.001*(1/14)) %>% 
   mutate(TP_ugL = TP_ugL*1000*0.001*(1/30.97)) %>% 
   mutate(OGM_poc = 0.1*(OGM_doc+OGM_docr)) %>% #assuming that 10% of DOC is POC (Wetzel page 755)
-  mutate(OGM_don = (5/6)*(TN_ugL-(NIT_amm+NIT_nit))) %>% #DON is ~5x greater than PON (Wetzel page 220)
+  mutate(OGM_don = (5/6)*(TN_ugL-(NIT_amm+NIT_nit))*0.10) %>% #DON is ~5x greater than PON (Wetzel page 220)
+  mutate(OGM_donr = (5/6)*(TN_ugL-(NIT_amm+NIT_nit))*0.90) %>% 
   mutate(OGM_pon = (1/6)*(TN_ugL-(NIT_amm+NIT_nit))) %>%
-  mutate(OGM_dop = 0.3*(TP_ugL-PHS_frp)) %>% #Wetzel page 241, 70% of total organic P = particulate organic; 30% = dissolved organic P
+  mutate(OGM_dop = 0.3*(TP_ugL-PHS_frp)*0.1) %>% #Wetzel page 241, 70% of total organic P = particulate organic; 30% = dissolved organic P
+  mutate(OGM_dopr = 0.3*(TP_ugL-PHS_frp)*0.9) %>%
   mutate(OGM_pop = 0.7*(TP_ugL-PHS_frp)) %>% 
-  mutate(PHS_frp_ads = PHS_frp) %>% #Following Farrell et al. 2020 EcolMod
+ # mutate(PHS_frp_ads = PHS_frp) %>% #Following Farrell et al. 2020 EcolMod
   mutate(CAR_dic = DIC_mgL*1000*(1/52.515)) %>% #Long-term avg pH of FCR is 6.5, at which point CO2/HCO3 is about 50-50
 #given this disparity, using a 50-50 weighted molecular weight (44.01 g/mol and 61.02 g/mol, respectively)
   mutate(SIL_rsi = DRSI_mgL*1000*(1/60.08))  #setting the Silica concentration to the median 2014 inflow concentration for consistency
   
 #reality check: these distributions should be at 0 or near zero due to rounding errors
-hist(wetland_inflow$TP_ugL - (wetland_inflow$PHS_frp + wetland_inflow$OGM_dop + wetland_inflow$OGM_pop))
-hist(wetland_inflow$TN_ugL - (wetland_inflow$NIT_amm + wetland_inflow$NIT_nit + wetland_inflow$OGM_don + wetland_inflow$OGM_pon))
+hist(wetland_inflow$TP_ugL - (wetland_inflow$PHS_frp + wetland_inflow$OGM_dop + wetland_inflow$OGM_dopr + wetland_inflow$OGM_pop))
+hist(wetland_inflow$TN_ugL - (wetland_inflow$NIT_amm + wetland_inflow$NIT_nit + wetland_inflow$OGM_don + wetland_inflow$OGM_donr + wetland_inflow$OGM_pon))
 
 #now need to get temp for the inflow; setting to 0.1 m water temp at site 50 using CTD
 #checked site 50 vs site 10 and they are highly correlated
@@ -492,7 +497,7 @@ wetland_final <- wetland %>%
   mutate_if(is.numeric, round, 4) #round to 4 digits 
 
 #now write file for wetland inflow
-write.csv(wetland_final, "FCR_wetland_inflow_newEDI_2013_2019_20200616_allfractions_2DOCpools.csv", row.names = FALSE)
+write.csv(wetland_final, "FCR_wetland_inflow_2013_2019_20200624_allfractions_2DOCpools.csv", row.names = FALSE)
 
 ###############################################################################
 #NOW to get 1 pools of OC #SKIP THIS STEP IF YOU'RE GOING TO USE 2 POOLS OF OC!
