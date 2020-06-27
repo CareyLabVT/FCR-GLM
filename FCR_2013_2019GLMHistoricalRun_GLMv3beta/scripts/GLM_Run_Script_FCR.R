@@ -11,7 +11,7 @@ library(lubridate)
 library(ncdf4)
 
 setwd("./FCR_2013_2019GLMHistoricalRun_GLMv3beta")
-#setwd("../") #if pulling from github, sets it to proper wd, which should be "/FCR_2013_2019GLMHistoricalRun_GLMv3beta"
+setwd("../") #if pulling from github, sets it to proper wd, which should be "/FCR_2013_2019GLMHistoricalRun_GLMv3beta"
 sim_folder <- getwd()
 
 #look at glm and aed nml files
@@ -144,8 +144,7 @@ o_temp <- temps$Observed_temp[temps$Depth>=0 & temps$Depth<=9.3]
 RMSE(m_temp,o_temp)
 
 
-#######################################################
-#### oxygen data #######
+############## oxygen data #######
 
 #read in cleaned CTD temp file with long-term obs at focal depths
 var="OXY_oxy"
@@ -203,7 +202,7 @@ plot(mod_oxy9$DateTime, mod_oxy9$OXY_oxy_9.2, type="l")
 #diagnostic plot of DO at 9.2 m (just above sediments)
 
 
-#######################################################
+
 #### dissolved inorganic carbon (DIC) data ###########
 var="CAR_dic"
 field_file <- file.path(sim_folder,'/field_data/field_chem.csv') 
@@ -218,7 +217,7 @@ obs<-read.csv('field_data/field_chem.csv', header=TRUE) %>% #read in observed ch
 obs<-as.data.frame(obs)
 #write.csv(obs, "field_data/field_DIC.csv", row.names =F)
 
-plot_var_compare(nc_file,field_file,var_name = var, precision="days",col_lim = c(0,1000)) #compare obs vs modeled
+#plot_var_compare(nc_file,field_file,var_name = var, precision="days",col_lim = c(0,1000)) #compare obs vs modeled
 
 #get modeled concentrations for focal depths
 depths<- as.numeric(unique(obs$Depth))
@@ -264,9 +263,8 @@ o_DIC <- DIC$Observed_CAR_dic[DIC$Depth>=0 & DIC$Depth<=9.3] #depths from 6-9m
 RMSE(m_DIC,o_DIC)
 
 
-#######################################################
+
 #### dissolved methane data #######
-#### dissolved inorganic carbon (DIC) data ###########
 var="CAR_ch4"
 field_file <- file.path(sim_folder,'/field_data/field_gases.csv') 
 
@@ -322,7 +320,6 @@ RMSE(mod,obs)
 
 
 
-#######################################################
 #### dissolved pCO2  data #######
 #SKIPPING THIS FOR NOW!!
 #read in observed CO2 file to create field file, but first need to remove duplicate date values
@@ -380,7 +377,7 @@ RMSE(mod,obs)
 # RMSE(m_DIC,o_DIC)
 
 
-#######################################################
+
 #### silica  data #######
 
 var="SIL_rsi"
@@ -437,8 +434,8 @@ obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=0.1 & ne
 RMSE(mod,obs)
 
 
-#######################################################
-#### ammonium #######
+
+######## ammonium #######
 
 var="NIT_amm"
 field_file <- file.path(sim_folder,'/field_data/field_chem.csv') 
@@ -493,9 +490,12 @@ mod <- eval(parse(text=paste0("newdata$Modeled_",var)))[newdata$Depth>=0.1 & new
 obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=0.1 & newdata$Depth<=9.3] 
 RMSE(mod,obs)
 
+mod <- eval(parse(text=paste0("newdata$Modeled_",var)))[newdata$Depth>=1.6 & newdata$Depth<=1.6] 
+obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=1.6 & newdata$Depth<=1.6] 
+RMSE(mod,obs)
 
-#######################################################
-#### nitrate #########################################
+
+###### nitrate #########################################
 
 var="NIT_nit"
 field_file <- file.path(sim_folder,'/field_data/field_chem.csv') 
@@ -550,7 +550,8 @@ mod <- eval(parse(text=paste0("newdata$Modeled_",var)))[newdata$Depth>=0.1 & new
 obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=0.1 & newdata$Depth<=9.3] 
 RMSE(mod,obs)
 
-#######################################################
+
+
 #### phosphate ########################################
 
 var="PHS_frp"
@@ -607,7 +608,8 @@ obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=0.1 & ne
 RMSE(mod,obs)
 
 
-#######################################################
+
+
 #### dissolved organic carbon: recalcitrant ###########
 
 var="OGM_docr"
@@ -664,7 +666,7 @@ obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=0.1 & ne
 RMSE(mod,obs)
 
 
-#######################################################
+
 #### dissolved organic carbon: labile ###########
 
 var="OGM_doc"
@@ -721,7 +723,7 @@ obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=0.1 & ne
 RMSE(mod,obs)
 
 
-#######################################################
+
 #### chlorophyll a #######
 
 var="PHY_TCHLA"
@@ -781,7 +783,7 @@ mod <- eval(parse(text=paste0("newdata$Modeled_",var)))[newdata$Depth>=1 & newda
 obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=1 & newdata$Depth<=1] 
 RMSE(mod,obs)
 r2 <-lm(mod ~ obs)
-
+summary(r2)
 #plot individual phyto groups
 #plot_var(file=nc_file,"PHY_TCHLA",reference="surface", col_lim=c(0,30))
 #plot_var(file=nc_file,"PHY_CYANOPCH1",reference="surface", col_lim=c(0,50))

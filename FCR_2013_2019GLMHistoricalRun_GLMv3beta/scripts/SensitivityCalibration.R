@@ -87,7 +87,7 @@ run_sensitivity(var, max_r, x0, lb, ub, pars, obs, nml_file)
 
 # 2) dissolved oxygen
 file.copy('glm4.nml', 'glm3.nml', overwrite = TRUE)
-file.copy('aed2/aed4_20200602.nml', 'aed2/aed2_20200602.nml', overwrite = TRUE)
+file.copy('aed2/aed4_20200612.nml', 'aed2/aed2_20200612.nml', overwrite = TRUE)
 var = 'OXY_oxy'
 calib <- matrix(c('par', 'lb', 'ub', 'x0',
                   'Fsed_oxy', -2, -40, -21,
@@ -108,7 +108,7 @@ lb <- calib$lb
 ub <- calib$ub
 pars <- calib$par
 obs <- read_field_obs('field_data/field_FCR.csv', var)
-nml_file = 'aed2/aed2_20200602.nml'
+nml_file = 'aed2/aed2_20200612.nml'
 run_sensitivity(var, max_r, x0, lb, ub, pars, obs, nml_file)
 
 # 3) dissolved inorganic carbon

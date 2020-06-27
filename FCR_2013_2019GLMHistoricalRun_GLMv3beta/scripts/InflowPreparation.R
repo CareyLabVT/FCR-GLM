@@ -369,10 +369,10 @@ plot(FCRchem$time, FCRchem$SRP) #no outliers
 plot(FCRchem$time, FCRchem$DOC) #no outliers
 plot(FCRchem$time, FCRchem$DIC) #no outliers
 
-TNratio <- median(FCRchem$TN)
+TNratio <- max(FCRchem$TN)
 TPratio <- median(FCRchem$TP)
-NH4ratio <- median(FCRchem$NH4)#range is from 0.111 to 1.8; median = 0.32, mean = 0.399; [23] = 0.9
-NO3ratio <- median(FCRchem$NO3) #median = 0.766
+NH4ratio <- 10*max(FCRchem$NH4)#range is from 0.111 to 1.8; median = 0.32, mean = 0.399; [23] = 0.9
+NO3ratio <- 10*max(FCRchem$NO3) #median = 0.766, max = 14.666
 SRPratio <- median(FCRchem$SRP)#range is from 0.33 to 4.75, median = 1.75, mean = 1.98
 DOCratio <- sort(FCRchem$DOC)[6]#note that this is from tuning
 DICratio <- median(FCRchem$DIC)

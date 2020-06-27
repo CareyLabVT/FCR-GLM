@@ -104,7 +104,7 @@
 !-------------------------------------------------------------------------------
 &aed2_noncohesive
    !-- Select SS groups and their light attenuation
-    num_ss       = 1
+    num_ss       = 0! turn this to 1 if you have phs_frp_ads on
     ss_initial   = 1,1
     Ke_ss        = 0.06,0.063
    !-- Configure particle settling
@@ -383,12 +383,12 @@
 !-------------------------------------------------------------------------------
 &aed2_phosphorus
    frp_initial = 0.05 !Kinneret&manual 0.29 from observational data
-   Fsed_frp = 0.21243218!0.118264303!0.082020643!0.001 !!!!  manual 0.08 Paul 0.40
-   Ksed_frp = 1!24.44440037!35.94895616!10 !!!! Kinneret 50.0 manual 80
+   Fsed_frp = 0.01!0.21243218!0.118264303!0.082020643!0.001 !!!!  manual 0.08 Paul 0.40
+   Ksed_frp = 24.44440037!35.94895616!10 !!!! Kinneret 50.0 manual 80
    theta_sed_frp = 1.146677713!1.15!1.08
    phosphorus_reactant_variable = 'OXY_oxy'
 !   Fsed_frp_variable ='SDF_Fsed_frp'
-   simPO4Adsorption = .true. !!!!
+   simPO4Adsorption = .false. !!!!should be true if using PHS_frp_ads, otherwise false
    ads_use_external_tss = .false.! paul had as false; bombs if not true
    po4sorption_target_variable ='NCS_ss1' !manual has "TRC_ss1"
    PO4AdsorptionModel = 1
@@ -469,11 +469,11 @@
    !-- Breakdown and mineralisation (basic pool)
      Rdom_minerl = 0.013484159!0.015569485!0.019274248!0.001!0.008653273!0.005405006 !0.001!Paul 0.04
      Rpom_hydrol = 0.03!Paul 0.03
-     !Rpoc_hydrol  =   0.05 !manual 0.05 !Paul 0.01
+     Rpoc_hydrol  = 0.001 !manual 0.05 !Paul 0.01
      !Rdoc_minerl  =   0!0.01 !Manual 0.001; Paul 0.03 !doesnt work
-     !Rpon_hydrol  =   0.05 !Paul had 0.01
+     Rpon_hydrol  = 0.001 !Paul had 0.01
      !Rdon_minerl  =   0.005 !Paul had 0.01
-     !Rpop_hydrol  =   0.05 ! Paul had 0.01
+     Rpop_hydrol  =  0.001 ! Paul had 0.01
      !Rdop_minerl  =   0.01 !manual is 0.001, Paul had 0.01! doesnt work
      theta_hydrol =   1.07
      theta_minerl =   1.07
@@ -604,8 +604,8 @@
    c_mortality_target_variable='OGM_poc'
    si_mortality_target_variable=''
    p1_uptake_target_variable='PHS_frp'
-   n1_uptake_target_variable='NIT_nit'
-   n2_uptake_target_variable='NIT_amm'
+   n1_uptake_target_variable='NIT_amm'
+   n2_uptake_target_variable='NIT_nit'
    si_uptake_target_variable='SIL_rsi'
    do_uptake_target_variable='OXY_oxy'
    c_uptake_target_variable='CAR_dic'
