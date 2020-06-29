@@ -44,7 +44,7 @@
    n_zones  = 2
    Fsed_oxy = -23.50785035,-10.06198843!-22.08945619,-6.775167763!-38.72966437,-5.879006793! -32.84404595,-6.480610699!-38.72966437,-5.879006793! -20.93638231,-5.386861486!-22.61978213,-14.59600758! -25.04550,-14.82423!-19.82500445,-6.95657003!-21.54700501,-8.109540123!-34.1613205,-15.92258046
    Fsed_ch4 = 0.1,232.6331575!1,108.1066833!0.1,108.8471097!199.804146952339,80.5621335068372
-   Fsed_amm = 25.56295172,1!22.45527115,9.438855025
+   Fsed_amm = 25.56295172,1!1.659739687,1.317249221!1.842041446,10.60683101!25.56295172,1!22.45527115,9.438855025
 /
 !###############################################################################
 ! aed2_sed_constant
@@ -328,8 +328,8 @@
    !atm_din_conc = 0.5
   !-- Sediment fluxes
 !   Fsed_amm = 25.56295172!4 !3 !!!! manual 3.5 Paul 20
-   Ksed_amm = 1.15447635!1.897990933!10 !!!! 25
-   Fsed_nit = -0.083112835!-0.17111! -0.353194296! -0.01!-1.937417788!-7.078329303!-9.340307115!-0.35!-0.35 !-1.755 !!!! manual -4.5 Kinneret -0.5 Paul -8
+   Ksed_amm = 1.15447635!2.798536672!28.43015431!2.798536672!1.15447635!1.897990933!10 !!!! 25
+   Fsed_nit = -0.07!-0.083112835!-0.17111! -0.353194296! -0.01!-1.937417788!-7.078329303!-9.340307115!-0.35!-0.35 !-1.755 !!!! manual -4.5 Kinneret -0.5 Paul -8
    Ksed_nit = 73.26014646!67.9799101!121.5780415!100 !!!! Kinneret +manual 100; paul 15
    Fsed_n2o =   0.0 !!! man -4.5
    Ksed_n2o = 100.0
@@ -534,7 +534,7 @@
      Xsc = 0.5
      Xsn = 0.05
      Xsp = 0.005
-     Fsed_doc = 10 !5 !manual 10.0, *****0.1 for Sunapee, 30 for Mendota
+     Fsed_doc = 60!10 !4.124780855!10 !5 !manual 10.0, *****0.1 for Sunapee, 30 for Mendota
      Fsed_don = 0.0 !bombs if set to >0 manual 1.0, *****0.01 for Sunapee, 5 for Mendota
      Fsed_dop = 0.0 !bombs if set to >0 manuual 0.020; *****0.001 for Sunapee, -900 for Mendota
      Ksed_dom = 4.5
@@ -581,7 +581,7 @@
 !
 !-------------------------------------------------------------------------------
 &aed2_phytoplankton
-   num_phytos = 3!4
+   num_phytos = 3!cyano,green,diatom!4
    the_phytos = 1,2,3!,4
    settling = 1,1,1!1,1,1,1
    !-- Benthic phytoplankton group (microphytobenthos)
@@ -609,7 +609,7 @@
    si_uptake_target_variable='SIL_rsi'
    do_uptake_target_variable='OXY_oxy'
    c_uptake_target_variable='CAR_dic'
-   dbase='aed2/aed2_phyto_pars_ForQuinn_3groups_30Oct2019.nml'!'aed2_phyto_pars_1group_4July2019.nml'!'aed2_phyto_pars_WhitneyComparison_6Mar19.nml'
+   dbase='aed2/aed2_phyto_pars_29June2020.nml'! aed2_phyto_pars_ForQuinn_3groups_30Oct2019.nml'!'aed2_phyto_pars_1group_4July2019.nml'!'aed2_phyto_pars_WhitneyComparison_6Mar19.nml'
    extra_diag = .true.
  !zerolimitfudgefactor = ??
   min_rho =  900.0

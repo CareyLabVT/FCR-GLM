@@ -624,8 +624,8 @@ ub <- cal_pars$ub
 lb <- cal_pars$lb
 #Create initial files
 #init.val <- rep(5, nrow(cal_pars))
-init.val <- (c(0.001, 10,30,31.25) - lb) *10 /(ub-lb) # EDIT THESE
-obs <- read_field_obs('field_data/field_chem_1DOCpool.csv', var)
+init.val <- (c(4,10,31.25) - lb) *10 /(ub-lb) # EDIT THESE
+obs <- read_field_obs('field_data/field_chem.csv', var)
 method = 'cmaes'
 calib.metric = 'RMSE'
 os = "Compiled"

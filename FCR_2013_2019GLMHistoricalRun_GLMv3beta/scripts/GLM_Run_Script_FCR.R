@@ -124,6 +124,7 @@ RMSE = function(m, o){
   sqrt(mean((m - o)^2))
 }
 
+field_file<-file.path(sim_folder,'/field_data/CleanedObsTemp.csv')
 temps <- resample_to_field(nc_file, field_file, precision="mins", method='interp')
 temps<-temps[complete.cases(temps),]
 
