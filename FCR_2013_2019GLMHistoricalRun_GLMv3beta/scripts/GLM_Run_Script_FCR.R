@@ -25,7 +25,7 @@ print(nml)
 print(aed)
 print(aed_phytos)
 
-#run the model!
+#########run the model!
 system2(paste0(sim_folder, "/", "glm"), stdout = TRUE, stderr = TRUE, env = paste0("DYLD_LIBRARY_PATH=",sim_folder))
 #sometimes, you'll get an error that says "Error in file, 'Time(Date)' is not first column!
 #in this case, open the input file in Excel, set the column in Custom ("YYYY-MM-DD") format, resave, and close the file
@@ -701,7 +701,7 @@ for(i in 1:length(depths)){
   }
 }
 
-#calculate RMSE for DIC
+#calculate RMSE for DOC
 newdata <- resample_to_field(nc_file, field_file, precision="hours", method='interp', 
                              var_name=var)
 newdata <-newdata[complete.cases(newdata),]
