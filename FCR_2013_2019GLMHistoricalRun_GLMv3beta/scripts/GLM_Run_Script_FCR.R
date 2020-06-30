@@ -802,6 +802,16 @@ legend("topleft", legend=c("Cyano", "Greens", "Diatoms"), fill= c("cyan", "green
 chla <- get_var(file=nc_file,var_name = 'PHY_TCHLA',z_out=0.1,reference = 'surface') 
 lines(chla$DateTime, chla$PHY_TCHLA_0.1, col="red")
 
+plot_var(nc_file, "PHY_cyano_fNit")
+plot_var(nc_file, "PHY_cyano_fPho")
+plot_var(nc_file, "PHY_cyano_fT")
+plot_var(nc_file, "PHY_cyano_NtoP")
+plot_var(nc_file, "PHY_cyano_fI")
+
+
+
+
+
 phytos <- get_var(file=nc_file,var_name = 'PHY_AGGREGATE',z_out=0.1,reference = 'surface') 
 plot(phytos$DateTime, phytos$PHY_AGGREGATE_0.1, col="cyan", type="l", ylab="Phyto C mmol/m3", ylim=c(0,30))
 

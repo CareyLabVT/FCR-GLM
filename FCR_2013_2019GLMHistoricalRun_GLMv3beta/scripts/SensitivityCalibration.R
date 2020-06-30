@@ -400,7 +400,7 @@ method = 'cmaes'
 calib.metric = 'RMSE'
 os = 'Compiled' #Changed from Unix
 target_fit = -Inf#1.55
-target_iter = 750 #1000*length(init.val)^2
+target_iter = 800 #1000*length(init.val)^2
 nml_file = 'glm3.nml'
 run_calibvalid(var, var_unit = 'degreesC', var_seq = seq(-5,35,1), cal_pars, pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c()) #var_seq is contour color plot range
