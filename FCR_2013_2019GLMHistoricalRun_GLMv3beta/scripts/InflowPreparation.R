@@ -370,7 +370,7 @@ plot(FCRchem$time, FCRchem$DOC) #no outliers
 plot(FCRchem$time, FCRchem$DIC) #no outliers
 
 TNratio <- max(FCRchem$TN)
-TPratio <- median(FCRchem$TP)
+TPratio <- max(FCRchem$TP)
 NH4ratio <- 10*max(FCRchem$NH4)#range is from 0.111 to 1.8; median = 0.32, mean = 0.399; [23] = 0.9
 NO3ratio <- 10*max(FCRchem$NO3) #median = 0.766, max = 14.666
 SRPratio <- median(FCRchem$SRP)#range is from 0.33 to 4.75, median = 1.75, mean = 1.98
@@ -497,7 +497,7 @@ wetland_final <- wetland %>%
   mutate_if(is.numeric, round, 4) #round to 4 digits 
 
 #now write file for wetland inflow
-write.csv(wetland_final, "FCR_wetland_inflow_2013_2019_20200624_allfractions_2DOCpools.csv", row.names = FALSE)
+write.csv(wetland_final, "FCR_wetland_inflow_2013_2019_20200630_allfractions_2DOCpools.csv", row.names = FALSE)
 
 ###############################################################################
 #NOW to get 1 pools of OC #SKIP THIS STEP IF YOU'RE GOING TO USE 2 POOLS OF OC!

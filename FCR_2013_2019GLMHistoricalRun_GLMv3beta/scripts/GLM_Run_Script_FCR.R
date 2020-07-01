@@ -17,7 +17,7 @@ sim_folder <- getwd()
 #look at glm and aed nml files
 nml_file <- paste0(sim_folder,"/glm3.nml")
 aed_file <- paste0(sim_folder,"/aed2/aed2_20200612_2DOCpools.nml")
-aed_phytos_file <- paste0(sim_folder,"/aed2/aed2_phyto_pars_ForQuinn_3groups_30Oct2019.nml")
+aed_phytos_file <- paste0(sim_folder,"/aed2/aed2_phyto_pars_30June2020.nml")
 nml <- read_nml(nml_file) 
 aed <- read_nml(aed_file) #you may get a warning about an incomplete final line but it doesn't matter
 aed_phytos <- read_nml(aed_phytos_file)
@@ -50,8 +50,8 @@ plot(evap$time, evap$evap)
 plot(precip$time, precip$precip)
 
 outflow<-read.csv("inputs/FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv", header=T)
-inflow_weir<-read.csv("inputs/FCR_weir_inflow_2013_2019_20200607_allfractions_2poolsDOC.csv", header=T)
-inflow_wetland<-read.csv("inputs/FCR_wetland_inflow_newEDI_2013_2019_20200615_allfractions_2DOCpools.csv", header=T)
+inflow_weir<-read.csv("inputs/FCR_weir_inflow_2013_2019_20200624_allfractions_2poolsDOC.csv", header=T)
+inflow_wetland<-read.csv("inputs/FCR_wetland_inflow_2013_2019_20200624_allfractions_2DOCpools.csv", header=T)
 outflow$time<-as.POSIXct(strptime(outflow$time, "%Y-%m-%d", tz="EST"))
 inflow_weir$time<-as.POSIXct(strptime(inflow_weir$time, "%Y-%m-%d", tz="EST"))
 inflow_wetland$time<-as.POSIXct(strptime(inflow_wetland$time, "%Y-%m-%d", tz="EST"))
@@ -802,13 +802,25 @@ legend("topleft", legend=c("Cyano", "Greens", "Diatoms"), fill= c("cyan", "green
 chla <- get_var(file=nc_file,var_name = 'PHY_TCHLA',z_out=0.1,reference = 'surface') 
 lines(chla$DateTime, chla$PHY_TCHLA_0.1, col="red")
 
+
 plot_var(nc_file, "PHY_cyano_fNit")
 plot_var(nc_file, "PHY_cyano_fPho")
-plot_var(nc_file, "PHY_cyano_fT")
 plot_var(nc_file, "PHY_cyano_NtoP")
+plot_var(nc_file, "PHY_cyano_fT")
 plot_var(nc_file, "PHY_cyano_fI")
 
+plot_var(nc_file, "PHY_diatom_fNit")
+plot_var(nc_file, "PHY_diatom_fPho")
+plot_var(nc_file, "PHY_diatom_NtoP")
+plot_var(nc_file, "PHY_diatom_fSil")
+plot_var(nc_file, "PHY_diatom_fT")
+plot_var(nc_file, "PHY_diatom_fI")
 
+plot_var(nc_file, "PHY_green_fNit")
+plot_var(nc_file, "PHY_green_fPho")
+plot_var(nc_file, "PHY_green_NtoP")
+plot_var(nc_file, "PHY_green_fT")
+plot_var(nc_file, "PHY_green_fI")
 
 
 
