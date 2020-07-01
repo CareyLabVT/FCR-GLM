@@ -44,7 +44,8 @@
    n_zones  = 2
    Fsed_oxy = -25.30429134,-8.444594424! -23.50785035,-10.06198843!-22.08945619,-6.775167763!-38.72966437,-5.879006793! -32.84404595,-6.480610699!-38.72966437,-5.879006793! -20.93638231,-5.386861486!-22.61978213,-14.59600758! -25.04550,-14.82423!-19.82500445,-6.95657003!-21.54700501,-8.109540123!-34.1613205,-15.92258046
    Fsed_ch4 = 0.1,232.6331575!1,108.1066833!0.1,108.8471097!199.804146952339,80.5621335068372
-   Fsed_amm = 25.56295172,1!1.659739687,1.317249221!1.842041446,10.60683101!25.56295172,1!22.45527115,9.438855025
+   Fsed_amm = 20,40!25.56295172,1!1.659739687,1.317249221!1.842041446,10.60683101!25.56295172,1!22.45527115,9.438855025
+   Fsed_frp = 0.06,0.15
 /
 !###############################################################################
 ! aed2_sed_constant
@@ -383,11 +384,11 @@
 !-------------------------------------------------------------------------------
 &aed2_phosphorus
    frp_initial = 0.05 !Kinneret&manual 0.29 from observational data
-   Fsed_frp = 0.01!0.21243218!0.118264303!0.082020643!0.001 !!!!  manual 0.08 Paul 0.40
+  ! Fsed_frp = 0.07!0.21243218!0.118264303!0.082020643!0.001 !!!!  manual 0.08 Paul 0.40
    Ksed_frp = 24.44440037!35.94895616!10 !!!! Kinneret 50.0 manual 80
    theta_sed_frp = 1.146677713!1.15!1.08
    phosphorus_reactant_variable = 'OXY_oxy'
-!   Fsed_frp_variable ='SDF_Fsed_frp'
+   Fsed_frp_variable ='SDF_Fsed_frp'
    simPO4Adsorption = .false. !!!!should be true if using PHS_frp_ads, otherwise false
    ads_use_external_tss = .false.! paul had as false; bombs if not true
    po4sorption_target_variable ='NCS_ss1' !manual has "TRC_ss1"
@@ -456,16 +457,16 @@
 !-------------------------------------------------------------------------------
 &aed2_organic_matter
    !-- Initial concentrations for OM variables (mmol/m3)
-     poc_initial  =  78.5 !all of these values are from Kinneret
-     doc_initial  =  30 !edited
-     pon_initial  =   0.1
-     don_initial  =   0.1
+     poc_initial  =  15!78.5 !all of these values are from Kinneret
+     doc_initial  =  15!30 !edited
+     pon_initial  =   2!0.1
+     don_initial  =   1.1!0.1
      pop_initial  =   0.1
-     dop_initial  =   1.5
+     dop_initial  =   0.01!1.5
      docr_initial = 150.0 !edited
-     donr_initial =  13.0
-     dopr_initial =   1.0
-     cpom_initial = 100.0
+     donr_initial =  9!13.0
+     dopr_initial =   0.15!1.0
+     cpom_initial = 0!100.0
    !-- Breakdown and mineralisation (basic pool)
      Rdom_minerl = 0.013484159!0.015569485!0.019274248!0.001!0.008653273!0.005405006 !0.001!Paul 0.04
      Rpom_hydrol = 0.03!Paul 0.03
@@ -609,7 +610,7 @@
    si_uptake_target_variable='SIL_rsi'
    do_uptake_target_variable='OXY_oxy'
    c_uptake_target_variable='CAR_dic'
-   dbase='aed2/aed2_phyto_pars_29June2020.nml'! aed2_phyto_pars_ForQuinn_3groups_30Oct2019.nml'!'aed2_phyto_pars_1group_4July2019.nml'!'aed2_phyto_pars_WhitneyComparison_6Mar19.nml'
+   dbase='aed2/aed2_phyto_pars_30June2020.nml'! aed2_phyto_pars_ForQuinn_3groups_30Oct2019.nml'!'aed2_phyto_pars_1group_4July2019.nml'!'aed2_phyto_pars_WhitneyComparison_6Mar19.nml'
    extra_diag = .true.
  !zerolimitfudgefactor = ??
   min_rho =  900.0
