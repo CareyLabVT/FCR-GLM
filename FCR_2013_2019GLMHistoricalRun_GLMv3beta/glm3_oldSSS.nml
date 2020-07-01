@@ -8,7 +8,7 @@
 /
 &wq_setup
    wq_lib = 'aed2'
-   wq_nml_file = 'aed2/aed2_20200701_2DOCpools.nml'
+   wq_nml_file = 'aed2/aed2_20200612_2DOCpools.nml'
    ode_method = 1
    split_factor = 1
    bioshade_feedback = .true.
@@ -101,19 +101,19 @@
    strm_hf_angle = 55, 55, -15
    strmbd_slope = 0.05, 0.05, 15
    strmbd_drag = 0.03, 0.016, 1.2
-   inflow_factor = 1, 1, 0.2!0.75
-   inflow_fl = 'inputs/FCR_weir_inflow_2013_2019_20200624_allfractions_2poolsDOC.csv','inputs/FCR_wetland_inflow_2013_2019_20200630_allfractions_2DOCpools.csv','inputs/FCR_SSS_inflow_2013_2019_20200701_allfractions_2DOCpools.csv'
+   inflow_factor = 1, 1, 0.75
+   inflow_fl = 'inputs/FCR_weir_inflow_2013_2019_20200624_allfractions_2poolsDOC.csv','inputs/FCR_wetland_inflow_2013_2019_20200630_allfractions_2DOCpools.csv','inputs/FCR_SSS_inflow_2013_2019_20200624_allfractions_2DOCpools.csv'
    inflow_varnum = 19
    inflow_vars = 'FLOW','TEMP','SALT','OXY_oxy','NIT_amm','NIT_nit','PHS_frp','OGM_doc','OGM_docr','OGM_poc','OGM_don','OGM_donr','OGM_pon','OGM_dop','OGM_dopr','OGM_pop','CAR_dic','CAR_ch4','SIL_rsi'
 /
 &outflow
-   num_outlet = 1
-   flt_off_sw = .false.!, .false.
-   outl_elvs = 506.9!, 498.883
-   bsn_len_outl = 711.699!, 100
-   bsn_wid_outl = 226.03!, 10
-   outflow_fl = 'inputs/FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv'!,'inputs/FCR_SSS_outflow_2013_2019_20200601.csv'
-   outflow_factor = 1!, 0.75
+   num_outlet = 2
+   flt_off_sw = .false., .false.
+   outl_elvs = 506.9, 498.883
+   bsn_len_outl = 711.699, 100
+   bsn_wid_outl = 226.03, 10
+   outflow_fl = 'inputs/FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv','inputs/FCR_SSS_outflow_2013_2019_20200601.csv'
+   outflow_factor = 1, 0.75
 /
 &snowice
    snow_albedo_factor = 1

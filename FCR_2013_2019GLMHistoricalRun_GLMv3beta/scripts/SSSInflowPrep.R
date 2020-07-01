@@ -38,6 +38,80 @@ plot(inflowoxy$time, inflowoxy$FLOW, type = "o")
 plot(inflowoxy$time, inflowoxy$OXY_oxy, type = "l", col = "red", ylab="mmol O2/m3/d added per day",
      xlab="Time")
 
+########playing around to see if we can inject high levels of O2 with low flow rate
+
+highox <- inflowoxy %>% 
+  mutate(load = FLOW*OXY_oxy) %>% 
+  mutate(FLOW_lo = rep(1e-08, length(highox$FLOW))) %>% 
+  mutate(OXY_oxy_lo = load/FLOW_lo) %>% 
+  select(time, FLOW_lo, SALT, OXY_oxy_lo) %>% 
+  rename(FLOW = FLOW_lo, OXY_oxy = OXY_oxy_lo) %>% 
+  mutate(NIT_amm = rep(0, length(highox$time))) %>% 
+  mutate(NIT_nit = rep(0, length(highox$time))) %>% 
+  mutate(PHS_frp = rep(0, length(highox$time))) %>% 
+  mutate(OGM_doc = rep(0, length(highox$time))) %>% 
+  mutate(OGM_docr = rep(0, length(highox$time))) %>% 
+  mutate(OGM_poc = rep(0, length(highox$time))) %>% 
+  mutate(OGM_don = rep(0, length(highox$time))) %>% 
+  mutate(OGM_donr = rep(0, length(highox$time))) %>% 
+  mutate(OGM_pon = rep(0, length(highox$time))) %>% 
+  mutate(OGM_dop = rep(0, length(highox$time))) %>% 
+  mutate(OGM_dopr = rep(0, length(highox$time))) %>% 
+  mutate(OGM_pop = rep(0, length(highox$time))) %>% 
+  mutate(CAR_dic = rep(0, length(highox$time))) %>% 
+  mutate(CAR_ch4 = rep(0, length(highox$time))) %>% 
+  mutate(SIL_rsi = rep(0, length(highox$time))) 
+  
+CTD<-read.csv("CTD_final_2013_2019.csv", header=TRUE) #now need to get temp at 8m for inflow
+CTD8 <- CTD %>%
+  select(Reservoir:Temp_C) %>%
+  filter(Reservoir=="FCR") %>%
+  filter(Site==50) %>%
+  rename(time=Date, TEMP=Temp_C) %>%
+  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
+  mutate(Depth_m = round(Depth_m, digits=0)) %>%
+  group_by(time) %>% 
+  filter(Depth_m==8) %>%
+  summarise(TEMP=mean(TEMP)) %>%
+  filter(TEMP<17) #remove crazy outlier from 2014
+
+#diagnostic plot to check for 8m water temp
+plot(CTD8$time, CTD8$TEMP, type = "o")
+
+#make final SSS inflow file, setting 12/31 of each year to 4oC in lieu of CTD data for interpolation
+SSS_inflowALL<-merge(highox,CTD8, by="time",all.x=TRUE)
+SSS_inflowALL$TEMP[231]<-4
+SSS_inflowALL$TEMP[596]<-4
+SSS_inflowALL$TEMP[961]<-4
+SSS_inflowALL$TEMP[1326]<-4
+SSS_inflowALL$TEMP[1691]<-4
+SSS_inflowALL$TEMP[2056]<-4
+SSS_inflowALL$TEMP[2422]<-4 #set last row as 4oC in prep for freezing
+SSS_inflowALL$TEMP<-na.fill(na.approx(SSS_inflowALL$TEMP),"extend")
+#SSS_inflowALL$CAR_ch4 <-na.fill(na.approx(SSS_inflowALL$CAR_ch4), "extend")
+plot(SSS_inflowALL$time, SSS_inflowALL$TEMP, type = "o")
+
+#get everything in order
+SSS_inflowALL<-SSS_inflowALL %>%
+  select(time, FLOW, TEMP, SALT:SIL_rsi) #get all of the columns in order
+
+SSS_inflowALL[which(duplicated(SSS_inflowALL$time)),] #identify if there are repeated dates
+
+SSS_inflowALL <- SSS_inflowALL[(!duplicated(SSS_inflowALL$time)),] #remove repeated dates
+
+#et voila! the final inflow file for the SSS for 2 pools of DOC
+write.csv(SSS_inflowALL, "FCR_SSS_inflow_2013_2019_20200701_allfractions_2DOCpools.csv", row.names = FALSE)
+
+  
+  
+  
+  
+
+
+
+
+
+
 #read in lab dataset of dissolved silica, measured by Jon in summer 2014 only
 silica <- read.csv("FCR2014_Chemistry.csv", header=T) %>%
   select(Date, Depth, DRSI_mgL) %>%
