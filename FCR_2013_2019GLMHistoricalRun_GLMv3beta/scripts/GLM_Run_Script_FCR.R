@@ -30,6 +30,8 @@ system2(paste0(sim_folder, "/", "glm"), stdout = TRUE, stderr = TRUE, env = past
 #sometimes, you'll get an error that says "Error in file, 'Time(Date)' is not first column!
 #in this case, open the input file in Excel, set the column in Custom ("YYYY-MM-DD") format, resave, and close the file
 nc_file <- file.path(sim_folder, 'output/output.nc') #defines the output.nc file 
+#########
+
 
 #reality check of temp heat map
 plot_temp(nc_file, col_lim = c(0,30))
@@ -75,6 +77,7 @@ ice<-get_var(nc_file,"hwice")
 iceblue<-get_var(nc_file,"hice")
 plot(ice$DateTime,rowSums(cbind(ice$hwice,iceblue$hice)))
 
+############## temperature data #######
 #read in cleaned CTD temp file with long-term obs at focal depths
 obstemp<-read_csv('field_data/CleanedObsTemp.csv') %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST")))
@@ -783,6 +786,7 @@ RMSE(mod,obs)
 mod <- eval(parse(text=paste0("newdata$Modeled_",var)))[newdata$Depth>=1 & newdata$Depth<=1] 
 obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=1 & newdata$Depth<=1] 
 RMSE(mod,obs)
+
 r2 <-lm(mod ~ obs)
 summary(r2)
 #plot individual phyto groups
@@ -792,15 +796,15 @@ summary(r2)
 #plot_var(file=nc_file,"PHY_CHLOROPCH3",reference="surface", col_lim=c(0,50))
 #plot_var(file=nc_file,"PHY_DIATOMPCH4",reference="surface", col_lim=c(0,50))
 
-cyano <- get_var(file=nc_file,var_name = 'PHY_cyano',z_out=0.1,reference = 'surface') 
-plot(cyano$DateTime, cyano$PHY_cyano_0.1, col="cyan", type="l", ylab="Phyto C mmol/m3", ylim=c(0,30))
-green <- get_var(file=nc_file,var_name = 'PHY_green',z_out=0.1,reference = 'surface') 
-lines(green$DateTime, green$PHY_green_0.1, col="green")
-diatoms <- get_var(file=nc_file,var_name = 'PHY_diatom',z_out=0.1,reference = 'surface') 
-lines(diatoms$DateTime, diatoms$PHY_diatom_0.1, col="brown")
+cyano <- get_var(file=nc_file,var_name = 'PHY_cyano',z_out=1.0,reference = 'surface') 
+plot(cyano$DateTime, cyano$PHY_cyano_1, col="cyan", type="l", ylab="Phyto C mmol/m3", ylim=c(0,30))
+green <- get_var(file=nc_file,var_name = 'PHY_green',z_out=1.0,reference = 'surface') 
+lines(green$DateTime, green$PHY_green_1, col="green")
+diatoms <- get_var(file=nc_file,var_name = 'PHY_diatom',z_out=1.0,reference = 'surface') 
+lines(diatoms$DateTime, diatoms$PHY_diatom_1, col="brown")
 legend("topleft", legend=c("Cyano", "Greens", "Diatoms"), fill= c("cyan", "green","brown"), cex=0.8)
-chla <- get_var(file=nc_file,var_name = 'PHY_TCHLA',z_out=0.1,reference = 'surface') 
-lines(chla$DateTime, chla$PHY_TCHLA_0.1, col="red")
+chla <- get_var(file=nc_file,var_name = 'PHY_TCHLA',z_out=1.0,reference = 'surface') 
+lines(chla$DateTime, chla$PHY_TCHLA_1, col="red")
 
 
 plot_var(nc_file, "PHY_cyano_fNit")
