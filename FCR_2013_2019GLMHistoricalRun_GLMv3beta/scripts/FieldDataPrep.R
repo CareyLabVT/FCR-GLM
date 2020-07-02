@@ -82,30 +82,127 @@ super_final <- as.data.frame(super_final) %>%
   mutate(temp = as.numeric(levels(temp))[temp]) %>%
   mutate(DO = as.numeric(levels(DO))[DO]) %>%
   mutate(chla = as.numeric(levels(chla))[chla])
-  
-#export CTD data!
-temp <- super_final %>%
-  select(time, depth, temp) %>%
-  rename(DateTime = time, Depth = depth) %>%
-  write.csv("CleanedObsTemp.csv", row.names = F)
 
-oxygen <- super_final %>%
+
+#now pull in YSI data to fill in missing temp/DO data from CTD dataset
+#need to import YSI observations from EDI
+inUrl1  <- "https://pasta.lternet.edu/package/data/eml/edi/198/7/25b5e8b7f4291614d5c6d959a08148d8" 
+infile1 <- paste0(getwd(),"/YSI_PAR_profiles_2013-2019.csv")
+download.file(inUrl1,infile1,method="curl")
+
+ysi <- read.csv("YSI_PAR_profiles_2013-2019.csv", header=T) %>% 
+  filter(Reservoir == "FCR") %>% 
+  filter(Site == 50) %>% 
+  select(DateTime:DO_mgL) %>% 
+  rename(time = DateTime, depth = Depth_m, temp = Temp_C, DO = DO_mgL) %>% 
+  mutate(time = as.POSIXct(strptime(time, "%m/%d/%y %H:%M", tz="EST"))) %>% 
+  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>% 
+  filter(!(is.na(temp) & is.na(DO)))
+
+depths<- c(0.1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9.2) 
+#Initialize an empty matrix with the correct number of rows and columns 
+temp<-matrix(data=NA, ncol=ncol(ysi), nrow=length(depths)) #of cols in CTD data, and then nrows = # of layers produced
+super_final_ysi<-matrix(data=NA, ncol=1, nrow=0)
+dates<-unique(ysi$time)
+
+#create a function to chose the matching depth closest to our focal depths
+closest<-function(xv, sv){
+  xv[which.min(abs(xv-sv))]}
+
+library(plyr) #only use plyr for this for loop, then detach!
+
+#For loop to retrieve CTD depth with the closest function and fill in matrix
+for (i in 1:length(dates)){
+  j=dates[i]
+  q <- subset(ysi, ysi$time == j)
+  
+  layer1<- q[q[, "depth"] == closest(q$depth,0.1),][1,]
+  layer2<- q[q[, "depth"] == closest(q$depth,1),][1,]
+  layer3<- q[q[, "depth"] == closest(q$depth,2),][1,]
+  layer4<- q[q[, "depth"] == closest(q$depth,3),][1,]
+  layer5<- q[q[, "depth"] == closest(q$depth,4),][1,]
+  layer6<- q[q[, "depth"] == closest(q$depth,5),][1,]
+  layer7<- q[q[, "depth"] == closest(q$depth,6),][1,]
+  layer8<- q[q[, "depth"] == closest(q$depth,7),][1,]
+  layer9<- q[q[, "depth"] == closest(q$depth,8),][1,]
+  layer10<-q[q[, "depth"] == closest(q$depth,9),][1,]
+  layer11<- q[q[, "depth"] == closest(q$depth,9.2),][1,]
+  
+  temp<-rbind(layer1,layer2,layer3,layer4,layer5,layer6,layer7,layer8,layer9,layer10,layer11)
+  temp[,((ncol(ysi))+1)] <- depths
+  colnames(temp)[((ncol(ysi))+1)]<-"new_depth"
+  final <- temp
+  final <- data.frame(final)
+  super_final_ysi <- rbind.fill.matrix(super_final_ysi,final)
+}
+
+detach(package:plyr)#to prevent issues with dplyr vs plyr not playing well together!
+
+#now need to clean up the data frame and make all factors numeric
+super_final_ysi1 <- as.data.frame(super_final_ysi) %>%
+  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
+  filter(time > "2013-05-16") %>% #need to make sure that the CTD data only start after first day of sim
+  mutate(depth = as.numeric(levels(depth))[depth]) %>%
+  mutate(new_depth = as.numeric(levels(new_depth))[new_depth]) %>%
+  mutate(temp = as.numeric(levels(temp))[temp]) %>%
+  mutate(DO = as.numeric(levels(DO))[DO]) %>%
+  mutate(diff = new_depth - depth) %>% 
+  filter(abs(diff)<0.4)%>%
+  select(time, new_depth, temp, DO) %>%
+  rename(depth = new_depth) 
+
+more <- merge(super_final, super_final_ysi1, all.x=T, all.y=T, by=c("time", "depth"))
+
+for(i in 1:length(more$time)){
+  if(is.na(more$temp.x[i])==F){
+    more$temp_new[i]=more$temp.x[i]
+  }
+  if(is.na(more$temp.x[i])==T & is.na(more$temp.y[i])==F){
+    more$temp_new[i]=more$temp.y[i]
+  }
+  if(is.na(more$temp.x[i])==T & is.na(more$temp.y[i])==T){
+    more$temp_new[i]=NA
+  }
+  if(is.na(more$DO.x[i])==F){
+    more$DO_new[i]=more$DO.x[i]
+  }
+  if(is.na(more$DO.x[i])==T & is.na(more$DO.y[i])==F){
+    more$DO_new[i]=more$DO.y[i]
+  }
+  if(is.na(more$DO.x[i])==T & is.na(more$DO.y[i])==T){
+    more$DO_new[i]=NA
+  }
+}     
+
+more1 <- more %>% 
+  select(time, depth,temp_new,DO_new, chla) %>% 
+  rename(temp = temp_new, DO = DO_new) 
+
+#export CTD data!
+temp <- more1 %>%
+  select(time, depth, temp) %>%
+  rename(DateTime = time, Depth = depth) %>% 
+  drop_na() %>% 
+  write.csv("CleanedObsTemp1.csv", row.names = F)
+
+oxygen <- more1 %>%
   select(time, depth, DO) %>%
   rename(DateTime = time, Depth = depth, OXY_oxy=DO) %>%
   mutate(OXY_oxy = OXY_oxy*1000/32) %>% #to convert mg/L to molar units
-  write.csv("CleanedObsOxy.csv", row.names = F)
+  drop_na() %>% 
+  write.csv("CleanedObsOxy1.csv", row.names = F)
 
-chla <- super_final %>%
+chla <- more1 %>%
   select(time, depth, chla) %>%
   rename(DateTime = time, Depth = depth, PHY_TCHLA=chla) %>%
-  write.csv("CleanedObsChla.csv", row.names = F)
+  drop_na() %>% 
+  write.csv("CleanedObsChla1.csv", row.names = F)
 
-fcr <- super_final %>%
+fcr <- more1 %>%
   select(time, depth, temp, DO) %>%
   rename(DateTime = time, Depth = depth, OXY_oxy=DO) %>%
   mutate(OXY_oxy = OXY_oxy*1000/32) %>% #to convert mg/L to molar units
-  write.csv("field_FCR.csv", row.names = F)
-
+  write.csv("field_FCR1.csv", row.names = F)
 
 
 ###########################################################
