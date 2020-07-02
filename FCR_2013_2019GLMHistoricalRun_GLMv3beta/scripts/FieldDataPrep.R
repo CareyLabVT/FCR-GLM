@@ -7,7 +7,8 @@ setwd("./field_data")
 library(tidyverse)
 library(lubridate)
 
-depths<- c(0.1, 1, 2, 3, 4, 5, 6, 7, 8, 9) #focal depths we are trying to compare modeled data vs observations
+depths<- c(0.1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9.2) #focal depths we are trying to compare modeled data vs observations
+#going with 9.2 vs. 9.3 because 9.202598 is the shallowest depth experienced by reservoir over 2013-2017
 
 ###########################################################
 ######TEMPERATURE, DO, AND CHLA FROM CTD
@@ -26,6 +27,13 @@ ctd<-read_csv('CTD_final_2013_2019.csv') %>% #read in observed CTD data, which h
   select(time, depth, temp, DO, chla) %>%
   na.omit() 
 
+#to see on average how deep the CTD casts at site 50 really are!
+Zmax <- ctd %>% 
+  group_by(time) %>% 
+  summarise(depth = max(depth)) %>% 
+  select(time, depth)
+hist(Zmax$depth)
+
 #Initialize an empty matrix with the correct number of rows and columns 
 temp<-matrix(data=NA, ncol=ncol(ctd), nrow=length(depths)) #of cols in CTD data, and then nrows = # of layers produced
 super_final<-matrix(data=NA, ncol=1, nrow=0)
@@ -42,8 +50,8 @@ for (i in 1:length(dates)){
   j=dates[i]
   q <- subset(ctd, ctd$time == j)
 
-  layer1 <- q[q[, "depth"] == closest(q$depth,0.1),][1,]
-  layer2<- q[q[, "depth"] == closest(q$depth,1.0),][1,]
+  layer1<- q[q[, "depth"] == closest(q$depth,0.1),][1,]
+  layer2<- q[q[, "depth"] == closest(q$depth,1),][1,]
   layer3<- q[q[, "depth"] == closest(q$depth,2),][1,]
   layer4<- q[q[, "depth"] == closest(q$depth,3),][1,]
   layer5<- q[q[, "depth"] == closest(q$depth,4),][1,]
@@ -51,9 +59,10 @@ for (i in 1:length(dates)){
   layer7<- q[q[, "depth"] == closest(q$depth,6),][1,]
   layer8<- q[q[, "depth"] == closest(q$depth,7),][1,]
   layer9<- q[q[, "depth"] == closest(q$depth,8),][1,]
-  layer10<- q[q[, "depth"] == closest(q$depth,9),][1,]
+  layer10<-q[q[, "depth"] == closest(q$depth,9),][1,]
+  layer11<- q[q[, "depth"] == closest(q$depth,9.2),][1,]
   
-  temp<-rbind(layer1,layer2,layer3,layer4,layer5,layer6,layer7,layer8,layer9,layer10)
+  temp<-rbind(layer1,layer2,layer3,layer4,layer5,layer6,layer7,layer8,layer9,layer10,layer11)
   temp[,((ncol(ctd))+1)] <- depths
   colnames(temp)[((ncol(ctd))+1)]<-"new_depth"
   final <- temp
@@ -90,6 +99,13 @@ chla <- super_final %>%
   select(time, depth, chla) %>%
   rename(DateTime = time, Depth = depth, PHY_TCHLA=chla) %>%
   write.csv("CleanedObsChla.csv", row.names = F)
+
+fcr <- super_final %>%
+  select(time, depth, temp, DO) %>%
+  rename(DateTime = time, Depth = depth, OXY_oxy=DO) %>%
+  mutate(OXY_oxy = OXY_oxy*1000/32) %>% #to convert mg/L to molar units
+  write.csv("field_FCR.csv", row.names = F)
+
 
 
 ###########################################################

@@ -25,9 +25,6 @@ field_temp<-read.csv("field_data/CleanedObsTemp.csv", header=T)
 field_oxy <-read.csv("field_data/CleanedObsOxy.csv", header=T)
 field_temp$DateTime <-as.POSIXct(strptime(field_temp$DateTime, "%Y-%m-%d", tz="EST"))
 field_oxy$DateTime <-as.POSIXct(strptime(field_oxy$DateTime, "%Y-%m-%d", tz="EST"))
-field_temp_oxy <- merge(field_temp, field_oxy, by=c("DateTime", "Depth"), all.x=T, all.y=T)
-colnames(field_temp_oxy) <-c("datetime", "depth", "temp", "OXY_oxy")
-#write.csv(field_temp_oxy, 'field_data/field_FCR.csv', row.names = F)
 
 # CHEMISTRY: GET ALL NUTRIENTS, SILICA, CH4, & CO2
 chem <- read.csv('field_data/field_chem.csv', header=T)
