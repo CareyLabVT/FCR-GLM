@@ -1,4 +1,2 @@
 par,lb,ub,x0
-Ksed_oxy,1,15,7
-Fsed_oxy,-60,-15,-30
-Fsed_oxy,-60,-5,-15
+Ksed_oxy,4.05,4.15,4.1
