@@ -16,7 +16,7 @@ sim_folder <- getwd()
 
 #look at glm and aed nml files
 nml_file <- paste0(sim_folder,"/glm3.nml")
-aed_file <- paste0(sim_folder,"/aed2/aed2_20200612_2DOCpools.nml")
+aed_file <- paste0(sim_folder,"/aed2/aed2_20200701_2DOCpools.nml")
 aed_phytos_file <- paste0(sim_folder,"/aed2/aed2_phyto_pars_30June2020.nml")
 nml <- read_nml(nml_file) 
 aed <- read_nml(aed_file) #you may get a warning about an incomplete final line but it doesn't matter
@@ -79,7 +79,7 @@ plot(ice$DateTime,rowSums(cbind(ice$hwice,iceblue$hice)))
 
 ############## temperature data #######
 #read in cleaned CTD temp file with long-term obs at focal depths
-obstemp<-read_csv('field_data/CleanedObsTemp.csv') %>%
+obstemp<-read_csv('field_data/CleanedObsTemp1.csv') %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST")))
 
 #get modeled temperature readings for focal depths
@@ -100,7 +100,7 @@ for(i in 1:length(unique(watertemp$Depth))){
 }
 
 #thermocline depth comparison
-field_file<-file.path(sim_folder,'/field_data/CleanedObsTemp.csv')
+field_file<-file.path(sim_folder,'/field_data/CleanedObsTemp1.csv')
 therm_depths <- compare_to_field(nc_file, field_file, metric="thermo.depth", precision="days",method='interp',as_value=TRUE, na.rm=T)
 compare_to_field(nc_file, field_file, metric="thermo.depth", precision="days", method='interp',as_value=F, na.rm=TRUE) #prints RMSE
 plot(therm_depths$DateTime,therm_depths$mod, type="l", ylim=c(1,9),main = paste0("ThermoclineDepth: Obs=Red, Mod=Black"),
@@ -108,7 +108,7 @@ plot(therm_depths$DateTime,therm_depths$mod, type="l", ylim=c(1,9),main = paste0
 points(therm_depths$DateTime, therm_depths$obs, type="l",col="red")
 
 #Run sim diagnostics and calculate RMSE using glmtools
-field_file<-file.path(sim_folder,'/field_data/CleanedObsTemp.csv')
+field_file<-file.path(sim_folder,'/field_data/CleanedObsTemp1.csv')
 compare_to_field(nc_file, field_file, nml_file = nml_file, metric = 'hypo.temperature', as_value = FALSE,
                  na.rm = TRUE, precision = 'days',method = 'interp')
 compare_to_field(nc_file, field_file, nml_file = nml_file, metric = 'epi.temperature', as_value = FALSE,
@@ -127,7 +127,7 @@ RMSE = function(m, o){
   sqrt(mean((m - o)^2))
 }
 
-field_file<-file.path(sim_folder,'/field_data/CleanedObsTemp.csv')
+field_file<-file.path(sim_folder,'/field_data/CleanedObsTemp1.csv')
 temps <- resample_to_field(nc_file, field_file, precision="mins", method='interp')
 temps<-temps[complete.cases(temps),]
 
@@ -152,10 +152,10 @@ RMSE(m_temp,o_temp)
 
 #read in cleaned CTD temp file with long-term obs at focal depths
 var="OXY_oxy"
-obs_oxy<-read.csv('field_data/CleanedObsOxy.csv') %>%
+obs_oxy<-read.csv('field_data/CleanedObsOxy1.csv') %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST")))
-field_file <- file.path(sim_folder,'/field_data/CleanedObsOxy.csv') 
-depths<- c(0.1, 1, 2, 3, 4, 5, 6, 7, 8, 9) 
+field_file <- file.path(sim_folder,'/field_data/CleanedObsOxy1.csv') 
+depths<- c(0.1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9.2) 
 #plot_var_compare(nc_file,field_file,var_name = var, precision="days",col_lim = c(0,1000)) #compare obs vs modeled
 
 #get modeled oxygen concentrations for focal depths
@@ -382,7 +382,7 @@ RMSE(mod,obs)
 
 
 
-#### silica  data #######
+#### silica #######
 
 var="SIL_rsi"
 field_file <- file.path(sim_folder,'/field_data/field_silica.csv') 
@@ -731,9 +731,9 @@ RMSE(mod,obs)
 #### chlorophyll a #######
 
 var="PHY_TCHLA"
-field_file <- file.path(sim_folder,'/field_data/CleanedObsChla.csv') 
+field_file <- file.path(sim_folder,'/field_data/CleanedObsChla1.csv') 
 
-obs<-read.csv('field_data/CleanedObsChla.csv', header=TRUE) %>% #read in observed chemistry data
+obs<-read.csv('field_data/CleanedObsChla1.csv', header=TRUE) %>% #read in observed chemistry data
   dplyr::mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
   select(DateTime, Depth, var) %>%
   na.omit()
@@ -785,6 +785,10 @@ RMSE(mod,obs)
 
 mod <- eval(parse(text=paste0("newdata$Modeled_",var)))[newdata$Depth>=1 & newdata$Depth<=1] 
 obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=1 & newdata$Depth<=1] 
+RMSE(mod,obs)
+
+mod <- eval(parse(text=paste0("newdata$Modeled_",var)))[newdata$Depth>=2 & newdata$Depth<=2] 
+obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=2 & newdata$Depth<=2] 
 RMSE(mod,obs)
 
 r2 <-lm(mod ~ obs)
