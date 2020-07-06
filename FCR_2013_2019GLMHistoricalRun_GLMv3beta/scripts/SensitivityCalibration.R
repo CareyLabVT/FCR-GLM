@@ -424,16 +424,16 @@ ub <- cal_pars$ub
 lb <- cal_pars$lb
 #Create initial files
 #init.val <- rep(5, nrow(cal_pars))
-init.val <- (c(7,-30,-15) - lb) *10 /(ub-lb) # Paul's values
+init.val <- (c(4.1) - lb) *10 /(ub-lb) # Paul's values
 #obs <- read_field_obs('field_data/field_FCR.csv', var)
-obs <- read_field_obs('field_data/CleanedObsOxy_hypo.csv',var)
+obs <- read_field_obs('field_data/CleanedObsOxy1_hypo.csv',var)
 method = 'cmaes'
 calib.metric = 'RMSE'
 os = "Compiled" #Changed from Unix
 target_fit = -Inf#2.50 * 1000/32
-target_iter = 1000#1000*length(init.val)^2
+target_iter = 200#1000*length(init.val)^2
 #nml_file = 'aed2/aed2.nml'
-nml_file = 'aed2/aed2_20200612_2DOCpools.nml'
+nml_file = 'aed2/aed2_20200701_2DOCpools.nml'
 run_calibvalid(var, var_unit = 'mmol/m3', var_seq = seq(0,600,50), cal_pars, pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
 
@@ -458,7 +458,7 @@ calib.metric = 'RMSE'
 os = "Compiled"
 target_fit = -Inf#2.50 * 1000/32
 target_iter = 500#1000#1000*length(init.val)^2
-nml_file = 'aed2/aed2_20200612_2DOCpools.nml'
+nml_file = 'aed2/aed2_20200701_2DOCpools.nml'
 run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,2000,250), pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
 
@@ -482,7 +482,7 @@ calib.metric = 'RMSE'
 os = "Compiled"
 target_fit = -Inf#2.50 * 1000/32
 target_iter = 500#1000#1000*length(init.val)^2
-nml_file = 'aed2/aed2_20200612_2DOCpools.nml'
+nml_file = 'aed2/aed2_20200701_2DOCpools.nml'
 run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,500,25), pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
 
@@ -499,14 +499,14 @@ pars <- cal_pars$par
 ub <- cal_pars$ub
 lb <- cal_pars$lb
 #Create initial files
-init.val <- (c(25, 50) - lb) *10 /(ub-lb) # EDIT THESE
+init.val <- (c(5, 50) - lb) *10 /(ub-lb) # EDIT THESE
 obs <- read_field_obs('field_data/field_silica.csv', var)
 method = 'cmaes'
 calib.metric = 'RMSE'
 os = "Compiled"
 target_fit = -Inf#2.50 * 1000/32
-target_iter = 500#1000*length(init.val)^2
-nml_file = 'aed2/aed2_20200612_2DOCpools.nml'
+target_iter = 300#1000*length(init.val)^2
+nml_file = 'aed2/aed2_20200701_2DOCpools.nml'
 run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,1000,50), pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
 
@@ -523,14 +523,14 @@ pars <- cal_pars$par
 ub <- cal_pars$ub
 lb <- cal_pars$lb
 #Create initial files
-init.val <- (c(25, 1, 10) - lb) *10 /(ub-lb) # EDIT THESE
-obs <- read_field_obs('field_data/field_chem.csv', var)
+init.val <- (c(5, 10, 48, 1.04) - lb) *10 /(ub-lb) # EDIT THESE
+obs <- read_field_obs('field_data/field_chem_hypo.csv', var)
 method = 'cmaes'
 calib.metric = 'RMSE'
 os = "Compiled"
 target_fit = -Inf#2.50 * 1000/32
 target_iter = 500#1000*length(init.val)^2
-nml_file = 'aed2/aed2_20200612_2DOCpools.nml'
+nml_file = 'aed2/aed2_20200701_2DOCpools.nml'
 run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,250,25), pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
 
@@ -554,7 +554,7 @@ calib.metric = 'RMSE'
 os = "Compiled"
 target_fit = -Inf#2.50 * 1000/32
 target_iter = 250#1000*length(init.val)^2
-nml_file = 'aed2/aed2_20200612_2DOCpools.nml'
+nml_file = 'aed2/aed2_20200701_2DOCpools.nml'
 run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,50,5), pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
 
@@ -572,15 +572,15 @@ ub <- cal_pars$ub
 lb <- cal_pars$lb
 #Create initial files
 #init.val <- rep(5, nrow(cal_pars))
-init.val <- (c(0.118, 25) - lb) *10 /(ub-lb) # EDIT THESE
+init.val <- (c(0.011, 0.2, 25) - lb) *10 /(ub-lb) # EDIT THESE
 obs <- read_field_obs('field_data/field_chem.csv', var)
 method = 'cmaes'
 calib.metric = 'RMSE'
 os = "Compiled"
 target_fit = -Inf#2.50 * 1000/32
 target_iter = 500#1000*length(init.val)^2
-nml_file = 'aed2/aed2_20200612_2DOCpools.nml'
-run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,1000,100), pars, ub, lb, init.val, obs, method, 
+nml_file = 'aed2/aed2_20200701_2DOCpools.nml'
+run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,0.5,0.05), pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
 
 
@@ -604,7 +604,7 @@ calib.metric = 'RMSE'
 os = "Compiled"
 target_fit = -Inf#2.50 * 1000/32
 target_iter = 500#1000*length(init.val)^2
-nml_file = 'aed2/aed2_20200612_2DOCpools.nml'
+nml_file = 'aed2/aed2_20200701_2DOCpools.nml'
 run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,500,50), pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
 
@@ -621,14 +621,14 @@ ub <- cal_pars$ub
 lb <- cal_pars$lb
 #Create initial files
 #init.val <- rep(5, nrow(cal_pars))
-init.val <- (c(4,10,31.25) - lb) *10 /(ub-lb) # EDIT THESE
+init.val <- (c(4,31.25,1.08) - lb) *10 /(ub-lb) # EDIT THESE
 obs <- read_field_obs('field_data/field_chem.csv', var)
 method = 'cmaes'
 calib.metric = 'RMSE'
 os = "Compiled"
 target_fit = -Inf#2.50 * 1000/32
-target_iter = 300#1000*length(init.val)^2
-nml_file = 'aed2/aed2_20200612_2DOCpools.nml'
+target_iter = 500#1000*length(init.val)^2
+nml_file = 'aed2/aed2_20200701_2DOCpools.nml'
 run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,100,10), pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
 
@@ -657,7 +657,7 @@ calib.metric = 'RMSE'
 os = "Compiled"
 target_fit = -Inf#2.50 * 1000/32
 target_iter = 300#1000*length(init.val)^2
-nml_file = 'aed2/aed2_20200612_2DOCpools.nml'
+nml_file = 'aed2/aed2_20200701_2DOCpools.nml'
 run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,1,10), pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
 
