@@ -628,13 +628,19 @@ obs <- read.csv('field_data/field_chem.csv', header=TRUE) %>% #read in observed 
 residuals <- merge(obs, docr1, by="DateTime") %>% 
   mutate(resids = obs_docr - mod_docr) 
 
-inflow<-read.csv("inputs/FCR_wetland_inflow_newEDI_2013_2019_20200616_allfractions_2DOCpools.csv", header=T) %>%
-  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
+inflow1<-read.csv("inputs/FCR_wetland_inflow_2013_2019_20200630_allfractions_2DOCpools.csv", header=T) %>%
+  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST")))
+
+inflow <- inflow1 %>%
   rename(DateTime = time) %>%
   select(DateTime, OGM_docr, FLOW, TEMP) 
 
 more <- merge(residuals, inflow, by="DateTime") %>% 
   mutate(DOY = yday(DateTime))
+
+outflow = read.csv("inputs/FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv", header=T) %>%
+  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST")))
+
 
 #trying to figure out what combination of flow, wetland DOCr concentration, and DOY predict residuals
 #need to add a subsidy DOCr pool into DOCr inflow to explain 
@@ -648,7 +654,7 @@ model1 = lm(resids ~ DOY + FLOW + OGM_docr + TEMP +
               DOY*FLOW + DOY*OGM_docr + DOY*TEMP +
               FLOW*OGM_docr + FLOW*TEMP +
               OGM_docr*TEMP + 
-              DOY*FLOW*OGM_docr,  
+              DOY*FLOW*OGM_docr +  
               + FLOW*OGM_docr*TEMP +
               DOY*FLOW*TEMP +
               DOY*FLOW*OGM_docr*TEMP,
@@ -673,20 +679,26 @@ summary(bestmodel)
 #now need to turn this model into predictions which will then be run for the wetland dataset and added into the OGM_docr pool
 
 #let's use the model predictions as extra inflow DOCr! Formerly included best model that had temp; now removed
-wetland_extraOC <- merge(wetland_final,outflow, by="time") %>% 
+wetland_extraOC <- merge(inflow1,outflow, by="time") %>% 
   mutate(DOY = yday(time)) %>% 
   rename(FLOW = FLOW.x) %>% 
   #mutate(preds = -1.442e+02 + 1.199e+00*DOY + 4.296e+03*FLOW + 5.611e-01*OGM_docr +
   #      (-4.037e+01*DOY*FLOW) + (-2.611e-03*DOY*OGM_docr) + (-1.620e+01*FLOW*OGM_docr) +
   #        1.159e-01*DOY*FLOW*OGM_docr) %>% #best model terms (best model not including temp)
-  mutate(preds1 = -2.664e+02 + 1.753e+00*DOY + 8.115e+02*FLOW + 1.465e+00*OGM_docr +
-           8.885e+00*TEMP + (-2.755e+01*DOY*FLOW) + (-8.157e-03*DOY*OGM_docr) +
-           (-3.757e-02*DOY*TEMP) + (-1.263e+01*FLOW*OGM_docr) + (2.317e+02*FLOW*TEMP) +
-           (-7.338e-02*OGM_docr*TEMP) + 1.225e-01*DOY*FLOW*OGM_docr + (-1.189e+00*DOY*FLOW*TEMP) +
-           (3.893e-04*DOY*OGM_docr*TEMP)) %>% #best model terms that include temp
+  #mutate(preds1 = -2.664e+02 + 1.753e+00*DOY + 8.115e+02*FLOW + 1.465e+00*OGM_docr +
+  #       8.885e+00*TEMP + (-2.755e+01*DOY*FLOW) + (-8.157e-03*DOY*OGM_docr) + 
+  #       (-3.757e-02*DOY*TEMP) + (-1.263e+01*FLOW*OGM_docr) + (2.317e+02*FLOW*TEMP) +
+  #       (-7.338e-02*OGM_docr*TEMP) + 1.225e-01*DOY*FLOW*OGM_docr + (-1.189e+00*DOY*FLOW*TEMP) +
+  #       (3.893e-04*DOY*OGM_docr*TEMP))
+  mutate(preds1 = -263.2070 + 1.727140*DOY + 704.5604*FLOW + 1.482740*OGM_docr +
+           8.286827*TEMP + (-27.39587*DOY*FLOW) + (-0.008109236*DOY*OGM_docr) +
+           (-0.03454047*DOY*TEMP) + (-12.74106*FLOW*OGM_docr) + (236.84212*FLOW*TEMP) +
+           (-0.07210827*OGM_docr*TEMP) + 0.1222970*DOY*FLOW*OGM_docr + (-1.183907*DOY*FLOW*TEMP) +
+           (0.0003783986*DOY*OGM_docr*TEMP)) %>% #best model terms that include temp
   #mutate(preds = preds*(FLOW + FLOW.y)/FLOW) %>% 
-  mutate(preds1 = preds1*(FLOW + FLOW.y)/FLOW) %>% 
+  mutate(preds1 = preds1*(FLOW.y/FLOW)) %>% 
   mutate(OGM_docr = OGM_docr + preds1) %>% #choosing the best model with temperature
   select(time:SIL_rsi)
 
-write.csv(wetland_extraOC, "FCR_wetland_inflow_newEDI_2013_2019_20200618_allfractions_2DOCpools.csv", row.names = FALSE)
+#FIX THIS NAME!!
+write.csv(wetland_extraOC, "inputs/FCR_wetland_inflow_2013_2019_20200713_allfractions_2DOCpools.csv", row.names = FALSE)
