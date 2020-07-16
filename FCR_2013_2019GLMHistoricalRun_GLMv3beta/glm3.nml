@@ -2,7 +2,7 @@
    sim_name = 'FCR'
    max_layers = 500
    min_layer_vol = 0.025
-   min_layer_thick = 0.5
+   min_layer_thick = 1.0
    max_layer_thick = 1.5
    non_avg = .true.
 /
@@ -45,7 +45,7 @@
 &time
    timefmt = 2
    start = '2013-05-15 12:00:00'
-   stop = '2019-12-31 12:00:00'
+   stop = '2018-12-31 12:00:00'
    dt = 3600
    num_days = 1
    timezone = -5
