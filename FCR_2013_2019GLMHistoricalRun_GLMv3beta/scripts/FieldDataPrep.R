@@ -19,9 +19,9 @@ infile1 <- paste0(getwd(),"/CTD_final_2013_2019.csv")
 download.file(inUrl1,infile1,method="curl")
 
 #read in CTD temp file from EDI to create field file, but first need to subset CTD data per each day to depths
-ctd<-read_csv('CTD_final_2013_2019.csv') %>% #read in observed CTD data, which has multiple casts on the same day (problematic for comparison)
-  filter(Reservoir=="FCR") %>%
-  filter(Site==50) %>%
+ctd<-read.csv('CTD_final_2013_2019.csv') %>% #read in observed CTD data, which has multiple casts on the same day (problematic for comparison)
+  dplyr::filter(Reservoir=="FCR") %>%
+  dplyr::filter(Site==50) %>%
   rename(time=Date, depth=Depth_m, temp=Temp_C, DO=DO_mgL, chla = Chla_ugL) %>%
   mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
   select(time, depth, temp, DO, chla) %>%
@@ -77,7 +77,7 @@ super_final <- as.data.frame(super_final) %>%
   select(time, new_depth, temp, DO, chla) %>%
   rename(depth = new_depth) %>%
   mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
-  filter(time > "2013-05-16") %>% #need to make sure that the CTD data only start after first day of sim
+  dplyr::filter(time > "2013-05-16") %>% #need to make sure that the CTD data only start after first day of sim
   mutate(depth = as.numeric(levels(depth))[depth]) %>%
   mutate(temp = as.numeric(levels(temp))[temp]) %>%
   mutate(DO = as.numeric(levels(DO))[DO]) %>%
@@ -91,13 +91,13 @@ infile1 <- paste0(getwd(),"/YSI_PAR_profiles_2013-2019.csv")
 download.file(inUrl1,infile1,method="curl")
 
 ysi <- read.csv("YSI_PAR_profiles_2013-2019.csv", header=T) %>% 
-  filter(Reservoir == "FCR") %>% 
-  filter(Site == 50) %>% 
+  dplyr::filter(Reservoir == "FCR") %>% 
+  dplyr::filter(Site == 50) %>% 
   select(DateTime:DO_mgL) %>% 
   rename(time = DateTime, depth = Depth_m, temp = Temp_C, DO = DO_mgL) %>% 
   mutate(time = as.POSIXct(strptime(time, "%m/%d/%y %H:%M", tz="EST"))) %>% 
   mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>% 
-  filter(!(is.na(temp) & is.na(DO)))
+  dplyr::filter(!(is.na(temp) & is.na(DO)))
 
 depths<- c(0.1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9.2) 
 #Initialize an empty matrix with the correct number of rows and columns 
@@ -141,18 +141,62 @@ detach(package:plyr)#to prevent issues with dplyr vs plyr not playing well toget
 #now need to clean up the data frame and make all factors numeric
 super_final_ysi1 <- as.data.frame(super_final_ysi) %>%
   mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
-  filter(time > "2013-05-16") %>% #need to make sure that the CTD data only start after first day of sim
+  dplyr::filter(time > "2013-05-16") %>% #need to make sure that the CTD data only start after first day of sim
   mutate(depth = as.numeric(levels(depth))[depth]) %>%
   mutate(new_depth = as.numeric(levels(new_depth))[new_depth]) %>%
   mutate(temp = as.numeric(levels(temp))[temp]) %>%
   mutate(DO = as.numeric(levels(DO))[DO]) %>%
   mutate(diff = new_depth - depth) %>% 
-  filter(abs(diff)<0.4)%>%
+  dplyr::filter(abs(diff)<0.4)%>%
   select(time, new_depth, temp, DO) %>%
   rename(depth = new_depth) 
 
-more <- merge(super_final, super_final_ysi1, all.x=T, all.y=T, by=c("time", "depth"))
+more2 <- merge(super_final, super_final_ysi1, all.x=T, all.y=T, by=c("time", "depth"))
 
+#visualize the data
+for(i in 1:length(unique(more2$depth))){
+  tempdf<-subset(more2, more2$depth==depths[i])
+  plot(tempdf$time,tempdf$DO.y, type='l', col='red',
+       ylab='Oxygen mmol/m3', xlab='time',
+       main = paste0("YSI=Red,CTD=Black,Depth=",depths[i]),ylim=c(0,15))
+  points(tempdf$time, tempdf$DO.x, type="l",col='black')
+}
+
+#remove outliers
+more <- more2 %>% 
+  dplyr::filter((depth == 0.1 & DO.x > 5) |
+                (depth == 0.1 & DO.y > 5) |
+                (depth == 1 & DO.x > 5.5) |
+                (depth == 1 & DO.y > 5.5) |
+                (depth == 2 & DO.x > 5) |
+                (depth == 2 & DO.y > 5) |
+                (depth == 3 & DO.x > 2) |
+                (depth == 3 & DO.y > 2) |
+                (depth == 4 & DO.x < 13) |
+                (depth == 4 & DO.y < 13) |
+                (depth == 5 & DO.x < 13) |
+                (depth == 5 & DO.y < 13) |
+                (depth == 6 & DO.x < 13) |
+                (depth == 6 & DO.y < 13) |
+                (depth == 7 & DO.x < 12.5) |
+                (depth == 7 & DO.y < 12.5) |
+                (depth == 8 & DO.x < 12.5) |
+                (depth == 8 & DO.y < 12.5) |
+                (depth == 9 & DO.x < 12.5) |
+                (depth == 9 & DO.y < 12.5) |
+                (depth == 9.2 & DO.x < 12.5) |
+                (depth == 9.2 & DO.y < 12.5)) 
+  
+#visualize the DO data
+for(i in 1:length(unique(more$depth))){
+  tempdf<-subset(more, more$depth==depths[i])
+  plot(tempdf$time,tempdf$DO.y, type='l', col='red',
+       ylab='Oxygen mmol/m3', xlab='time',
+       main = paste0("YSI=Red,CTD=Black,Depth=",depths[i]),ylim=c(0,15))
+  points(tempdf$time, tempdf$DO.x, type="l",col='black')
+}
+
+#combine DO & temp data from both YSI & CTD, defaults to CTD if both are present 
 for(i in 1:length(more$time)){
   if(is.na(more$temp.x[i])==F){
     more$temp_new[i]=more$temp.x[i]
@@ -178,31 +222,79 @@ more1 <- more %>%
   select(time, depth,temp_new,DO_new, chla) %>% 
   rename(temp = temp_new, DO = DO_new) 
 
+#visualize the DO data
+for(i in 1:length(unique(more1$depth))){
+  tempdf<-subset(more1, more1$depth==depths[i])
+  plot(tempdf$time,tempdf$DO, type='l', col='red',
+       ylab='Oxygen mmol/m3', xlab='time',
+       main = paste0("Combined CTD & YSI data,Depth=",depths[i]),ylim=c(0,15))
+}
+
+#visualize the temp data
+for(i in 1:length(unique(more1$depth))){
+  tempdf<-subset(more1, more1$depth==depths[i])
+  plot(tempdf$time,tempdf$temp, type='l', col='red',
+       ylab='Temp oC', xlab='time',
+       main = paste0("Combined CTD & YSI data,Depth=",depths[i]),ylim=c(0,30))
+}
+
+#visualize the chla data
+for(i in 1:length(unique(more1$depth))){
+  tempdf<-subset(more1, more1$depth==depths[i])
+  plot(tempdf$time,tempdf$chla, type='l', col='red',
+       ylab='Chla ug/L', xlab='time',
+       main = paste0("Combined CTD & YSI data,Depth=",depths[i]),ylim=c(0,30))
+}
+
+
 #export CTD data!
 temp <- more1 %>%
   select(time, depth, temp) %>%
+  dplyr::filter(!(time==as_date("2014-05-28") & depth == 9.2)) %>% 
+  dplyr::filter(!(time==as_date("2017-03-27") & depth == 8)) %>% 
+  dplyr::filter(!(time==as_date("2013-08-12") & depth == 7)) %>% 
+  dplyr::filter(!(time==as_date("2016-06-28") & depth == 7)) %>% 
+  dplyr::filter(!(time==as_date("2013-08-12") & depth == 6)) %>% 
+  dplyr::filter(!(time==as_date("2014-05-28") & depth == 6)) %>% 
+  dplyr::filter(!(time==as_date("2013-08-12") & depth == 5)) %>% 
+  dplyr::filter(!(time==as_date("2013-08-12") & depth == 4)) %>% 
+  dplyr::filter(!(time==as_date("2013-08-12") & depth == 3)) %>% 
+  dplyr::filter(!(time==as_date("2014-05-28") & depth == 3)) %>% 
+  dplyr::filter(!(time==as_date("2013-08-12") & depth == 2)) %>% 
+  dplyr::filter(!(time==as_date("2014-05-28") & depth == 2)) %>% 
+  dplyr::filter(!(time==as_date("2014-05-28") & depth == 1)) %>% 
   rename(DateTime = time, Depth = depth) %>% 
   drop_na() %>% 
-  write.csv("CleanedObsTemp1.csv", row.names = F)
+  write.csv("CleanedObsTemp.csv", row.names = F)
 
 oxygen <- more1 %>%
   select(time, depth, DO) %>%
   rename(DateTime = time, Depth = depth, OXY_oxy=DO) %>%
   mutate(OXY_oxy = OXY_oxy*1000/32) %>% #to convert mg/L to molar units
   drop_na() %>% 
-  write.csv("CleanedObsOxy1.csv", row.names = F)
+  write.csv("CleanedObsOxy.csv", row.names = F)
 
 chla <- more1 %>%
   select(time, depth, chla) %>%
+  dplyr::filter(!(time==as_date("2015-04-16") & depth == 9.2)) %>% 
+  dplyr::filter(!(time==as_date("2015-04-16") & depth == 9)) %>% 
+  dplyr::filter(!(time==as_date("2015-04-16") & depth == 8)) %>% 
+  dplyr::filter(!(time==as_date("2015-04-16") & depth == 7)) %>% 
+  dplyr::filter(!(time==as_date("2015-04-16") & depth == 6)) %>% 
+  dplyr::filter(!(time==as_date("2016-07-26") & depth == 6)) %>% 
+  dplyr::filter(!(time==as_date("2015-04-16") & depth == 5)) %>% 
+  dplyr::filter(!(time==as_date("2015-04-16") & depth == 2)) %>% 
+  dplyr::filter(!(time==as_date("2015-04-16") & depth == 1)) %>% 
+  dplyr::filter(!(time==as_date("2015-04-16") & depth == 0.1)) %>% 
   rename(DateTime = time, Depth = depth, PHY_TCHLA=chla) %>%
   drop_na() %>% 
-  write.csv("CleanedObsChla1.csv", row.names = F)
+  write.csv("CleanedObsChla.csv", row.names = F)
 
-fcr <- more1 %>%
-  select(time, depth, temp, DO) %>%
-  rename(DateTime = time, Depth = depth, OXY_oxy=DO) %>%
-  mutate(OXY_oxy = OXY_oxy*1000/32) %>% #to convert mg/L to molar units
-  write.csv("field_FCR1.csv", row.names = F)
+#fcr <- more1 %>%
+#  select(time, depth, temp, DO) %>%
+#  rename(DateTime = time, Depth = depth, OXY_oxy=DO) %>%
+#  mutate(OXY_oxy = OXY_oxy*1000/32) %>% #to convert mg/L to molar units
+#  write.csv("field_FCR.csv", row.names = F)
 
 
 ###########################################################

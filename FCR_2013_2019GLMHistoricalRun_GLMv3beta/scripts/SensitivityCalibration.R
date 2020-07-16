@@ -424,14 +424,14 @@ ub <- cal_pars$ub
 lb <- cal_pars$lb
 #Create initial files
 #init.val <- rep(5, nrow(cal_pars))
-init.val <- (c(4.1) - lb) *10 /(ub-lb) # Paul's values
+init.val <- (c(4.1,-25,-8) - lb) *10 /(ub-lb) # Paul's values
 #obs <- read_field_obs('field_data/field_FCR.csv', var)
-obs <- read_field_obs('field_data/CleanedObsOxy1_hypo.csv',var)
+obs <- read_field_obs('field_data/CleanedObsOxy_9m.csv',var)
 method = 'cmaes'
 calib.metric = 'RMSE'
 os = "Compiled" #Changed from Unix
 target_fit = -Inf#2.50 * 1000/32
-target_iter = 200#1000*length(init.val)^2
+target_iter = 1000#1000*length(init.val)^2
 #nml_file = 'aed2/aed2.nml'
 nml_file = 'aed2/aed2_20200701_2DOCpools.nml'
 run_calibvalid(var, var_unit = 'mmol/m3', var_seq = seq(0,600,50), cal_pars, pars, ub, lb, init.val, obs, method, 

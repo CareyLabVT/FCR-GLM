@@ -102,14 +102,6 @@ SSS_inflowALL <- SSS_inflowALL[(!duplicated(SSS_inflowALL$time)),] #remove repea
 #et voila! the final inflow file for the SSS for 2 pools of DOC
 write.csv(SSS_inflowALL, "FCR_SSS_inflow_2013_2019_20200701_allfractions_2DOCpools.csv", row.names = FALSE)
 
-  
-  
-  
-  
-
-
-
-
 
 
 #read in lab dataset of dissolved silica, measured by Jon in summer 2014 only
