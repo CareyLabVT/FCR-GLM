@@ -392,7 +392,7 @@ lb <- cal_pars$lb
 #Create initial files
 #init.val <- rep(5, nrow(cal_pars))
 init.val <- (c(1,1,0.5, 0.0013,4,7,11,17,265,275) - lb) *10 /(ub-lb) # NEEDS TO BE UPDATED WITH STARTING VALUES FROM YOUR CALIBRATION FILE
-obs <- read_field_obs('field_data/field_FCR1.csv', var)
+obs <- read_field_obs('field_data/CleanedObsTemp.csv', var)
 method = 'cmaes'
 calib.metric = 'RMSE'
 os = 'Compiled' #Changed from Unix
@@ -431,7 +431,7 @@ method = 'cmaes'
 calib.metric = 'RMSE'
 os = "Compiled" #Changed from Unix
 target_fit = -Inf#2.50 * 1000/32
-target_iter = 1000#1000*length(init.val)^2
+target_iter = 500#1000*length(init.val)^2
 #nml_file = 'aed2/aed2.nml'
 nml_file = 'aed2/aed2_20200701_2DOCpools.nml'
 run_calibvalid(var, var_unit = 'mmol/m3', var_seq = seq(0,600,50), cal_pars, pars, ub, lb, init.val, obs, method, 
@@ -523,13 +523,13 @@ pars <- cal_pars$par
 ub <- cal_pars$ub
 lb <- cal_pars$lb
 #Create initial files
-init.val <- (c(5, 10, 48, 1.04) - lb) *10 /(ub-lb) # EDIT THESE
+init.val <- (c(2.8,1.6,48,1.07) - lb) *10 /(ub-lb) # EDIT THESE
 obs <- read_field_obs('field_data/field_chem_hypo.csv', var)
 method = 'cmaes'
 calib.metric = 'RMSE'
 os = "Compiled"
 target_fit = -Inf#2.50 * 1000/32
-target_iter = 500#1000*length(init.val)^2
+target_iter = 1000#1000*length(init.val)^2
 nml_file = 'aed2/aed2_20200701_2DOCpools.nml'
 run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,250,25), pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
@@ -548,7 +548,7 @@ ub <- cal_pars$ub
 lb <- cal_pars$lb
 #Create initial files
 init.val <- (c(-0.1, 50) - lb) *10 /(ub-lb) # EDIT THESE
-obs <- read_field_obs('field_data/field_chem.csv', var)
+obs <- read_field_obs('field_data/field_chem_hypo.csv', var)
 method = 'cmaes'
 calib.metric = 'RMSE'
 os = "Compiled"

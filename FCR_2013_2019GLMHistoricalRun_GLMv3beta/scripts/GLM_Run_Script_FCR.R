@@ -93,7 +93,7 @@ watertemp<-merge(modtemp, obstemp, by=c("DateTime","Depth")) %>%
   rename(modtemp = temp.x, obstemp = temp.y)
 for(i in 1:length(unique(watertemp$Depth))){
   tempdf<-subset(watertemp, watertemp$Depth==depths[i])
-  plot(tempdf$DateTime, tempdf$obstemp, type='l', col='red',
+  plot(tempdf$DateTime, tempdf$obstemp, type='p', col='red',
        ylab='temperature', xlab='time',
        main = paste0("Obs=Red,Mod=Black,Depth=",depths[i]),ylim=c(0,30))
        points(tempdf$DateTime, tempdf$modtemp, type="l",col='black')
@@ -694,7 +694,7 @@ compare<-na.omit(compare)
 for(i in 1:length(depths)){
   tempdf<-subset(compare, compare$Depth==depths[i])
   if(nrow(tempdf)>1){
-    plot(tempdf$DateTime,eval(parse(text=paste0("tempdf$",var,".y"))), type='l', col='red',
+    plot(tempdf$DateTime,eval(parse(text=paste0("tempdf$",var,".y"))), type='p', col='red',
          ylab=var, xlab='time',
          main = paste0("Obs=Red,Mod=Black,Depth=",depths[i]))
     points(tempdf$DateTime, eval(parse(text=paste0("tempdf$",var,".x"))), type="l",col='black')
