@@ -19,9 +19,9 @@
             'aed2_nitrogen',
             'aed2_phosphorus',
             'aed2_organic_matter',
-            'aed2_phytoplankton'
+            'aed2_phytoplankton',
            ! 'aed2_zooplankton', 
-           ! 'aed2_totals'
+            'aed2_totals'
 /
 
 !###############################################################################
@@ -617,7 +617,6 @@
   min_rho =  900.0
   max_rho = 1200.0
 /
-
 !###############################################################################
 ! ZOO: aed2_zooplankton - AED zooplankton model
 !-------------------------------------------------------------------------------
@@ -664,24 +663,24 @@
 !  TSS_vars     = list of variable contributing to total suspended solids
 !  TSS_varscale = scaling of TSS variables contribution
 !-------------------------------------------------------------------------------
-!&aed2_totals
-!   !outputLight  = .true.
-!   TN_vars =  'NIT_nit',
-!              'NIT_amm',
-!              'OGM_don',
-!              'OGM_donr',
-!              'OGM_pon'
-!   TN_varscale = 1.0, 1.0, 1.0, 1.0, 1.0
-!   TP_vars =  'PHS_frp',
-!              'OGM_dopr',
-!              'OGM_dop',
-!              'OGM_pop'
-!   TP_varscale = 1.0, 1.0, 1.0, 1.0
-!   TOC_vars = 'OGM_doc',
-!              'OGM_docr',
-!              'OGM_poc',
-!              'OGM_cpom'
-!  TOC_varscale = 1.0, 1.0, 1.0, 1.0
+&aed2_totals
+   !outputLight  = .true.
+   TN_vars =  'NIT_nit',
+              'NIT_amm',
+              'OGM_don',
+              'OGM_donr',
+              'OGM_pon'
+   TN_varscale = 1.0, 1.0, 1.0, 1.0, 1.0
+   TP_vars =  'PHS_frp',
+              'OGM_dopr',
+              'OGM_dop',
+              'OGM_pop'
+   TP_varscale = 1.0, 1.0, 1.0, 1.0
+   TOC_vars = 'OGM_doc',
+              'OGM_docr',
+              'OGM_poc',
+              'OGM_cpom'
+  TOC_varscale = 1.0, 1.0, 1.0, 1.0
  ! TSS_vars = 'OGM_poc',
    !           'PHY_CYANOPCH1',
    !           'PHY_CYANONPCH2',
@@ -695,4 +694,4 @@
    !TAl_vars =  'TRC_ss1',
    !            'GEO_Al',
    !TAl_varscale = 0.4,1.
-!/
+/

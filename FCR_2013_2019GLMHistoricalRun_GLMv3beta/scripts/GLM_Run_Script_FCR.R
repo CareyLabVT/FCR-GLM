@@ -723,6 +723,197 @@ obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=0.1 & ne
 RMSE(mod,obs)
 
 
+#### total nitrogen ###########
+
+var="TOT_tn"
+field_file <- file.path(sim_folder,'/field_data/totalNP.csv') 
+cyanoNcon = 0.12
+greenNcon = 0.12
+diatomNcon = 0.12
+
+obs<-read.csv('field_data/totalNP.csv', header=TRUE) %>% #read in observed chemistry data
+  dplyr::mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
+  select(DateTime, Depth, var) %>%
+  na.omit()
+
+#plot_var_compare(nc_file,field_file,var_name = var, precision="days",col_lim = c(0,400)) #compare obs vs modeled
+
+#now to include the phyto NP chemistry at 9m!
+cyano <- get_var(file=nc_file,var_name = 'PHY_cyano',z_out=depths,reference = 'surface') %>% 
+  select(DateTime:PHY_cyano_5, PHY_cyano_6.2:PHY_cyano_9) %>% 
+  pivot_longer(cols=starts_with(paste0("PHY_cyano_")), names_to="Depth", names_prefix="PHY_cyano_",values_to = "CyanoConc") %>%
+  mutate(cyanoN = CyanoConc*cyanoNcon) %>% 
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
+  select(DateTime,Depth,cyanoN)
+
+green <- get_var(file=nc_file,var_name = 'PHY_green',z_out=depths,reference = 'surface') %>% 
+  select(DateTime:PHY_green_5, PHY_green_6.2:PHY_green_9) %>% 
+  pivot_longer(cols=starts_with(paste0("PHY_green_")), names_to="Depth", names_prefix="PHY_green_",values_to = "GreenConc") %>%
+  mutate(greenN = GreenConc*greenNcon) %>% 
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
+  select(DateTime,Depth,greenN)
+
+diatom <- get_var(file=nc_file,var_name = 'PHY_diatom',z_out=depths,reference = 'surface') %>% 
+  select(DateTime:PHY_diatom_5, PHY_diatom_6.2:PHY_diatom_9) %>% 
+  pivot_longer(cols=starts_with(paste0("PHY_diatom_")), names_to="Depth", names_prefix="PHY_diatom_",values_to = "DiatomConc") %>%
+  mutate(diatomN = DiatomConc*diatomNcon) %>% 
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
+  select(DateTime,Depth,diatomN)
+
+phytos<-cbind.data.frame(cyano, green, diatom) 
+phytos<-phytos[-c(4,5,7,8)] %>% 
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
+  mutate(summedN = cyanoN + greenN + diatomN) %>% 
+  mutate(Depth=as.numeric(Depth)) %>%
+  select(DateTime, Depth, summedN)
+
+#get modeled concentrations for focal depths
+depths<- sort(unique(phytos$Depth))
+
+mod<- get_var(nc_file, var, reference="surface", z_out=depths) %>%
+  pivot_longer(cols=starts_with(paste0(var,"_")), names_to="Depth", names_prefix=paste0(var,"_"), values_to = var) %>%
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
+  mutate(Depth=as.numeric(Depth)) %>%
+  na.omit()
+
+allmod<-merge(mod, phytos, by=c("DateTime","Depth")) %>% 
+  mutate(TOT_tn=TOT_tn + summedN) %>% 
+  select(DateTime,Depth,TOT_tn)
+#write.csv(allmod,"output/SummedwPhytos_allTNModeled.csv", row.names=F)
+
+#lets do depth by depth comparisons of the sims
+compare<-merge(allmod, obs, by=c("DateTime","Depth"))
+compare<-na.omit(compare)
+for(i in 1:length(depths)){
+  tempdf<-subset(compare, compare$Depth==depths[i])
+  if(nrow(tempdf)>1){
+    plot(tempdf$DateTime,eval(parse(text=paste0("tempdf$",var,".y"))), type='p', col='red',
+         ylab=var, xlab='time',
+         main = paste0("Obs=Red,Mod=Black,Depth=",depths[i]))
+    points(tempdf$DateTime, eval(parse(text=paste0("tempdf$",var,".x"))), type="l",col='black')
+  }
+}
+
+#if you want phytos to be part of the N calculation for totals
+field_file <- file.path(sim_folder,"output/SummedwPhytos_allTNModeled.csv")
+
+#calculate RMSE for TN
+newdata <- resample_to_field(nc_file, field_file, precision="hours", method='interp', 
+                             var_name=var)
+newdata <-newdata[complete.cases(newdata),]
+
+mod <- eval(parse(text=paste0("newdata$Modeled_",var)))[newdata$Depth>=0.1 & newdata$Depth<=0.1] 
+obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=0.1 & newdata$Depth<=0.1] 
+RMSE(mod,obs)
+
+mod <- eval(parse(text=paste0("newdata$Modeled_",var)))[newdata$Depth>=9 & newdata$Depth<=9] 
+obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=9 & newdata$Depth<=9] 
+RMSE(mod,obs)
+
+mod <- eval(parse(text=paste0("newdata$Modeled_",var)))[newdata$Depth>=5 & newdata$Depth<=5] 
+obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=5 & newdata$Depth<=5] 
+RMSE(mod,obs)
+
+mod <- eval(parse(text=paste0("newdata$Modeled_",var)))[newdata$Depth>=0.1 & newdata$Depth<=9.3] 
+obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=0.1 & newdata$Depth<=9.3] 
+RMSE(mod,obs)
+
+
+#### total phosphorus ###########
+
+var="TOT_tp"
+field_file <- file.path(sim_folder,'/field_data/totalNP.csv') 
+cyanoPcon = 0.0005
+greenPcon = 0.0005
+diatomPcon = 0.0005
+
+obs<-read.csv('field_data/totalNP.csv', header=TRUE) %>% #read in observed chemistry data
+  dplyr::mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
+  select(DateTime, Depth, var) %>%
+  na.omit()
+
+#plot_var_compare(nc_file,field_file,var_name = var, precision="days",col_lim = c(0,400)) #compare obs vs modeled
+
+#now to include the phyto NP chemistry at 9m!
+cyano <- get_var(file=nc_file,var_name = 'PHY_cyano',z_out=depths,reference = 'surface') %>% 
+  select(DateTime:PHY_cyano_5, PHY_cyano_6.2:PHY_cyano_9) %>% 
+  pivot_longer(cols=starts_with(paste0("PHY_cyano_")), names_to="Depth", names_prefix="PHY_cyano_",values_to = "CyanoConc") %>%
+  mutate(cyanoP = CyanoConc*cyanoPcon) %>% 
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
+  select(DateTime,Depth,cyanoP)
+
+green <- get_var(file=nc_file,var_name = 'PHY_green',z_out=depths,reference = 'surface') %>% 
+  select(DateTime:PHY_green_5, PHY_green_6.2:PHY_green_9) %>% 
+  pivot_longer(cols=starts_with(paste0("PHY_green_")), names_to="Depth", names_prefix="PHY_green_",values_to = "GreenConc") %>%
+  mutate(greenP = GreenConc*greenPcon) %>% 
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
+  select(DateTime,Depth,greenP)
+
+diatom <- get_var(file=nc_file,var_name = 'PHY_diatom',z_out=depths,reference = 'surface') %>% 
+  select(DateTime:PHY_diatom_5, PHY_diatom_6.2:PHY_diatom_9) %>% 
+  pivot_longer(cols=starts_with(paste0("PHY_diatom_")), names_to="Depth", names_prefix="PHY_diatom_",values_to = "DiatomConc") %>%
+  mutate(diatomP = DiatomConc*diatomPcon) %>% 
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
+  select(DateTime,Depth,diatomP)
+
+phytos<-cbind.data.frame(cyano, green, diatom) 
+phytos<-phytos[-c(4,5,7,8)] %>% 
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
+  mutate(summedP = cyanoP + greenP + diatomP) %>% 
+  mutate(Depth=as.numeric(Depth)) %>%
+  select(DateTime, Depth, summedP)
+
+#get modeled concentrations for focal depths
+depths<- sort(unique(phytos$Depth))
+
+mod<- get_var(nc_file, var, reference="surface", z_out=depths) %>%
+  pivot_longer(cols=starts_with(paste0(var,"_")), names_to="Depth", names_prefix=paste0(var,"_"), values_to = var) %>%
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
+  mutate(Depth=as.numeric(Depth)) %>%
+  na.omit()
+
+allmod<-merge(mod, phytos, by=c("DateTime","Depth")) %>% 
+  mutate(TOT_tp=TOT_tp + summedP) %>% 
+  select(DateTime,Depth,TOT_tp)
+#write.csv(allmod,"output/SummedwPhytos_allTPModeled.csv", row.names=F)
+
+#lets do depth by depth comparisons of the sims
+compare<-merge(allmod, obs, by=c("DateTime","Depth"))
+compare<-na.omit(compare)
+for(i in 1:length(depths)){
+  tempdf<-subset(compare, compare$Depth==depths[i])
+  if(nrow(tempdf)>1){
+    plot(tempdf$DateTime,eval(parse(text=paste0("tempdf$",var,".y"))), type='p', col='red',
+         ylab=var, xlab='time',
+         main = paste0("Obs=Red,Mod=Black,Depth=",depths[i]))
+    points(tempdf$DateTime, eval(parse(text=paste0("tempdf$",var,".x"))), type="l",col='black')
+  }
+}
+
+#if you want phytos to be part of the N calculation for totals
+field_file <- file.path(sim_folder,"output/SummedwPhytos_allTPModeled.csv")
+
+#calculate RMSE for TP
+newdata <- resample_to_field(nc_file, field_file, precision="hours", method='interp', 
+                             var_name=var)
+newdata <-newdata[complete.cases(newdata),]
+
+mod <- eval(parse(text=paste0("newdata$Modeled_",var)))[newdata$Depth>=0.1 & newdata$Depth<=0.1] 
+obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=0.1 & newdata$Depth<=0.1] 
+RMSE(mod,obs)
+
+mod <- eval(parse(text=paste0("newdata$Modeled_",var)))[newdata$Depth>=9 & newdata$Depth<=9] 
+obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=9 & newdata$Depth<=9] 
+RMSE(mod,obs)
+
+mod <- eval(parse(text=paste0("newdata$Modeled_",var)))[newdata$Depth>=5 & newdata$Depth<=5] 
+obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=5 & newdata$Depth<=5] 
+RMSE(mod,obs)
+
+mod <- eval(parse(text=paste0("newdata$Modeled_",var)))[newdata$Depth>=0.1 & newdata$Depth<=9.3] 
+obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=0.1 & newdata$Depth<=9.3] 
+RMSE(mod,obs)
+
 
 #### chlorophyll a #######
 

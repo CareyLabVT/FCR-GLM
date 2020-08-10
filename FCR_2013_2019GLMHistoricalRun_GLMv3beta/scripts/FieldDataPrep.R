@@ -354,6 +354,25 @@ ggplot(FCRchem, aes(DateTime, OGM_doc, colour=Depth)) +
 
 write.csv(FCRchem, "field_chem_1DOCpool.csv", row.names = F)
 
+#######now make totals chemistry files
+FCRchem <- read.csv("chem.csv", header=T) %>%
+  select(Reservoir:DIC_mgL) %>%
+  dplyr::filter(Reservoir=="FCR") %>%
+  dplyr::filter(Site==50) %>%
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
+  select(DateTime, Depth_m, TN_ugL:TP_ugL) %>%
+  rename(Depth=Depth_m) %>%
+  mutate(TOT_tn = TN_ugL*1000*0.001*(1/14.0067)) %>% 
+  mutate(TOT_tp = TP_ugL*1000*0.001*(1/30.9738)) %>% 
+  select(DateTime, Depth, TOT_tn, TOT_tp) %>%
+  distinct(DateTime, Depth, .keep_all=TRUE)
+
+ggplot(FCRchem, aes(DateTime, TOT_tn, colour=Depth)) + 
+  geom_point()
+
+write.csv(FCRchem, "totalNP.csv", row.names = F)
+
+
 ###########################################################
 ###### ANCILLARY LAB CHEMISTRY DATASETS NEEDED FOR CALIBRATION 
 
