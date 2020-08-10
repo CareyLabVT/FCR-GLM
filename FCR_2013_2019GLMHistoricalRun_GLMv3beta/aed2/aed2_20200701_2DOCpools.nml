@@ -475,7 +475,7 @@
      !Rdoc_minerl  =   0!0.01 !Manual 0.001; Paul 0.03 !doesnt work
      Rpon_hydrol  = 0.001 !Paul had 0.01
      !Rdon_minerl  =   0.005 !Paul had 0.01
-     Rpop_hydrol  =  0.001 ! Paul had 0.01
+     Rpop_hydrol  =  0.0001 ! Paul had 0.01
      !Rdop_minerl  =   0.01 !manual is 0.001, Paul had 0.01! doesnt work
      theta_hydrol =   1.07
      theta_minerl =   1.07
@@ -538,7 +538,7 @@
      Xsp = 0.005
      Fsed_doc = 1.408053385!2.278062976!30!10 !4.124780855!10 !5 !manual 10.0, *****0.1 for Sunapee, 30 for Mendota
      Fsed_don = 0.0 !bombs if set to >0 manual 1.0, *****0.01 for Sunapee, 5 for Mendota
-     Fsed_dop = 0.0 !bombs if set to >0 manuual 0.020; *****0.001 for Sunapee, -900 for Mendota
+     Fsed_dop = 0.00 !bombs if set to >0 manuual 0.020; *****0.001 for Sunapee, -900 for Mendota
      Ksed_dom = 93.12891273!36.37003784!4.5
      theta_sed_dom = 1.057063596!1.08
      !Fsed_doc_variable = 'SDF_Fsed_doc'
