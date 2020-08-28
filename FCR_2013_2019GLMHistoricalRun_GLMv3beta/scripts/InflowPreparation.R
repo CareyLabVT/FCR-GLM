@@ -57,7 +57,8 @@ FCRchem <- read.csv("chem.csv", header=T) %>%
   dplyr::filter(Site==100) %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
   rename(time = DateTime) %>%
-  select(time:DIC_mgL)
+  filter(TP_ugL < 100) %>% #remove outliers
+  select(time:DIC_mgL) 
 
 #read in lab dataset of dissolved silica, measured by Jon in summer 2014 only
 silica <- read.csv("FCR2014_Chemistry.csv", header=T) %>%
@@ -175,7 +176,7 @@ weir_inflow <- alldata %>%
   mutate(OGM_pon = (1/6)*(TN_ugL-(NIT_amm+NIT_nit))) %>%
   mutate(OGM_dop = 0.3*(TP_ugL-PHS_frp)*0.10) %>% #Wetzel page 241, 70% of total organic P = particulate organic; 30% = dissolved organic P
   mutate(OGM_dopr = 0.3*(TP_ugL-PHS_frp)*0.90) %>% #Wetzel page 241, 70% of total organic P = particulate organic; 30% = dissolved organic P
-  mutate(OGM_pop = 0.7*(TP_ugL-PHS_frp)) %>% 
+  mutate(OGM_pop = 10*TP_ugL) %>% #0.7*(TP_ugL-PHS_frp)) %>% #ADDED IN MORE POP AS COMPLEXED P
   #mutate(PHS_frp_ads = PHS_frp) %>% #Following Farrell et al. 2020 EcolMod
   mutate(CAR_dic = DIC_mgL*1000*(1/52.515)) #Long-term avg pH of FCR is 6.5, at which point CO2/HCO3 is about 50-50
 #given this disparity, using a 50-50 weighted molecular weight (44.01 g/mol and 61.02 g/mol, respectively)
@@ -203,7 +204,8 @@ weir_inflow <- weir_inflow %>%
   mutate_if(is.numeric, round, 4) #round to 4 digits 
 
 #write file for inflow for the weir, with 2 pools of OC (DOC + DOCR)  
-write.csv(weir_inflow, "FCR_weir_inflow_2013_2019_20200624_allfractions_2poolsDOC.csv", row.names = F)
+#write.csv(weir_inflow, "FCR_weir_inflow_2013_2019_20200624_allfractions_2poolsDOC.csv", row.names = F)
+write.csv(weir_inflow, "FCR_weir_inflow_2013_2019_20200828_allfractions_2poolsDOC.csv", row.names = F)
 
 #copying dataframe in workspace to be used later
 alltdata = alldata
@@ -423,7 +425,7 @@ wetland_inflow <- data1 %>% #using weir chemistry in workspace for multiplying r
   mutate(OGM_pon = (1/6)*(TN_ugL-(NIT_amm+NIT_nit))) %>%
   mutate(OGM_dop = 0.3*(TP_ugL-PHS_frp)*0.1) %>% #Wetzel page 241, 70% of total organic P = particulate organic; 30% = dissolved organic P
   mutate(OGM_dopr = 0.3*(TP_ugL-PHS_frp)*0.9) %>%
-  mutate(OGM_pop = 0.7*(TP_ugL-PHS_frp)) %>% 
+  mutate(OGM_pop = 10*TP_ugL) %>% #0.7*(TP_ugL-PHS_frp)) %>% 
  # mutate(PHS_frp_ads = PHS_frp) %>% #Following Farrell et al. 2020 EcolMod
   mutate(CAR_dic = DIC_mgL*1000*(1/52.515)) %>% #Long-term avg pH of FCR is 6.5, at which point CO2/HCO3 is about 50-50
 #given this disparity, using a 50-50 weighted molecular weight (44.01 g/mol and 61.02 g/mol, respectively)
@@ -497,7 +499,8 @@ wetland_final <- wetland %>%
   mutate_if(is.numeric, round, 4) #round to 4 digits 
 
 #now write file for wetland inflow
-write.csv(wetland_final, "FCR_wetland_inflow_2013_2019_20200630_allfractions_2DOCpools.csv", row.names = FALSE)
+#write.csv(wetland_final, "FCR_wetland_inflow_2013_2019_20200630_allfractions_2DOCpools.csv", row.names = FALSE)
+write.csv(wetland_final, "FCR_wetland_inflow_2013_2019_20200828_allfractions_2DOCpools.csv", row.names = FALSE)
 
 ###############################################################################
 #NOW to get 1 pools of OC #SKIP THIS STEP IF YOU'RE GOING TO USE 2 POOLS OF OC!

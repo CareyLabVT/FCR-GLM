@@ -831,7 +831,7 @@ obs<-read.csv('field_data/totalNP.csv', header=TRUE) %>% #read in observed chemi
   dplyr::mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
   select(DateTime, Depth, var) %>%
   na.omit()
-
+depths<- sort(as.numeric(unique(obs$Depth)))
 #plot_var_compare(nc_file,field_file,var_name = var, precision="days",col_lim = c(0,400)) #compare obs vs modeled
 
 #now to include the phyto NP chemistry at 9m!
@@ -890,7 +890,7 @@ for(i in 1:length(depths)){
   }
 }
 
-#if you want phytos to be part of the N calculation for totals
+#if you want phytos to be part of the P calculation for totals
 field_file <- file.path(sim_folder,"output/SummedwPhytos_allTPModeled.csv")
 
 #calculate RMSE for TP
