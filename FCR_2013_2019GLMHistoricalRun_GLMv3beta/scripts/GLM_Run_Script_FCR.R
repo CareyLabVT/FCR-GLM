@@ -914,6 +914,63 @@ mod <- eval(parse(text=paste0("newdata$Modeled_",var)))[newdata$Depth>=0.1 & new
 obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=0.1 & newdata$Depth<=9.3] 
 RMSE(mod,obs)
 
+#### total organic carbon ###########
+
+var="TOT_toc"
+depths<- c(0.1, 1.6, 2.8, 3.8, 5, 6.2, 8, 9)
+
+#now to include the phyto NP chemistry at 9m!
+cyano <- get_var(file=nc_file,var_name = 'PHY_cyano',z_out=depths,reference = 'surface') %>% 
+  select(DateTime:PHY_cyano_9) %>% 
+  pivot_longer(cols=starts_with(paste0("PHY_cyano_")), names_to="Depth", names_prefix="PHY_cyano_",values_to = "CyanoConc") %>%
+  mutate(cyanoC = CyanoConc) %>% 
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
+  select(DateTime,Depth,cyanoC)
+
+green <- get_var(file=nc_file,var_name = 'PHY_green',z_out=depths,reference = 'surface') %>% 
+  select(DateTime:PHY_green_9) %>% 
+  pivot_longer(cols=starts_with(paste0("PHY_green_")), names_to="Depth", names_prefix="PHY_green_",values_to = "GreenConc") %>%
+  mutate(greenC = GreenConc) %>% 
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
+  select(DateTime,Depth,greenC)
+
+diatom <- get_var(file=nc_file,var_name = 'PHY_diatom',z_out=depths,reference = 'surface') %>% 
+  select(DateTime:PHY_diatom_9) %>% 
+  pivot_longer(cols=starts_with(paste0("PHY_diatom_")), names_to="Depth", names_prefix="PHY_diatom_",values_to = "DiatomConc") %>%
+  mutate(diatomC = DiatomConc) %>% 
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
+  select(DateTime,Depth,diatomC)
+
+phytos<-cbind.data.frame(cyano, green, diatom) 
+phytos<-phytos[-c(4,5,7,8)] %>% 
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
+  mutate(summedC = cyanoC + greenC + diatomC) %>% 
+  mutate(Depth=as.numeric(Depth)) %>%
+  select(DateTime, Depth, summedC)
+
+#get modeled concentrations for focal depths
+depths<- sort(unique(phytos$Depth))
+
+mod<- get_var(nc_file, var, reference="surface", z_out=depths) %>%
+  pivot_longer(cols=starts_with(paste0(var,"_")), names_to="Depth", names_prefix=paste0(var,"_"), values_to = var) %>%
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
+  mutate(Depth=as.numeric(Depth)) %>%
+  na.omit()
+
+allmod<-merge(mod, phytos, by=c("DateTime","Depth")) %>% 
+  mutate(TOT_toc=TOT_toc + summedC) %>% 
+  select(DateTime,Depth,TOT_toc)
+#write.csv(allmod,"output/SummedwPhytos_allTOCModeled.csv", row.names=F)
+
+#lets do depth by depth comparisons of the sims
+
+for(i in 1:length(depths)){
+  tempdf<-subset(allmod, allmod$Depth==depths[i])
+    plot(tempdf$DateTime,tempdf$TOT_toc, type='l', col='black',
+         ylab=var, xlab='time',
+         main = paste0("Obs=Red,Mod=Black,Depth=",depths[i]))
+}
+
 
 #### chlorophyll a #######
 
