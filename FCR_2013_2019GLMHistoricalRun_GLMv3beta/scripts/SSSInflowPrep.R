@@ -42,7 +42,7 @@ plot(inflowoxy$time, inflowoxy$OXY_oxy, type = "l", col = "red", ylab="mmol O2/m
 
 highox <- inflowoxy %>% 
   mutate(load = FLOW*OXY_oxy) %>% 
-  mutate(FLOW_lo = rep(1e-08, length(highox$FLOW))) %>% 
+  mutate(FLOW_lo = rep(1e-08, length(highox$FLOW))) %>% #using flow rate of 1e-08
   mutate(OXY_oxy_lo = load/FLOW_lo) %>% 
   select(time, FLOW_lo, SALT, OXY_oxy_lo) %>% 
   rename(FLOW = FLOW_lo, OXY_oxy = OXY_oxy_lo) %>% 
@@ -61,7 +61,11 @@ highox <- inflowoxy %>%
   mutate(CAR_dic = rep(0, length(highox$time))) %>% 
   mutate(CAR_ch4 = rep(0, length(highox$time))) %>% 
   mutate(SIL_rsi = rep(0, length(highox$time))) 
-  
+
+#inUrl1  <- "https://pasta.lternet.edu/package/data/eml/edi/200/10/2461524a7da8f1906bfc3806d594f94c" 
+#infile1 <- paste0(getwd(),"/CTD_final_2013_2019.csv")
+#download.file(inUrl1,infile1,method="curl")
+
 CTD<-read.csv("CTD_final_2013_2019.csv", header=TRUE) #now need to get temp at 8m for inflow
 CTD8 <- CTD %>%
   select(Reservoir:Temp_C) %>%
@@ -102,6 +106,14 @@ SSS_inflowALL <- SSS_inflowALL[(!duplicated(SSS_inflowALL$time)),] #remove repea
 #et voila! the final inflow file for the SSS for 2 pools of DOC
 write.csv(SSS_inflowALL, "FCR_SSS_inflow_2013_2019_20200701_allfractions_2DOCpools.csv", row.names = FALSE)
 
+# #########test to decrease SSS inflow to 0.3 of observed for 2019 only because of SSS malfunction
+# updatedSSS <- SSS_inflowALL %>% 
+#   mutate(year=year(time)) %>% 
+#   mutate(OXY_oxy1 = ifelse(year==2019, OXY_oxy*0.3,OXY_oxy)) %>% #convert oxygen addition to 0.3 of its previous value for 2019 only, from Quinn's DA of the SSS inflow factor
+#   select(time:SALT, OXY_oxy1, NIT_amm:SIL_rsi) %>% 
+#   rename(OXY_oxy=OXY_oxy1)
+# 
+# write.csv(updatedSSS,"FCR_SSS_inflow_2013_2019_2020827_allfractions_2019reduced_2DOCpools.csv", row.names = FALSE)
 
 
 #read in lab dataset of dissolved silica, measured by Jon in summer 2014 only
