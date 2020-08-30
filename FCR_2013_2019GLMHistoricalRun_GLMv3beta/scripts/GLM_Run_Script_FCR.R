@@ -25,12 +25,12 @@ print(nml)
 print(aed)
 print(aed_phytos)
 
-#########run the model!
+##### run the model! #######
 system2(paste0(sim_folder, "/", "glm"), stdout = TRUE, stderr = TRUE, env = paste0("DYLD_LIBRARY_PATH=",sim_folder))
 #sometimes, you'll get an error that says "Error in file, 'Time(Date)' is not first column!
 #in this case, open the input file in Excel, set the column in Custom ("YYYY-MM-DD") format, resave, and close the file
 nc_file <- file.path(sim_folder, 'output/output.nc') #defines the output.nc file 
-#########
+
 
 
 #reality check of temp heat map
