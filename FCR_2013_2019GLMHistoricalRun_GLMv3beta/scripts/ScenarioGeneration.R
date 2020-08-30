@@ -11,19 +11,17 @@ setwd("../") #if pulling from github, sets it to proper wd, which should be "/FC
 sim_folder <- getwd()
 
 #####baseline scenario: based on observed SSS practices
-nc_file <- file.path(sim_folder, 'output/observed_output.nc')
+baseline_file <- file.path(sim_folder, 'output/output_2013_2019.nc')
 
 #####anoxic scenario: no SSS activation throughout
 #Simply turn off the SSS inflow and outflow in the glm.nml file
-anoxic_file <- file.path(sim_folder, 'output/anoxic.nc')
+anoxic_file <- file.path(sim_folder, 'output/output_anoxic.nc')
 
-
-####oxic scenario: SSS on in summer April 15-Nov 15 at full level
+####oxic scenario: SSS on in summer May 15-Nov 15 at full level
 #take CTD observed temp for SSS inflows (same as for observed)
-setwd("./inputs")
 
 #pull in SSS file (currently not on EDI)
-inflowoxy<-read.csv("inputs/Calc_HOX_flow_DO_OXIC_20200701.csv", header=T) %>%
+inflowoxy<-read.csv("inputs/Calc_HOX_flow_DO_OXIC_20200828.csv", header=T) %>%
   #updated this file so that the eductor nozzles increase flow rate by a factor of 4, so 227 LPM = 1135 LPM
   select(time,SSS_m3.day,mmol.O2.m3.day) %>%
   mutate(SSS_m3.day = SSS_m3.day * (1/86400))  %>%
@@ -99,5 +97,7 @@ SSS_inflowALL[which(duplicated(SSS_inflowALL$time)),] #identify if there are rep
 SSS_inflowALL <- SSS_inflowALL[(!duplicated(SSS_inflowALL$time)),] #remove repeated dates
 
 #et voila! the final inflow file for the SSS for 2 pools of DOC
-write.csv(SSS_inflowALL, "inputs/FCR_SSS_inflow_2013_2019_20200701_OXIC_allfractions_2DOCpools.csv", row.names = FALSE)
+write.csv(SSS_inflowALL, "inputs/FCR_SSS_inflow_2013_2019_20200829_OXIC_allfractions_2DOCpools.csv", row.names = FALSE)
 
+#run the model with the oxic SSS driver file, then
+oxic_file <- file.path(sim_folder, 'output/output_oxic.nc')
