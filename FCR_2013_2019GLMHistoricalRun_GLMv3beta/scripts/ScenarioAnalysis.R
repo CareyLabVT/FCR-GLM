@@ -17,17 +17,17 @@ nc_file <- file.path(sim_folder, 'output/output_2013_2019.nc')
 
 #####anoxic scenario#####
 #no SSS activation throughout
-#nc_file <- file.path(sim_folder, 'output/anoxic_output.nc')
+#nc_file <- file.path(sim_folder, 'output/output_anoxic.nc')
 
 #####oxic scenario######
-#SSS on in summer April 15-Nov 15 at full level
-#nc_file <- file.path(sim_folder, 'output/oxic_output.nc')
+#SSS on in summer May 15-Nov 15 at full level
+#nc_file <- file.path(sim_folder, 'output/output_oxic.nc')
 
 #####pull out deep-water chemistry
 oxygen <- get_var(nc_file,'OXY_oxy',z_out=9.2,reference = 'surface') 
-TN <- get_var(nc_file,'TOT_tn',z_out=9.2,reference = 'surface') 
-TP <- get_var(nc_file,'TOT_tp',z_out=9.2,reference = 'surface') 
-TOC <- get_var(nc_file,'TOT_toc',z_out=9.2,reference = 'surface')
+TN <- get_var(nc_file,'TOT_tn',z_out=9.2,reference = 'surface') #not actually TN, because it's sans phytos
+TP <- get_var(nc_file,'TOT_tp',z_out=9.2,reference = 'surface') #not actually TP, because it's sans phytos
+TOC <- get_var(nc_file,'TOT_toc',z_out=9.2,reference = 'surface') #not actually TOC, because it's sans phytos
 NO3 <- get_var(nc_file, "NIT_nit",z_out=9.2,reference = 'surface')
 NH4 <- get_var(nc_file, "NIT_amm",z_out=9.2,reference = 'surface')
 DOCr <- get_var(nc_file, "OGM_docr",z_out=9.2,reference = 'surface')
@@ -43,8 +43,7 @@ data <- data %>%
          DIN = no3 + nh4,
          DOC = docr + doc,
          year = year(time),
-         doy = yday(time)) %>% 
-  filter(oxy<500)
+         doy = yday(time)) 
 
 #visualize the data & hysteresis 
 plot(data$oxy, data$NP)
@@ -122,7 +121,7 @@ ggplot(data = data1) +
   geom_point(aes(x = OXY_oxy, y = OGM_doc)) 
 
 
-#observational file preparation to run the code above
+#code to create the observational file provided above
 #first pull in FCR chem data from 2013-2019 from EDI
 inUrl1  <- "https://pasta.lternet.edu/package/data/eml/edi/199/6/2b3dc84ae6b12d10bd5485f1c300af13" 
 infile1 <- paste0(getwd(),"/chem.csv")

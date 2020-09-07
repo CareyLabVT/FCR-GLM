@@ -125,45 +125,50 @@ data1 <- data %>%
 
 ####make time series plots######
 
+pdf("figures/TimeSeries_AnoxicOxicScenarios.pdf", width=8.5, height=11)
+par(mfrow=c(4,2))
+
 #oxygen plot
-plot(data1$time, data1$A_oxy, type="l", col="red", ylim=c(0,800), xlab="time", ylab="DO mmol/m3")
+plot(data1$time, data1$A_oxy, type="l", col="red", ylim=c(0,800), xlab="time", ylab="DO mmol/m3", main="DO mmol/m3")
   points(data1$time, data1$O_oxy, type="l", col="blue")
   legend("topleft", c("Anoxic", "Oxic"), lwd=2,col=c("red", "blue"))
 
 #DOC plot
-plot(data1$time, data1$A_DOCall, type="l", col="red", ylim=c(130,360), xlab="time", ylab="DOC mmol/m3")
+plot(data1$time, data1$A_DOCall, type="l", col="red", ylim=c(130,360), xlab="time", ylab="DOC mmol/m3",main="DOC mmol/m3")
   points(data1$time, data1$O_DOCall, type="l", col="blue")
-  legend("topleft", c("Anoxic", "Oxic"), lwd=2,col=c("red", "blue"))
+  #legend("topleft", c("Anoxic", "Oxic"), lwd=2,col=c("red", "blue"))
   
 #NO3 plot
-plot(data1$time, data1$A_NO3, type="l", col="red", ylim=c(0,1.2), xlab="time", ylab="NO3 mmol/m3")
+plot(data1$time, data1$A_NO3, type="l", col="red", ylim=c(0,1.2), xlab="time", ylab="NO3 mmol/m3", main="NO3 mmol/m3")
   points(data1$time, data1$O_NO3, type="l", col="blue")
-  legend("topleft", c("Anoxic", "Oxic"), lwd=2,col=c("red", "blue"))
+  #legend("topleft", c("Anoxic", "Oxic"), lwd=2,col=c("red", "blue"))
   
 #NH4 plot
-plot(data1$time, data1$A_NH4, type="l", col="red", ylim=c(0,125), xlab="time", ylab="NH4 mmol/m3")
+plot(data1$time, data1$A_NH4, type="l", col="red", ylim=c(0,125), xlab="time", ylab="NH4 mmol/m3", main="NH4 mmol/m3")
   points(data1$time, data1$O_NH4, type="l", col="blue")
-  legend("topleft", c("Anoxic", "Oxic"), lwd=2,col=c("red", "blue"))
+  #legend("topleft", c("Anoxic", "Oxic"), lwd=2,col=c("red", "blue"))
 
 #PO4 plot
-plot(data1$time, data1$A_PO4, type="l", col="red", ylim=c(0,0.4), xlab="time", ylab="PO4 mmol/m3")
+plot(data1$time, data1$A_PO4, type="l", col="red", ylim=c(0,0.4), xlab="time", ylab="PO4 mmol/m3", main="PO4 mmol/m3")
   points(data1$time, data1$O_PO4, type="l", col="blue")
-  legend("topleft", c("Anoxic", "Oxic"), lwd=2,col=c("red", "blue"))
+  #legend("topleft", c("Anoxic", "Oxic"), lwd=2,col=c("red", "blue"))
 
 #TN plot
-plot(data1$time, data1$A_totalN, type="l", col="red", ylim=c(0,130), xlab="time", ylab="TN mmol/m3")
+plot(data1$time, data1$A_totalN, type="l", col="red", ylim=c(0,130), xlab="time", ylab="TN mmol/m3", main="TN mmol/m3")
   points(data1$time, data1$O_totalN, type="l", col="blue")
-  legend("topleft", c("Anoxic", "Oxic"), lwd=2,col=c("red", "blue"))
+  #legend("topleft", c("Anoxic", "Oxic"), lwd=2,col=c("red", "blue"))
 
 #TP plot
-plot(data1$time, data1$A_totalP, type="l", col="red", ylim=c(0,6), xlab="time", ylab="TP mmol/m3")
+plot(data1$time, data1$A_totalP, type="l", col="red", ylim=c(0,6), xlab="time", ylab="TP mmol/m3", main="TP mmol/m3")
   points(data1$time, data1$O_totalP, type="l", col="blue")
-  legend("topleft", c("Anoxic", "Oxic"), lwd=2,col=c("red", "blue"))
+  #legend("topleft", c("Anoxic", "Oxic"), lwd=2,col=c("red", "blue"))
   
 #TOC plot
-plot(data1$time, data1$A_totalC, type="l", col="red", ylim=c(125,400), xlab="time", ylab="TOC mmol/m3")
+plot(data1$time, data1$A_totalC, type="l", col="red", ylim=c(125,400), xlab="time", ylab="TOC mmol/m3", main="TOC mmol/m3")
   points(data1$time, data1$O_totalC, type="l", col="blue")
-  legend("topleft", c("Anoxic", "Oxic"), lwd=2,col=c("red", "blue"))
+  #legend("topleft", c("Anoxic", "Oxic"), lwd=2,col=c("red", "blue"))
+  
+dev.off()
   
 #####make ratios####
 data2 <- data1 %>% 
@@ -232,6 +237,10 @@ data4 <- data1 %>%
           O_TOC_TN = O_TOC/O_TN,
           A_DOC_DIN = A_DOCall/A_DIN,
           O_DOC_DIN = O_DOCall/O_DIN,
+          A_DOC_NH4 = A_DOC/A_NH4,
+          O_DOC_NH4 = O_DOC/O_NH4,
+          A_DOC_NO3 = A_DOC/A_NO3,
+          O_DOC_NO3 = O_DOC/O_NO3,
           A_TOC_TP = A_TOC/A_TP,
           O_TOC_TP = O_TOC/O_TP,
           A_DOC_PO4 = A_DOCall/A_PO4,
@@ -250,6 +259,10 @@ mediandata <- data4 %>%
             med_O_TOC_TN = median(O_TOC_TN),
             med_A_DOC_DIN = median(A_DOC_DIN),
             med_O_DOC_DIN = median(O_DOC_DIN),
+            med_A_DOC_NH4 = median(A_DOC_NH4),
+            med_O_DOC_NH4 = median(O_DOC_NH4),
+            med_A_DOC_NO3 = median(A_DOC_NO3),
+            med_O_DOC_NO3 = median(O_DOC_NO3),
             med_A_TOC_TP = median(A_TOC_TP),
             med_O_TOC_TP = median(O_TOC_TP),
             med_A_DOC_PO4 = median(A_DOC_PO4),
@@ -271,6 +284,10 @@ mediandata <- data4 %>%
             med_A_PO4 = median(A_PO4),
             med_O_PO4 = median(O_PO4))
 
+#boxplots of median summer ratios
+pdf("figures/BoxplotCNPRatios_AnoxicOxicScenarios.pdf", width=8.5, height=11)
+par(mfrow=c(4,2))
+
 #boxplots for TN:TP
 boxplot(mediandata$med_A_TN_TP,mediandata$med_O_TN_TP, ylab="median TN:TP", col=c("red","blue"),
         names=c("Anoxic", "Oxic"), main="TN:TP")
@@ -287,6 +304,14 @@ boxplot(mediandata$med_A_TOC_TN,mediandata$med_O_TOC_TN, ylab="median TOC:TN", c
 boxplot(mediandata$med_A_DOC_DIN,mediandata$med_O_DOC_DIN, ylab="median DOC:DIN", col=c("red","blue"),
         names=c("Anoxic", "Oxic"), main="DOC:DIN")
 
+#boxplots for DOC:NH4
+boxplot(mediandata$med_A_DOC_NH4,mediandata$med_O_DOC_NH4, ylab="median DOC:NH4", col=c("red","blue"),
+        names=c("Anoxic", "Oxic"), main="DOC:NH4")
+
+#boxplots for DOC:NO3
+boxplot(mediandata$med_A_DOC_NO3,mediandata$med_O_DOC_NO3, ylab="median DOC:NO3", col=c("red","blue"),
+        names=c("Anoxic", "Oxic"), main="DOC:NO3")
+
 #boxplots for TOC:TP
 boxplot(mediandata$med_A_TOC_TP,mediandata$med_O_TOC_TP, ylab="median TOC:TP", col=c("red","blue"),
         names=c("Anoxic", "Oxic"), main="TOC:TP")
@@ -294,6 +319,12 @@ boxplot(mediandata$med_A_TOC_TP,mediandata$med_O_TOC_TP, ylab="median TOC:TP", c
 #boxplots for DOC:DRP
 boxplot(mediandata$med_A_DOC_PO4,mediandata$med_O_DOC_PO4, ylab="median DOC:DRP", col=c("red","blue"),
         names=c("Anoxic", "Oxic"), main="DOC:DRP")
+
+dev.off()
+
+#looking at boxplots of raw (median) summerconcentrations
+pdf("figures/BoxplotCNPConcentrations_AnoxicOxicScenarios.pdf", width=8.5, height=11)
+par(mfrow=c(4,2))
 
 #boxplots for TOC
 boxplot(mediandata$med_A_TOC,mediandata$med_O_TOC, ylab="median TOC mmol/m3", col=c("red","blue"),
@@ -326,3 +357,5 @@ boxplot(mediandata$med_A_TP,mediandata$med_O_TP, ylab="median TP mmol/m3", col=c
 #boxplots for PO4
 boxplot(mediandata$med_A_PO4,mediandata$med_O_PO4, ylab="median P04 mmol/m3", col=c("red","blue"),
         names=c("Anoxic", "Oxic"), main="PO4 concentration")
+
+dev.off()
