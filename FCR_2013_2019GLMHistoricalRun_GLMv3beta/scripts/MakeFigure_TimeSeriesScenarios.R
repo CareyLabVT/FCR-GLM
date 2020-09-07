@@ -121,7 +121,8 @@ data1 <- data %>%
          O_totalP = O_TP + O_diatomP + O_cyanoP + O_greenP,
          A_totalC = A_TOC + A_diatomC + A_cyanoC + A_greenC,
          O_totalC = O_TOC + O_diatomC + O_cyanoC + O_greenC) %>% 
-  select(time:A_TOC,O_oxy:O_TOC,A_DOCall:O_totalC)
+  select(time:A_TOC,O_oxy:O_TOC,A_DOCall:O_totalC) %>% 
+  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST")))
 
 ####make time series plots######
 
@@ -359,3 +360,167 @@ boxplot(mediandata$med_A_PO4,mediandata$med_O_PO4, ylab="median P04 mmol/m3", co
         names=c("Anoxic", "Oxic"), main="PO4 concentration")
 
 dev.off()
+
+####calculate retention####
+#first need to get inflow concentrations of CNP
+nml_file <- paste0(sim_folder,"/glm3.nml")
+nml <- read_nml(nml_file) 
+inflowfiles<-get_nml_value(nml, arg_name="inflow_fl")
+
+weir <- read.csv("inputs/FCR_weir_inflow_2013_2019_20200828_allfractions_2poolsDOC.csv") %>% 
+  mutate(TP = FLOW*(PHS_frp + OGM_dop + OGM_dopr + OGM_pop),
+         TN = FLOW*(NIT_amm + NIT_nit + OGM_don + OGM_donr + OGM_pon),
+         TOC = FLOW*(OGM_doc + OGM_docr + OGM_poc),
+         DIN = FLOW*(NIT_amm + NIT_nit),
+         NO3 = FLOW*NIT_nit,
+         NH4 = FLOW*NIT_amm,
+         FRP = FLOW*PHS_frp,
+         DOC = FLOW*(OGM_doc + OGM_docr)) %>% 
+  select(time,TP:DOC)
+  
+wetland <- read.csv("inputs/FCR_wetland_inflow_2013_2019_20200828_allfractions_2DOCpools.csv") %>% 
+  mutate(TP = FLOW*(PHS_frp + OGM_dop + OGM_dopr + OGM_pop),
+         TN = FLOW*(NIT_amm + NIT_nit + OGM_don + OGM_donr + OGM_pon),
+         TOC = FLOW*(OGM_doc + OGM_docr + OGM_poc),
+         DIN = FLOW*(NIT_amm + NIT_nit),
+         NO3 = FLOW*NIT_nit,
+         NH4 = FLOW*NIT_amm,
+         FRP = FLOW*PHS_frp,
+         DOC = FLOW*(OGM_doc + OGM_docr)) %>% 
+  select(time,TP:DOC)
+
+inputs<- merge(weir, wetland, by="time") %>% 
+  mutate(TP = TP.x + TP.y,
+         TN = TN.x + TN.y,
+         TOC = TOC.x + TOC.y,
+         DOC = DOC.x + DOC.y,
+         DIN = DIN.x + DIN.y,
+         FRP = FRP.x + FRP.y,
+         NO3 = NO3.x + NO3.y,
+         NH4 = NH4.x + NH4.y) %>% 
+  select(time,TP:NH4) %>% 
+  rename(inputTP = TP,
+         inputTN = TN,
+         inputTOC = TOC,
+         inputDOC = DOC,
+         inputDIN = DIN,
+         inputFRP = FRP,
+         inputNO3 = NO3,
+         inputNH4 = NH4) %>% 
+  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST")))
+
+outflow <- read.csv('inputs/FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv') %>% 
+  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST")))
+
+outputs <- merge(outflow,data1, by="time") %>% 
+  select(time, FLOW, A_oxy,A_NO3:A_PO4,O_oxy,O_NO3:O_PO4,A_DOCall:O_totalC) %>% 
+  mutate(A_FRP_output = FLOW*A_PO4,
+         O_FRP_output = FLOW*O_PO4,
+         A_NO3_output = FLOW*A_NO3,
+         O_NO3_output = FLOW*O_NO3,
+         A_NH4_output = FLOW*A_NH4,
+         O_NH4_output = FLOW*O_NH4,
+         A_DOC_output = FLOW*A_DOCall,
+         O_DOC_output = FLOW*O_DOCall,
+         A_DIN_output = FLOW*(A_NO3 + A_NH4),
+         O_DIN_output = FLOW*(O_NO3 + O_NH4),
+         A_TN_output = FLOW*A_totalN,
+         O_TN_output = FLOW*O_totalN,
+         A_TP_output = FLOW*A_totalP,
+         O_TP_output = FLOW*O_totalP,
+         A_TOC_output = FLOW*A_totalC,
+         O_TOC_output = FLOW*O_totalC) %>% 
+  select(time,A_FRP_output:O_TOC_output) %>% 
+  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST")))
+
+fluxdata <- merge(inputs, outputs, by="time") %>% 
+  mutate(year=year(time),
+         DOY = yday(time)) 
+
+#from Farrell et al 2020 & Powers et al 2015
+#retention for full calendar year
+retention <- fluxdata %>% 
+  group_by(year) %>% 
+  summarise(Fnet_A_TN = 100*(sum(A_TN_output)-sum(inputTN))/sum(inputTN),
+            Fnet_O_TN = 100*(sum(O_TN_output)-sum(inputTN))/sum(inputTN),
+            Fnet_A_TP = 100*(sum(A_TP_output)-sum(inputTP))/sum(inputTP),
+            Fnet_O_TP = 100*(sum(O_TP_output)-sum(inputTP))/sum(inputTP),
+            Fnet_A_TOC = 100*(sum(A_TOC_output)-sum(inputTOC))/sum(inputTOC),
+            Fnet_O_TOC = 100*(sum(O_TOC_output)-sum(inputTOC))/sum(inputTOC),
+            Fnet_A_DOC = 100*(sum(A_DOC_output)-sum(inputDOC))/sum(inputDOC),
+            Fnet_O_DOC = 100*(sum(O_DOC_output)-sum(inputDOC))/sum(inputDOC),
+            Fnet_A_DIN = 100*(sum(A_DIN_output)-sum(inputDIN))/sum(inputDIN),
+            Fnet_O_DIN = 100*(sum(O_DIN_output)-sum(inputDIN))/sum(inputDIN),
+            Fnet_A_NO3 = 100*(sum(A_NO3_output)-sum(inputNO3))/sum(inputNO3),
+            Fnet_O_NO3 = 100*(sum(O_NO3_output)-sum(inputNO3))/sum(inputNO3),
+            Fnet_A_FRP = 100*(sum(A_FRP_output)-sum(inputFRP))/sum(inputFRP),
+            Fnet_O_FRP = 100*(sum(O_FRP_output)-sum(inputFRP))/sum(inputFRP),
+            Fnet_A_NH4 = 100*(sum(A_NH4_output)-sum(inputNH4))/sum(inputNH4),
+            Fnet_O_NH4 = 100*(sum(O_NH4_output)-sum(inputNH4))/sum(inputNH4))
+#Data indicate net flux (%) for each year; flux < 0 represents net retention and/or removal, 
+  #flux > 0 represents net downstream export
+
+#retention for summer period
+retention <- fluxdata %>% 
+  group_by(year) %>% 
+  filter(DOY < 275, DOY > 195) %>% 
+  summarise(Fnet_A_TN = 100*(sum(A_TN_output)-sum(inputTN))/sum(inputTN),
+            Fnet_O_TN = 100*(sum(O_TN_output)-sum(inputTN))/sum(inputTN),
+            Fnet_A_TP = 100*(sum(A_TP_output)-sum(inputTP))/sum(inputTP),
+            Fnet_O_TP = 100*(sum(O_TP_output)-sum(inputTP))/sum(inputTP),
+            Fnet_A_TOC = 100*(sum(A_TOC_output)-sum(inputTOC))/sum(inputTOC),
+            Fnet_O_TOC = 100*(sum(O_TOC_output)-sum(inputTOC))/sum(inputTOC),
+            Fnet_A_DOC = 100*(sum(A_DOC_output)-sum(inputDOC))/sum(inputDOC),
+            Fnet_O_DOC = 100*(sum(O_DOC_output)-sum(inputDOC))/sum(inputDOC),
+            Fnet_A_DIN = 100*(sum(A_DIN_output)-sum(inputDIN))/sum(inputDIN),
+            Fnet_O_DIN = 100*(sum(O_DIN_output)-sum(inputDIN))/sum(inputDIN),
+            Fnet_A_NO3 = 100*(sum(A_NO3_output)-sum(inputNO3))/sum(inputNO3),
+            Fnet_O_NO3 = 100*(sum(O_NO3_output)-sum(inputNO3))/sum(inputNO3),
+            Fnet_A_FRP = 100*(sum(A_FRP_output)-sum(inputFRP))/sum(inputFRP),
+            Fnet_O_FRP = 100*(sum(O_FRP_output)-sum(inputFRP))/sum(inputFRP),
+            Fnet_A_NH4 = 100*(sum(A_NH4_output)-sum(inputNH4))/sum(inputNH4),
+            Fnet_O_NH4 = 100*(sum(O_NH4_output)-sum(inputNH4))/sum(inputNH4))
+#Data indicate net flux (%) for each year; flux < 0 represents net retention and/or removal, 
+#flux > 0 represents net downstream export
+
+
+#first pick which retention period you want from above (full calendar year or just summer)
+#looking at boxplots of downstream export between anoxic vs oxic scenarios
+pdf("figures/BoxplotAnnualDownstreamExport_AnoxicOxicScenarios.pdf", width=8.5, height=11)
+par(mfrow=c(4,2))
+
+#boxplots for TOC
+boxplot(retention$Fnet_A_TOC,retention$Fnet_O_TOC, ylab="TOC flux (%)", col=c("red","blue"),
+        names=c("Anoxic", "Oxic"), main="TOC export")
+
+#boxplots for DOC
+boxplot(retention$Fnet_A_DOC,retention$Fnet_O_DOC, ylab="DOC flux (%)", col=c("red","blue"),
+        names=c("Anoxic", "Oxic"), main="DOC export")
+
+#boxplots for TN
+boxplot(retention$Fnet_A_TN,retention$Fnet_O_TN, ylab="TN flux (%)", col=c("red","blue"),
+        names=c("Anoxic", "Oxic"), main="TN export")
+
+#boxplots for DIN
+boxplot(retention$Fnet_A_DIN,retention$Fnet_O_DIN, ylab="DIN flux (%)", col=c("red","blue"),
+        names=c("Anoxic", "Oxic"), main="DIN export")
+
+#boxplots for NH4
+boxplot(retention$Fnet_A_NH4,retention$Fnet_O_NH4, ylab="NH4 flux (%)", col=c("red","blue"),
+        names=c("Anoxic", "Oxic"), main="NH4 export")
+
+#boxplots for NO3
+boxplot(retention$Fnet_A_NO3,retention$Fnet_O_NO3, ylab="NO3 flux (%)", col=c("red","blue"),
+        names=c("Anoxic", "Oxic"), main="NO3 export")
+
+#boxplots for TP
+boxplot(retention$Fnet_A_TP,retention$Fnet_O_TP, ylab="TP flux (%)", col=c("red","blue"),
+        names=c("Anoxic", "Oxic"), main="TP export")
+
+#boxplots for PO4
+boxplot(retention$Fnet_A_FRP,retention$Fnet_O_FRP, ylab="P04 flux (%)", col=c("red","blue"),
+        names=c("Anoxic", "Oxic"), main="PO4 export")
+
+dev.off()
+
+
