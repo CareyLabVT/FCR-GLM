@@ -1,4 +1,4 @@
-#to compare scenarios for oxic vs anoxic summer conditions in FCR
+#to compare scenarios for oxic vs anoxic scenario conditions in FCR
 #time series of anoxic vs oxic concentrations
 
 #load packages
