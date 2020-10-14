@@ -7,6 +7,7 @@ library(tidyverse)
 library(lubridate)
 library(GLMr)
 library(glmtools)
+library(plotrix)
 #library(gganimate)
 
 setwd("./FCR_2013_2019GLMHistoricalRun_GLMv3beta")
@@ -285,10 +286,75 @@ allmod <- merge(mod, data2, by="time") %>%
 ratios <- merge(obs, allmod, by="time") %>% 
   select(time, TNTP.x, DINFRP.x:DOCFRP.x,TNTP.y,DINFRP.y:DOCFRP.y)
 
+#can use this function to calculate RMSE at specific depth layers, e.g., from one depth or range of depths
+RMSE = function(m, o){
+  sqrt(mean((m - o)^2))
+}
+
+var="TNTP"
+var="DINFRP"
+var="DOCDIN"
+var="DOCNH4"
+var="DOCNO3"
+var="DOCFRP"
+
+#equation for RMSE calculation
+o <- eval(parse(text=paste0("ratios$",var,".x")))
+m <- eval(parse(text=paste0("ratios$",var,".y")))
+df <- cbind.data.frame(o,m)
+df<-df[complete.cases(df),]
+df <- df[is.finite(rowSums(df)),]
+RMSE(df$m,df$o)
+
+#set up figure 
+pdf("figures/TimeSeries_ModeledVsObservedRatios.pdf", width=8.5, height=11)
+par(mfrow=c(3,2))
+
 plot(ratios$time,ratios$TNTP.x, type='p', col='red',
      ylab="TN:TP", xlab='time', ylim=c(0,350),
-     main = "9m TN:TP, RMSE = xxx")
+     main = "9m TN:TP, RMSE = 51.3")
 points(ratios$time, ratios$TNTP.y, type="l",col='black')
 
+plot(ratios$time,ratios$DINFRP.x, type='p', col='red',
+     ylab="DIN:FRP", xlab='time', ylim=c(0,1200),
+     main = "9m DIN:FRP, RMSE = 447")
+points(ratios$time, ratios$DINFRP.y, type="l",col='black')
+
+plot(ratios$time,ratios$DOCDIN.x, type='p', col='red',
+     ylab="DOC:DIN", xlab='time', ylim=c(0,2000),
+     main = "9m DOC:DIN, RMSE = 290")
+points(ratios$time, ratios$DOCDIN.y, type="l",col='black')
+
+plot(ratios$time,ratios$DOCNH4.x, type='p', col='red',
+     ylab="DOC:NH4", xlab='time', ylim=c(0,3200),
+     main = "9m DOC:NH4, RMSE = 393")
+points(ratios$time, ratios$DOCNH4.y, type="l",col='black')
+
+var="DOCNO3"
+time<-ratios$time
+o <- eval(parse(text=paste0("ratios$",var,".x")))
+m <- eval(parse(text=paste0("ratios$",var,".y")))
+df <- cbind.data.frame(time,o,m)
+df<-df[complete.cases(df),]
+df<-df[is.finite(df$m),]
+df<-df[is.finite(df$o),] %>% 
+  mutate(doy = yday(time)) %>% 
+  filter(doy > 140 & doy < 275)
+df$o<-round(df$o,digits=0)
+df$m<-round(df$m,digits=0)
+RMSE(df$m,df$o)
+
+plot(df$time,df$o, type='p', col='red',
+     ylab="DOC:NO3", xlab='time', ylim=c(0,18000),
+     main = "9m DOC:NO3, RMSE = 40951")
+points(df$time, df$m, type="l",col='black')
+#axis.break(axis=2,breakpos=20000,pos=NULL,bgcol="white",breakcol="black",style="slash",brw=0.02)
+
+plot(ratios$time,ratios$DOCFRP.x, type='p', col='red',
+     ylab="DOC:FRP", xlab='time', ylim=c(500,20000),
+     main = "9m DOC:FRP, RMSE = 3047")
+points(ratios$time, ratios$DOCFRP.y, type="l",col='black')
+
+dev.off()
 ### add in other plots
 

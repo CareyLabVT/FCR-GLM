@@ -435,7 +435,8 @@ outputs <- merge(outflow,data1, by="time") %>%
 
 fluxdata <- merge(inputs, outputs, by="time") %>% 
   mutate(year=year(time),
-         DOY = yday(time)) 
+         DOY = yday(time)) #%>% 
+  #write.csv("output/DailyInputsOutputs_8Sep2020.csv", row.names = F)
 
 #from Farrell et al 2020 & Powers et al 2015
 #retention for full calendar year
