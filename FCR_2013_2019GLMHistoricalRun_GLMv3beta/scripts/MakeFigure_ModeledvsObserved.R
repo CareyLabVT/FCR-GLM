@@ -5,6 +5,8 @@
 library(zoo)
 library(tidyverse)
 library(lubridate)
+library(GLMr)
+library(glmtools)
 #library(gganimate)
 
 setwd("./FCR_2013_2019GLMHistoricalRun_GLMv3beta")
@@ -199,3 +201,94 @@ plot(obs$DateTime,obs$TOT_tp, type='p', col='red',
 points(data1$DateTime, data1$totalP, type="l",col='black')
 
 dev.off()
+
+##########################################################
+#lets compare observed vs modeled NP ratios
+
+#get observational data first
+obs <-read_csv("results/ObservationalDataForAnalysis_13July2020.csv") %>% 
+  rename(TN = TN_ugL, TP = TP_ugL, TNTP = NP) %>%  
+  mutate(DIN = NIT_amm + NIT_nit,
+         DINFRP = DIN/PHS_frp,
+         DOCDIN = OGM_doc/DIN,
+         DOCNH4 = OGM_doc/NIT_amm,
+         DOCNO3 = OGM_doc/NIT_nit,
+         DOCFRP = OGM_doc/PHS_frp) %>%
+  select(-CN, -CP) %>% 
+  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST")))
+  
+#baseline scenario, based on observed SSS practices
+nc_file <- file.path(sim_folder, 'output/output_2013_2019.nc')
+
+#dissolved modeled constituents first
+NO3 <- get_var(nc_file, "NIT_nit",z_out=9,reference = 'surface')
+NH4 <- get_var(nc_file, "NIT_amm",z_out=9,reference = 'surface')
+DOCr <- get_var(nc_file, "OGM_docr",z_out=9,reference = 'surface')
+DOC <- get_var(nc_file, "OGM_doc",z_out=9,reference = 'surface')
+FRP <- get_var(nc_file, "PHS_frp",z_out=9,reference = 'surface')
+
+mod<-as.data.frame(cbind(NO3,NH4[,2],DOCr[,2],DOC[,2],FRP[,2])) 
+colnames(mod) = c("time","no3","nh4","docr","doc","frp") 
+mod$time = as.POSIXct(strptime(mod$time, "%Y-%m-%d", tz="EST"))
+
+#total modeled constituents second
+TN <- get_var(nc_file, "TOT_tn",z_out=9,reference = 'surface')
+TP <- get_var(nc_file, "TOT_tp",z_out=9,reference = 'surface')
+TOC <- get_var(nc_file, "TOT_toc",z_out=9,reference = 'surface')
+
+cyano <- get_var(nc_file,var_name = 'PHY_cyano',z_out=9,reference = 'surface') %>% 
+  pivot_longer(cols=starts_with(paste0("PHY_cyano_")), names_to="Depth", names_prefix="PHY_cyano_",values_to = "CyanoConc") %>%
+  mutate(cyanoN = CyanoConc*0.12,
+         cyanoP = CyanoConc*0.0005,
+         cyanoC = CyanoConc) %>% 
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
+  select(DateTime,Depth,cyanoN, cyanoP, cyanoC)
+
+green <- get_var(nc_file,var_name = 'PHY_green',z_out=9,reference = 'surface') %>% 
+  pivot_longer(cols=starts_with(paste0("PHY_green_")), names_to="Depth", names_prefix="PHY_green_",values_to = "GreenConc") %>%
+  mutate(greenN = GreenConc*0.12,
+         greenP = GreenConc*0.0005,
+         greenC = GreenConc) %>% 
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
+  select(DateTime,Depth,greenN, greenP, greenC)
+
+diatom <- get_var(nc_file,var_name = 'PHY_diatom',z_out=9,reference = 'surface') %>% 
+  pivot_longer(cols=starts_with(paste0("PHY_diatom_")), names_to="Depth", names_prefix="PHY_diatom_",values_to = "DiatomConc") %>%
+  mutate(diatomN = DiatomConc*0.12,
+         diatomP = DiatomConc*0.0005,
+         diatomC = DiatomConc) %>% 
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
+  select(DateTime,Depth, diatomN, diatomP, diatomC)
+
+data<-as.data.frame(cbind(diatom[1:5],cyano[,3:5],green[,3:5],TN[,2],TP[,2],TOC[,2])) 
+colnames(data) = c("DateTime", "Depth", "diatomN", "diatomP", "diatomC",
+                   "cyanoN", "cyanoP", "cyanoC", "greenN", "greenP", "greenC",
+                   "TN", "TP", "TOC") 
+data2 <- data %>% 
+  mutate(totalN = TN + diatomN + cyanoN + greenN,
+         totalP = TP + diatomP + cyanoP + greenP,
+         totalC = TOC + diatomC + cyanoC + greenC) %>% 
+  mutate(time = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
+  select(time, totalN:totalC)
+
+allmod <- merge(mod, data2, by="time") %>% 
+  mutate(DIN = no3 + nh4,
+         DOC = doc + docr,
+         DINFRP = DIN/frp,
+         DOCDIN = DOC/DIN,
+         DOCNH4 = DOC/nh4,
+         DOCNO3 = DOC/no3,
+         DOCFRP = DOC/frp,
+         TNTP = totalN/totalP)
+
+#x values = obs, y values = mod
+ratios <- merge(obs, allmod, by="time") %>% 
+  select(time, TNTP.x, DINFRP.x:DOCFRP.x,TNTP.y,DINFRP.y:DOCFRP.y)
+
+plot(ratios$time,ratios$TNTP.x, type='p', col='red',
+     ylab="TN:TP", xlab='time', ylim=c(0,350),
+     main = "9m TN:TP, RMSE = xxx")
+points(ratios$time, ratios$TNTP.y, type="l",col='black')
+
+### add in other plots
+
