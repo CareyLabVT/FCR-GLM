@@ -1162,7 +1162,7 @@ plot(pop9$DateTime, pop9$OGM_pop_9, ylim=c(0,0.5))
 
 get_var(file=nc_file,var_name = 'CAR_atm_ch4_flux',reference = "bottom",z_out = 1) #, z_out=1, reference='surface')
 
-nc<-nc_open("output.nc")
+nc<-nc_open("output/output.nc")
 names(nc$var)#get list of variables in data
 names(nc$dim)#get list of variables in data
 time <- ncvar_get(nc, 'time')
@@ -1174,6 +1174,8 @@ plot(time_1,ch4flux[,1], ylim=c(0,2.5), ylab="CH4 flux, mmol/m2/d", xlab="Date")
 points(time_1,(ch4flux[,1]+sample(rnorm(1,mean=0.3,sd=0.3))), col="red")
 legend("topleft", c("Baseline","+2 degrees"), fill=c("black","red"))
 
+
+nh4flux<-t(as.data.frame(ncvar_get(nc,varid="NIT_anammox")))
 
 nc_close(nc)
 

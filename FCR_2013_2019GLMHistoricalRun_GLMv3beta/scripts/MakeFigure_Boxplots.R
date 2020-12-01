@@ -5,6 +5,8 @@
 library(zoo)
 library(tidyverse)
 library(lubridate)
+library(GLMr)
+library(glmtools)
 #library(gganimate)
 
 setwd("./FCR_2013_2019GLMHistoricalRun_GLMv3beta")
@@ -396,9 +398,11 @@ retention <- fluxdata %>%
             Fnet_A_FRP = 100*(sum(A_FRP_output)-sum(inputFRP))/sum(inputFRP),
             Fnet_O_FRP = 100*(sum(O_FRP_output)-sum(inputFRP))/sum(inputFRP),
             Fnet_A_NH4 = 100*(sum(A_NH4_output)-sum(inputNH4))/sum(inputNH4),
-            Fnet_O_NH4 = 100*(sum(O_NH4_output)-sum(inputNH4))/sum(inputNH4))
+            Fnet_O_NH4 = 100*(sum(O_NH4_output)-sum(inputNH4))/sum(inputNH4)) %>% 
+  write.csv("output/RetentionPerYear_30Nov2020.csv", row.names=F)
 #Data indicate net flux (%) for each year; flux < 0 represents net retention and/or removal, 
   #flux > 0 represents net downstream export
+
 
 
 ####boxplots annual retention####
