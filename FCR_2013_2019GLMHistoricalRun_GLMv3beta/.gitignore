@@ -1,3 +1,13 @@
-output
-*.nc
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
 .nc
+*.nc
+output_anoxic_oxic_anoxic.nc
+output_oxic.nc
+output_anoxic.nc
+output_2019_validation.nc
+output_2013_2018_calibration.nc
+output_2013_2019.nc
+output.nc
