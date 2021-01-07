@@ -32,7 +32,7 @@ oxy <- ggplot(sss_oxy, aes(DateTime, mmol.O2.m3.day))+
   #geom_line(size = 1)+
   geom_area(color = "grey80", alpha = 0.3)+
   geom_line(data = mod_oxy, aes(DateTime, OXY_oxy), size = 1, color = "black")+
-  geom_point(data = obs_oxy, aes(DateTime, OXY_oxy),pch = 21, fill = "red", size = 2.5, color = "grey10")+
+  geom_point(data = obs_oxy, aes(DateTime, OXY_oxy),pch = 16, size = 2.5, color = "red")+
   theme_classic()+
   ylim(0,750)+
   ylab(expression(paste("Oxygen (mmol m" ^"-3",")")))+
@@ -48,7 +48,7 @@ oxy <- ggplot(sss_oxy, aes(DateTime, mmol.O2.m3.day))+
 #ammonia plot
 NIT_amm <- ggplot(mod_amm, aes(DateTime, NIT_amm))+
   geom_line(size = 1)+
-  geom_point(data = obs_amm, aes(DateTime, NIT_amm),pch = 21, fill = "red", size = 2.5, color = "grey10")+
+  geom_point(data = obs_amm, aes(DateTime, NIT_amm),pch = 16, size = 2.5, color = "red")+
   theme_classic()+
   ylab(expression(paste("Ammonium (mmol m" ^"-3",")")))+
   xlab("")+
@@ -61,7 +61,7 @@ NIT_amm <- ggplot(mod_amm, aes(DateTime, NIT_amm))+
 #nitrate plot
 NIT_nit <- ggplot(mod_nit, aes(DateTime, NIT_nit))+
   geom_line(size = 1)+
-  geom_point(data = obs_nit, aes(DateTime, NIT_nit),pch = 21, fill = "red", size = 2.5, color = "grey10")+
+  geom_point(data = obs_nit, aes(DateTime, NIT_nit),pch = 16, size = 2.5, color = "red")+
   theme_classic()+
   ylab(expression(paste("Nitrate (mmol m" ^"-3",")")))+
   xlab("")+
@@ -74,7 +74,7 @@ NIT_nit <- ggplot(mod_nit, aes(DateTime, NIT_nit))+
 #dissolved reactive phosphorus plot
 SRP <- ggplot(mod_srp, aes(DateTime, PHS_frp))+
   geom_line(size = 1)+
-  geom_point(data = obs_srp, aes(DateTime, PHS_frp),pch = 21, fill = "red", size = 2.5, color = "grey10")+
+  geom_point(data = obs_srp, aes(DateTime, PHS_frp),pch = 16, size = 2.5, color = "red")+
   theme_classic()+
   ylab(expression(paste("Dissolved Reactive Phosphorus (mmol m" ^"-3",")")))+
   xlab("")+
@@ -87,7 +87,7 @@ SRP <- ggplot(mod_srp, aes(DateTime, PHS_frp))+
 # doc plot
 DOC <- ggplot(modDOC, aes(DateTime, DOCall))+
   geom_line(size = 1)+
-  geom_point(data = obsDOC, aes(DateTime, DOCall),pch = 21, fill = "red", size = 2.5, color = "grey10")+
+  geom_point(data = obsDOC, aes(DateTime, DOCall),pch = 16, size = 2.5, color = "red")+
   theme_classic()+
   ylab(expression(paste("Dissolved Organic Carbon (mmol m" ^"-3",")")))+
   xlab("")+
@@ -100,7 +100,7 @@ DOC <- ggplot(modDOC, aes(DateTime, DOCall))+
 #total nitrogen plot
 TN <- ggplot(mod_total_pools, aes(DateTime, totalN))+
   geom_line(size = 1)+
-  geom_point(data = obs_total_pools, aes(DateTime, TOT_tn),pch = 21, fill = "red", size = 2.5, color = "grey10")+
+  geom_point(data = obs_total_pools, aes(DateTime, TOT_tn),pch = 16, size = 2.5, color = "red")+
   theme_classic()+
   ylab(expression(paste("Total Nitrogen (mmol m" ^"-3",")")))+
   xlab("")+
@@ -113,7 +113,7 @@ TN <- ggplot(mod_total_pools, aes(DateTime, totalN))+
 #total phosphorus plot
 TP <- ggplot(mod_total_pools, aes(DateTime, totalP))+
   geom_line(size = 1)+
-  geom_point(data = obs_total_pools, aes(DateTime, TOT_tp),pch = 21, fill = "red", size = 2.5, color = "grey10")+
+  geom_point(data = obs_total_pools, aes(DateTime, TOT_tp),pch = 16, size = 2.5, color = "red")+
   theme_classic()+
   ylab(expression(paste("Total Phosphorus (mmol m" ^"-3",")")))+
   xlab("")+

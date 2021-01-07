@@ -12,7 +12,7 @@ oxy_scenarios_cum <- ggplot()+
   scale_color_manual(breaks = c("Oxic", "Anoxic"),
                      values = c("Oxic" = "blue", "Anoxic" = "red"))+
   theme_classic()+
-  ylab(expression(paste("Oxygen Accumulation (mmol m" ^"-3",")")))+
+  ylab(expression(paste("Oxygen accumulation (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "a")+
   theme(axis.text = element_text(size = 24, color = "black"),
@@ -28,7 +28,7 @@ amm_scenarios_cum <- ggplot()+
   scale_color_manual(breaks = c("Oxic", "Anoxic"),
                      values = c("Oxic" = "blue", "Anoxic" = "red"))+
   theme_classic()+
-  ylab(expression(paste("Ammonium Accumulation (mmol m" ^"-3",")")))+
+  ylab(expression(paste("Ammonium accumulation (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "b")+
   theme(axis.text = element_text(size = 24, color = "black"),
@@ -44,7 +44,7 @@ nit_scenarios_cum <- ggplot()+
   scale_color_manual(breaks = c("Oxic", "Anoxic"),
                      values = c("Oxic" = "blue", "Anoxic" = "red"))+
   theme_classic()+
-  ylab(expression(paste("Nitrate Accumulation (mmol m" ^"-3",")")))+
+  ylab(expression(paste("Nitrate accumulation (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "c")+
   theme(axis.text = element_text(size = 24, color = "black"),
@@ -60,7 +60,7 @@ srp_scenarios_cum <- ggplot()+
   scale_color_manual(breaks = c("Oxic", "Anoxic"),
                      values = c("Oxic" = "blue", "Anoxic" = "red"))+
   theme_classic()+
-  ylab(expression(paste("DRP Accumulation (mmol m" ^"-3",")")))+
+  ylab(expression(paste("DRP accumulation (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "d")+
   theme(axis.text = element_text(size = 24, color = "black"),
@@ -76,7 +76,7 @@ doc_scenarios_cum <- ggplot()+
   scale_color_manual(breaks = c("Oxic", "Anoxic"),
                      values = c("Oxic" = "blue", "Anoxic" = "red"))+
   theme_classic()+
-  ylab(expression(paste("DOC Accumulation (mmol m" ^"-3",")")))+
+  ylab(expression(paste("DOC accumulation (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "e")+
   theme(axis.text = element_text(size = 24, color = "black"),
@@ -92,7 +92,7 @@ TN_scenarios_cum <- ggplot()+
   scale_color_manual(breaks = c("Oxic", "Anoxic"),
                      values = c("Oxic" = "blue", "Anoxic" = "red"))+
   theme_classic()+
-  ylab(expression(paste("Nitrogen Accumulation (mmol m" ^"-3",")")))+
+  ylab(expression(paste("Nitrogen accumulation (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "f")+
   theme(axis.text = element_text(size = 24, color = "black"),
@@ -108,7 +108,7 @@ TP_scenarios_cum <- ggplot()+
   scale_color_manual(breaks = c("Oxic", "Anoxic"),
                      values = c("Oxic" = "blue", "Anoxic" = "red"))+
   theme_classic()+
-  ylab(expression(paste("Phosphorus Accumulation (mmol m" ^"-3",")")))+
+  ylab(expression(paste("Phosphorus accumulation (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "g")+
   theme(axis.text = element_text(size = 24, color = "black"),
