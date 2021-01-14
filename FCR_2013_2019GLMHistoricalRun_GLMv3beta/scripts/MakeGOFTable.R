@@ -34,24 +34,58 @@ baseline <- file.path(sim_folder, 'FCR_2013_2019GLMHistoricalRun_GLMv3beta/outpu
 # Variables to include: temp, oxy, NIT_amm, NIT_nit, SRP, DOC, TN, TP for 9 m ONLY
 # Include: Calibration period (2013-2018); Validation period (2019); and All (2013-2019)
 
-# Start with summer calculations ONLY (July 15 - Oct 1) - Following summer stratified period as defined in 
+# Summer calculations defined as July 15 to Oct 1 - Following summer stratified period as defined in 
 # MakeFigure_Boxplots.R
 
 # Create empty dataframe for GOF results
 # Using all GOF parameters for now - will cull eventually
+# Summer, 9m, full period (2013-2019)
 summer_9m_gof <- setNames(data.frame(matrix(ncol=9,nrow=20)),c("Parameter","Temp","Oxy","NIT_amm","NIT_nit","SRP","DOC","TN","TP"))
 summer_9m_gof$Parameter <- c("ME","MAE","MSE","RMSE","NRMSE%","PBIAS%","RSR","rSD","NSE","mNSE","rNSE","d","md","rd","cp","r",
                              "R2","bR2","KGE","VE")
+
+# Full year, 9m, full period (2013-2019)
 all_9m_gof <- setNames(data.frame(matrix(ncol=9,nrow=20)),c("Parameter","Temp","Oxy","NIT_amm","NIT_nit","SRP","DOC","TN","TP"))
 all_9m_gof$Parameter <- c("ME","MAE","MSE","RMSE","NRMSE%","PBIAS%","RSR","rSD","NSE","mNSE","rNSE","d","md","rd","cp","r",
                              "R2","bR2","KGE","VE")
+
+# Summer, 9m, calibration period (2013-2018)
+summer_9m_gof_cal <- setNames(data.frame(matrix(ncol=9,nrow=20)),c("Parameter","Temp","Oxy","NIT_amm","NIT_nit","SRP","DOC","TN","TP"))
+summer_9m_gof_cal$Parameter <- c("ME","MAE","MSE","RMSE","NRMSE%","PBIAS%","RSR","rSD","NSE","mNSE","rNSE","d","md","rd","cp","r",
+                       "R2","bR2","KGE","VE")
+
+# Full year, 9m, calibration period (2013-2018)
+all_9m_gof_cal <- setNames(data.frame(matrix(ncol=9,nrow=20)),c("Parameter","Temp","Oxy","NIT_amm","NIT_nit","SRP","DOC","TN","TP"))
+all_9m_gof_cal$Parameter <- c("ME","MAE","MSE","RMSE","NRMSE%","PBIAS%","RSR","rSD","NSE","mNSE","rNSE","d","md","rd","cp","r",
+                    "R2","bR2","KGE","VE")
+
+# Summer, 9m, validation period (2019)
+summer_9m_gof_val <- setNames(data.frame(matrix(ncol=9,nrow=20)),c("Parameter","Temp","Oxy","NIT_amm","NIT_nit","SRP","DOC","TN","TP"))
+summer_9m_gof_val$Parameter <- c("ME","MAE","MSE","RMSE","NRMSE%","PBIAS%","RSR","rSD","NSE","mNSE","rNSE","d","md","rd","cp","r",
+                       "R2","bR2","KGE","VE")
+
+# Full year, 9m, validation period (2019)
+all_9m_gof_val <- setNames(data.frame(matrix(ncol=9,nrow=20)),c("Parameter","Temp","Oxy","NIT_amm","NIT_nit","SRP","DOC","TN","TP"))
+all_9m_gof_val$Parameter <- c("ME","MAE","MSE","RMSE","NRMSE%","PBIAS%","RSR","rSD","NSE","mNSE","rNSE","d","md","rd","cp","r",
+                    "R2","bR2","KGE","VE")
 
 ### 9m Summer TEMP ###
 # 9m Model temp
 mod_temp_9m <- get_temp(baseline,z_out=9,reference='surface') %>% 
   mutate(DateTime = as.POSIXct(strptime(DateTime,'%Y-%m-%d',tz="EST"))) %>% 
   rename(temp_mod = temp_9)
+mod_temp_9m_cal <- mod_temp_9m %>% 
+  filter(DateTime < "2019-01-01")
+mod_temp_9m_val <- mod_temp_9m %>% 
+  filter(DateTime >= "2019-01-01")
+
 mod_temp_9m_summer <- mod_temp_9m %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+mod_temp_9m_summer_cal <- mod_temp_9m_cal %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+mod_temp_9m_summer_val <- mod_temp_9m_val %>% 
   mutate(Month = format(DateTime,"%m-%d")) %>% 
   filter(Month >= "07-15" & Month <= "10-01")
 
@@ -61,7 +95,18 @@ obs_temp <- read_csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/Cleaned
   rename(temp_obs = temp)
 obs_temp_9m <- obs_temp %>% 
   filter(Depth==9)
+obs_temp_9m_cal <- obs_temp_9m %>% 
+  filter(DateTime < "2019-01-01")
+obs_temp_9m_val <- obs_temp_9m %>% 
+  filter(DateTime >= "2019-01-01")
+
 obs_temp_9m_summer <- obs_temp_9m %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+obs_temp_9m_summer_cal <- obs_temp_9m_cal %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+obs_temp_9m_summer_val <- obs_temp_9m_val %>% 
   mutate(Month = format(DateTime,"%m-%d")) %>% 
   filter(Month >= "07-15" & Month <= "10-01")
 
@@ -69,21 +114,44 @@ obs_temp_9m_summer <- obs_temp_9m %>%
 # For SUMMER only
 comb_9m_temp_summer <- left_join(obs_temp_9m_summer,mod_temp_9m_summer,by="DateTime") %>% 
   select(-c("Month.x","Month.y"))
-
 summer_9m_gof$Temp <- gof(comb_9m_temp_summer$temp_mod,comb_9m_temp_summer$temp_obs)
+
+comb_9m_temp_summer_cal <- left_join(obs_temp_9m_summer_cal,mod_temp_9m_summer_cal,by="DateTime") %>% 
+  select(-c("Month.x","Month.y"))
+summer_9m_gof_cal$Temp <- gof(comb_9m_temp_summer_cal$temp_mod,comb_9m_temp_summer_cal$temp_obs)
+
+comb_9m_temp_summer_val <- left_join(obs_temp_9m_summer_val,mod_temp_9m_summer_val,by="DateTime") %>% 
+  select(-c("Month.x","Month.y"))
+summer_9m_gof_val$Temp <- gof(comb_9m_temp_summer_val$temp_mod,comb_9m_temp_summer_val$temp_obs)
 
 # Select dates where we have observations and calculate ALL GOF parameters (can cull later)
 # For FULL year
 comb_9m_temp <- left_join(obs_temp_9m,mod_temp_9m,by="DateTime")
-
 all_9m_gof$Temp <- gof(comb_9m_temp$temp_mod,comb_9m_temp$temp_obs)
+
+comb_9m_temp_cal <- left_join(obs_temp_9m_cal,mod_temp_9m_cal,by="DateTime")
+all_9m_gof_cal$Temp <- gof(comb_9m_temp_cal$temp_mod,comb_9m_temp_cal$temp_obs)
+
+comb_9m_temp_val <- left_join(obs_temp_9m_val,mod_temp_9m_val,by="DateTime")
+all_9m_gof_val$Temp <- gof(comb_9m_temp_val$temp_mod,comb_9m_temp_val$temp_obs)
 
 ### 9m summer OXY ###
 # 9m modeled oxy
 mod_oxy_9m <- get_var(baseline,'OXY_oxy',z_out=9,reference='surface') %>% 
   mutate(DateTime = as.POSIXct(strptime(DateTime,'%Y-%m-%d',tz="EST"))) %>% 
   rename(oxy_mod = OXY_oxy_9)
+mod_oxy_9m_cal <- mod_oxy_9m %>% 
+  filter(DateTime < "2019-01-01")
+mod_oxy_9m_val <- mod_oxy_9m %>% 
+  filter(DateTime >= "2019-01-01")
+
 mod_oxy_9m_summer <- mod_oxy_9m %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+mod_oxy_9m_summer_cal <- mod_oxy_9m_cal %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+mod_oxy_9m_summer_val <- mod_oxy_9m_val %>% 
   mutate(Month = format(DateTime,"%m-%d")) %>% 
   filter(Month >= "07-15" & Month <= "10-01")
 
@@ -93,7 +161,18 @@ obs_oxy <- read.csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/CleanedO
   rename(oxy_obs = OXY_oxy)
 obs_oxy_9m <- obs_oxy %>% 
   filter(Depth==9)
+obs_oxy_9m_cal <- obs_oxy_9m %>% 
+  filter(DateTime < "2019-01-01")
+obs_oxy_9m_val <- obs_oxy_9m %>% 
+  filter(DateTime >= "2019-01-01")
+
 obs_oxy_9m_summer <- obs_oxy_9m %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+obs_oxy_9m_summer_cal <- obs_oxy_9m_cal %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+obs_oxy_9m_summer_val <- obs_oxy_9m_val %>% 
   mutate(Month = format(DateTime,"%m-%d")) %>% 
   filter(Month >= "07-15" & Month <= "10-01")
 
@@ -101,20 +180,43 @@ obs_oxy_9m_summer <- obs_oxy_9m %>%
 # SUMMER ONLY
 comb_9m_oxy_summer <- left_join(obs_oxy_9m_summer,mod_oxy_9m_summer,by="DateTime") %>% 
   select(-c("Month.x","Month.y"))
-
 summer_9m_gof$Oxy <- gof(comb_9m_oxy_summer$oxy_mod,comb_9m_oxy_summer$oxy_obs)
+
+comb_9m_oxy_summer_cal <- left_join(obs_oxy_9m_summer_cal,mod_oxy_9m_summer_cal,by="DateTime") %>% 
+  select(-c("Month.x","Month.y"))
+summer_9m_gof_cal$Oxy <- gof(comb_9m_oxy_summer_cal$oxy_mod,comb_9m_oxy_summer_cal$oxy_obs)
+
+comb_9m_oxy_summer_val <- left_join(obs_oxy_9m_summer_val,mod_oxy_9m_summer_val,by="DateTime") %>% 
+  select(-c("Month.x","Month.y"))
+summer_9m_gof_val$Oxy <- gof(comb_9m_oxy_summer_val$oxy_mod,comb_9m_oxy_summer_val$oxy_obs)
 
 # Select dates where we have observations and calculate ALL GOF parameters (can cull later!)
 # FULL YEAR
 comb_9m_oxy <- left_join(obs_oxy_9m,mod_oxy_9m,by="DateTime")
-
 all_9m_gof$Oxy <- gof(comb_9m_oxy$oxy_mod,comb_9m_oxy$oxy_obs)
+
+comb_9m_oxy_cal <- left_join(obs_oxy_9m_cal,mod_oxy_9m_cal,by="DateTime")
+all_9m_gof_cal$Oxy <- gof(comb_9m_oxy_cal$oxy_mod,comb_9m_oxy_cal$oxy_obs)
+
+comb_9m_oxy_val <- left_join(obs_oxy_9m_val,mod_oxy_9m_val,by="DateTime")
+all_9m_gof_val$Oxy <- gof(comb_9m_oxy_val$oxy_mod,comb_9m_oxy_val$oxy_obs)
 
 ### 9 m summer NIT-amm ###
 mod_NIT_amm_9m <- get_var(baseline,'NIT_amm',z_out=9,reference='surface') %>% 
   mutate(DateTime = as.POSIXct(strptime(DateTime,'%Y-%m-%d',tz="EST"))) %>% 
   rename(NIT_amm_mod = NIT_amm_9)
+mod_NIT_amm_9m_cal <- mod_NIT_amm_9m %>% 
+  filter(DateTime < "2019-01-01")
+mod_NIT_amm_9m_val <- mod_NIT_amm_9m %>% 
+  filter(DateTime >= "2019-01-01")
+
 mod_NIT_amm_9m_summer <- mod_NIT_amm_9m %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+mod_NIT_amm_9m_summer_cal <- mod_NIT_amm_9m_cal %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+mod_NIT_amm_9m_summer_val <- mod_NIT_amm_9m_val %>% 
   mutate(Month = format(DateTime,"%m-%d")) %>% 
   filter(Month >= "07-15" & Month <= "10-01")
 
@@ -125,7 +227,18 @@ obs_NIT_amm <- read.csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/fiel
 obs_NIT_amm_9m <- obs_NIT_amm %>% 
   filter(Depth == 9) %>% 
   na.omit()
+obs_NIT_amm_9m_cal <- obs_NIT_amm_9m %>% 
+  filter(DateTime < "2019-01-01")
+obs_NIT_amm_9m_val <- obs_NIT_amm_9m %>% 
+  filter(DateTime >= "2019-01-01")
+
 obs_NIT_amm_9m_summer <- obs_NIT_amm_9m %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+obs_NIT_amm_9m_summer_cal <- obs_NIT_amm_9m_cal %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+obs_NIT_amm_9m_summer_val <- obs_NIT_amm_9m_val %>% 
   mutate(Month = format(DateTime,"%m-%d")) %>% 
   filter(Month >= "07-15" & Month <= "10-01")
 
@@ -133,20 +246,43 @@ obs_NIT_amm_9m_summer <- obs_NIT_amm_9m %>%
 # SUMMER ONLY
 comb_9m_NIT_amm_summer <- left_join(obs_NIT_amm_9m_summer,mod_NIT_amm_9m_summer,by="DateTime") %>% 
   select(-c("Month.x","Month.y"))
-
 summer_9m_gof$NIT_amm <- gof(comb_9m_NIT_amm_summer$NIT_amm_mod,comb_9m_NIT_amm_summer$NIT_amm_obs)
+
+comb_9m_NIT_amm_summer_cal <- left_join(obs_NIT_amm_9m_summer_cal,mod_NIT_amm_9m_summer_cal,by="DateTime") %>% 
+  select(-c("Month.x","Month.y"))
+summer_9m_gof_cal$NIT_amm <- gof(comb_9m_NIT_amm_summer_cal$NIT_amm_mod,comb_9m_NIT_amm_summer_cal$NIT_amm_obs)
+
+comb_9m_NIT_amm_summer_val <- left_join(obs_NIT_amm_9m_summer_val,mod_NIT_amm_9m_summer_val,by="DateTime") %>% 
+  select(-c("Month.x","Month.y"))
+summer_9m_gof_val$NIT_amm <- gof(comb_9m_NIT_amm_summer_val$NIT_amm_mod,comb_9m_NIT_amm_summer_val$NIT_amm_obs)
 
 # Select dates where we have observations and calculate ALL GOF parameters (can cull later!)
 # FULL YEAR
 comb_9m_NIT_amm <- left_join(obs_NIT_amm_9m,mod_NIT_amm_9m,by="DateTime")
-
 all_9m_gof$NIT_amm <- gof(comb_9m_NIT_amm$NIT_amm_mod,comb_9m_NIT_amm$NIT_amm_obs)
+
+comb_9m_NIT_amm_cal <- left_join(obs_NIT_amm_9m_cal,mod_NIT_amm_9m_cal,by="DateTime")
+all_9m_gof_cal$NIT_amm <- gof(comb_9m_NIT_amm_cal$NIT_amm_mod,comb_9m_NIT_amm_cal$NIT_amm_obs)
+
+comb_9m_NIT_amm_val <- left_join(obs_NIT_amm_9m_val,mod_NIT_amm_9m_val,by="DateTime")
+all_9m_gof_val$NIT_amm <- gof(comb_9m_NIT_amm_val$NIT_amm_mod,comb_9m_NIT_amm_val$NIT_amm_obs)
 
 ### 9m summer NIT_nit ###
 mod_NIT_nit_9m <- get_var(baseline,'NIT_nit',z_out=9,reference='surface') %>% 
   mutate(DateTime = as.POSIXct(strptime(DateTime,'%Y-%m-%d',tz="EST"))) %>% 
   rename(NIT_nit_mod = NIT_nit_9)
+mod_NIT_nit_9m_cal <- mod_NIT_nit_9m %>% 
+  filter(DateTime < "2019-01-01")
+mod_NIT_nit_9m_val <- mod_NIT_nit_9m %>% 
+  filter(DateTime >= "2019-01-01")
+
 mod_NIT_nit_9m_summer <- mod_NIT_nit_9m %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+mod_NIT_nit_9m_summer_cal <- mod_NIT_nit_9m_cal %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+mod_NIT_nit_9m_summer_val <- mod_NIT_nit_9m_val %>% 
   mutate(Month = format(DateTime,"%m-%d")) %>% 
   filter(Month >= "07-15" & Month <= "10-01")
 
@@ -157,7 +293,18 @@ obs_NIT_nit <- read.csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/fiel
 obs_NIT_nit_9m <- obs_NIT_nit %>% 
   filter(Depth == 9) %>% 
   na.omit()
+obs_NIT_nit_9m_cal <- obs_NIT_nit_9m %>% 
+  filter(DateTime < "2019-01-01")
+obs_NIT_nit_9m_val <- obs_NIT_nit_9m %>% 
+  filter(DateTime >= "2019-01-01")
+
 obs_NIT_nit_9m_summer <- obs_NIT_nit_9m %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+obs_NIT_nit_9m_summer_cal <- obs_NIT_nit_9m_cal %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+obs_NIT_nit_9m_summer_val <- obs_NIT_nit_9m_val %>% 
   mutate(Month = format(DateTime,"%m-%d")) %>% 
   filter(Month >= "07-15" & Month <= "10-01")
 
@@ -165,20 +312,43 @@ obs_NIT_nit_9m_summer <- obs_NIT_nit_9m %>%
 # SUMMER ONLY
 comb_9m_NIT_nit_summer <- left_join(obs_NIT_nit_9m_summer,mod_NIT_nit_9m_summer,by="DateTime") %>% 
   select(-c("Month.x","Month.y"))
-
 summer_9m_gof$NIT_nit <- gof(comb_9m_NIT_nit_summer$NIT_nit_mod,comb_9m_NIT_nit_summer$NIT_nit_obs)
+
+comb_9m_NIT_nit_summer_cal <- left_join(obs_NIT_nit_9m_summer_cal,mod_NIT_nit_9m_summer_cal,by="DateTime") %>% 
+  select(-c("Month.x","Month.y"))
+summer_9m_gof_cal$NIT_nit <- gof(comb_9m_NIT_nit_summer_cal$NIT_nit_mod,comb_9m_NIT_nit_summer_cal$NIT_nit_obs)
+
+comb_9m_NIT_nit_summer_val <- left_join(obs_NIT_nit_9m_summer_val,mod_NIT_nit_9m_summer_val,by="DateTime") %>% 
+  select(-c("Month.x","Month.y"))
+summer_9m_gof_val$NIT_nit <- gof(comb_9m_NIT_nit_summer_val$NIT_nit_mod,comb_9m_NIT_nit_summer_val$NIT_nit_obs)
 
 # Select dates where we have observations and calculate ALL GOF parameters (can cull later!)
 # FULL YEAR
 comb_9m_NIT_nit <- left_join(obs_NIT_nit_9m,mod_NIT_nit_9m,by="DateTime")
-
 all_9m_gof$NIT_nit <- gof(comb_9m_NIT_nit$NIT_nit_mod,comb_9m_NIT_nit$NIT_nit_obs)
+
+comb_9m_NIT_nit_cal <- left_join(obs_NIT_nit_9m_cal,mod_NIT_nit_9m_cal,by="DateTime")
+all_9m_gof_cal$NIT_nit <- gof(comb_9m_NIT_nit_cal$NIT_nit_mod,comb_9m_NIT_nit_cal$NIT_nit_obs)
+
+comb_9m_NIT_nit_val <- left_join(obs_NIT_nit_9m_val,mod_NIT_nit_9m_val,by="DateTime")
+all_9m_gof_val$NIT_nit <- gof(comb_9m_NIT_nit_val$NIT_nit_mod,comb_9m_NIT_nit_val$NIT_nit_obs)
 
 ### 9 m SRP ###
 mod_PHS_frp_9m <- get_var(baseline,'PHS_frp',z_out=9,reference='surface') %>% 
   mutate(DateTime = as.POSIXct(strptime(DateTime,'%Y-%m-%d',tz="EST"))) %>% 
   rename(PHS_frp_mod = PHS_frp_9)
+mod_PHS_frp_9m_cal <- mod_PHS_frp_9m %>% 
+  filter(DateTime < "2019-01-01")
+mod_PHS_frp_9m_val <- mod_PHS_frp_9m %>% 
+  filter(DateTime >= "2019-01-01")
+
 mod_PHS_frp_9m_summer <- mod_PHS_frp_9m %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+mod_PHS_frp_9m_summer_cal <- mod_PHS_frp_9m_cal %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+mod_PHS_frp_9m_summer_val <- mod_PHS_frp_9m_val %>% 
   mutate(Month = format(DateTime,"%m-%d")) %>% 
   filter(Month >= "07-15" & Month <= "10-01")
 
@@ -189,7 +359,18 @@ obs_PHS_frp <- read.csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/fiel
 obs_PHS_frp_9m <- obs_PHS_frp %>% 
   filter(Depth == 9) %>% 
   na.omit()
+obs_PHS_frp_9m_cal <- obs_PHS_frp_9m %>% 
+  filter(DateTime < "2019-01-01")
+obs_PHS_frp_9m_val <- obs_PHS_frp_9m %>% 
+  filter(DateTime >= "2019-01-01")
+
 obs_PHS_frp_9m_summer <- obs_PHS_frp_9m %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+obs_PHS_frp_9m_summer_cal <- obs_PHS_frp_9m_cal %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+obs_PHS_frp_9m_summer_val <- obs_PHS_frp_9m_val %>% 
   mutate(Month = format(DateTime,"%m-%d")) %>% 
   filter(Month >= "07-15" & Month <= "10-01")
 
@@ -197,14 +378,26 @@ obs_PHS_frp_9m_summer <- obs_PHS_frp_9m %>%
 # SUMMER ONLY
 comb_9m_PHS_frp_summer <- left_join(obs_PHS_frp_9m_summer,mod_PHS_frp_9m_summer,by="DateTime") %>% 
   select(-c("Month.x","Month.y"))
-
 summer_9m_gof$SRP <- gof(comb_9m_PHS_frp_summer$PHS_frp_mod,comb_9m_PHS_frp_summer$PHS_frp_obs)
+
+comb_9m_PHS_frp_summer_cal <- left_join(obs_PHS_frp_9m_summer_cal,mod_PHS_frp_9m_summer_cal,by="DateTime") %>% 
+  select(-c("Month.x","Month.y"))
+summer_9m_gof_cal$SRP <- gof(comb_9m_PHS_frp_summer_cal$PHS_frp_mod,comb_9m_PHS_frp_summer_cal$PHS_frp_obs)
+
+comb_9m_PHS_frp_summer_val <- left_join(obs_PHS_frp_9m_summer_val,mod_PHS_frp_9m_summer_val,by="DateTime") %>% 
+  select(-c("Month.x","Month.y"))
+summer_9m_gof_val$SRP <- gof(comb_9m_PHS_frp_summer_val$PHS_frp_mod,comb_9m_PHS_frp_summer_val$PHS_frp_obs)
 
 # Select dates where we have observations and calculate ALL GOF parameters (can cull later!)
 # FULL YEAR
 comb_9m_PHS_frp <- left_join(obs_PHS_frp_9m,mod_PHS_frp_9m,by="DateTime")
-
 all_9m_gof$SRP <- gof(comb_9m_PHS_frp$PHS_frp_mod,comb_9m_PHS_frp$PHS_frp_obs)
+
+comb_9m_PHS_frp_cal <- left_join(obs_PHS_frp_9m_cal,mod_PHS_frp_9m_cal,by="DateTime")
+all_9m_gof_cal$SRP <- gof(comb_9m_PHS_frp_cal$PHS_frp_mod,comb_9m_PHS_frp_cal$PHS_frp_obs)
+
+comb_9m_PHS_frp_val <- left_join(obs_PHS_frp_9m_val,mod_PHS_frp_9m_val,by="DateTime")
+all_9m_gof_val$SRP <- gof(comb_9m_PHS_frp_val$PHS_frp_mod,comb_9m_PHS_frp_val$PHS_frp_obs)
 
 ### 9m DOC + rDOC ####
 # Summed DOC and rDOC following MakeFigure_ModeledvsObserved
@@ -217,7 +410,18 @@ mod_rDOC_9m <- get_var(baseline,'OGM_docr',z_out=9,reference='surface') %>%
 
 mod_allDOC_9m <- left_join(mod_DOC_9m,mod_rDOC_9m,by="DateTime") %>% 
   mutate(allDOC_mod = DOC_mod + rDOC_mod)
+mod_allDOC_9m_cal <- mod_allDOC_9m %>% 
+  filter(DateTime < "2019-01-01")
+mod_allDOC_9m_val <- mod_allDOC_9m %>% 
+  filter(DateTime >= "2019-01-01")
+
 mod_allDOC_9m_summer <- mod_allDOC_9m %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+mod_allDOC_9m_summer_cal <- mod_allDOC_9m_cal %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+mod_allDOC_9m_summer_val <- mod_allDOC_9m_val %>% 
   mutate(Month = format(DateTime,"%m-%d")) %>% 
   filter(Month >= "07-15" & Month <= "10-01")
 
@@ -229,7 +433,18 @@ obs_allDOC <- read.csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/field
 obs_allDOC_9m <- obs_allDOC %>% 
   filter(Depth == 9) %>% 
   na.omit()
+obs_allDOC_9m_cal <- obs_allDOC_9m %>% 
+  filter(DateTime < "2019-01-01")
+obs_allDOC_9m_val <- obs_allDOC_9m %>% 
+  filter(DateTime >= "2019-01-01")
+
 obs_allDOC_9m_summer <- obs_allDOC_9m %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+obs_allDOC_9m_summer_cal <- obs_allDOC_9m_cal %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+obs_allDOC_9m_summer_val <- obs_allDOC_9m_val %>% 
   mutate(Month = format(DateTime,"%m-%d")) %>% 
   filter(Month >= "07-15" & Month <= "10-01")
 
@@ -237,14 +452,26 @@ obs_allDOC_9m_summer <- obs_allDOC_9m %>%
 # SUMMER ONLY
 comb_9m_allDOC_summer <- left_join(obs_allDOC_9m_summer,mod_allDOC_9m_summer,by="DateTime") %>% 
   select(-c("Month.x","Month.y"))
-
 summer_9m_gof$DOC <- gof(comb_9m_allDOC_summer$allDOC_mod,comb_9m_allDOC_summer$allDOC_obs)
+
+comb_9m_allDOC_summer_cal <- left_join(obs_allDOC_9m_summer_cal,mod_allDOC_9m_summer_cal,by="DateTime") %>% 
+  select(-c("Month.x","Month.y"))
+summer_9m_gof_cal$DOC <- gof(comb_9m_allDOC_summer_cal$allDOC_mod,comb_9m_allDOC_summer_cal$allDOC_obs)
+
+comb_9m_allDOC_summer_val <- left_join(obs_allDOC_9m_summer_val,mod_allDOC_9m_summer_val,by="DateTime") %>% 
+  select(-c("Month.x","Month.y"))
+summer_9m_gof_val$DOC <- gof(comb_9m_allDOC_summer_val$allDOC_mod,comb_9m_allDOC_summer_val$allDOC_obs)
 
 # Select dates where we have observations and calculate ALL GOF parameters (can cull later!)
 # FULL YEAR
 comb_9m_allDOC <- left_join(obs_allDOC_9m,mod_allDOC_9m,by="DateTime")
-
 all_9m_gof$DOC <- gof(comb_9m_allDOC$allDOC_mod,comb_9m_allDOC$allDOC_obs)
+
+comb_9m_allDOC_cal <- left_join(obs_allDOC_9m_cal,mod_allDOC_9m_cal,by="DateTime")
+all_9m_gof_cal$DOC <- gof(comb_9m_allDOC_cal$allDOC_mod,comb_9m_allDOC_cal$allDOC_obs)
+
+comb_9m_allDOC_val <- left_join(obs_allDOC_9m_val,mod_allDOC_9m_val,by="DateTime")
+all_9m_gof_val$DOC <- gof(comb_9m_allDOC_val$allDOC_mod,comb_9m_allDOC_val$allDOC_obs)
 
 ### 9m TOTALS ###
 # Calculations following MakeFigure_ModeledvsObserved
@@ -281,14 +508,25 @@ mod_totals_9m<-as.data.frame(cbind(diatom_9m[1:5],cyano_9m[,3:5],green_9m[,3:5],
 colnames(mod_totals_9m) = c("DateTime", "Depth", "diatomN", "diatomP", "diatomC",
                       "cyanoN", "cyanoP", "cyanoC", "greenN", "greenP", "greenC",
                       "TN", "TP", "TOC") 
+
 mod_totals2_9m <- mod_totals_9m %>% 
   mutate(TN_mod = TN + diatomN + cyanoN + greenN,
          TP_mod = TP + diatomP + cyanoP + greenP,
          TOC_mod = TOC + diatomC + cyanoC + greenC) %>% 
   select(DateTime, TN_mod:TOC_mod) %>% 
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST")))
+mod_totals2_9m_cal <- mod_totals2_9m %>% 
+  filter(DateTime < "2019-01-01")
+mod_totals2_9m_val <- mod_totals2_9m %>% 
+  filter(DateTime >= "2019-01-01")
 
 mod_totals2_9m_summer <- mod_totals2_9m %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+mod_totals2_9m_summer_cal <- mod_totals2_9m_cal %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+mod_totals2_9m_summer_val <- mod_totals2_9m_val %>% 
   mutate(Month = format(DateTime,"%m-%d")) %>% 
   filter(Month >= "07-15" & Month <= "10-01")
 
@@ -296,34 +534,57 @@ mod_totals2_9m_summer <- mod_totals2_9m %>%
 obs_Totals <- read.csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/totalNP.csv',header=TRUE) %>% 
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz='EST'))) %>% 
   rename(TN_obs = TOT_tn, TP_obs = TOT_tp)
-### NOTE: There is no data for TOT_tn associated with this datasheet? ###
 obs_Totals_9m <- obs_Totals %>% 
   filter(Depth == 9)
+obs_Totals_9m_cal <- obs_Totals_9m %>% 
+  filter(DateTime < "2019-01-01")
+obs_Totals_9m_val <- obs_Totals_9m %>% 
+  filter(DateTime >= "2019-01-01")
+
 obs_Totals_9m_summer <- obs_Totals_9m %>% 
   mutate(Month = format(DateTime,"%m-%d")) %>% 
   filter(Month >= "07-15" & Month <= "10-01")
+obs_Totals_9m_summer_cal <- obs_Totals_9m_cal %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
+obs_Totals_9m_summer_val <- obs_Totals_9m_val %>% 
+  mutate(Month = format(DateTime,"%m-%d")) %>% 
+  filter(Month >= "07-15" & Month <= "10-01")
 
-# Stick w/ TP for now (add in TN when datasheet figure out)
 # Select dates where we have observations and calculate ALL GOF parameters (can cull later!)
 # SUMMER ONLY
 comb_9m_Totals_summer <- left_join(obs_Totals_9m_summer,mod_totals2_9m_summer,by="DateTime") %>% 
   select(-c("Month.x","Month.y"))
+summer_9m_gof$TP <- gof(comb_9m_Totals_summer$TP_mod,comb_9m_Totals_summer$TP_obs,na.rm=TRUE)
 
-summer_9m_gof$TP <- gof(comb_9m_Totals_summer$TP_mod,comb_9m_Totals_summer$TP_obs)
+comb_9m_Totals_summer_cal <- left_join(obs_Totals_9m_summer_cal,mod_totals2_9m_summer_cal,by="DateTime") %>% 
+  select(-c("Month.x","Month.y"))
+summer_9m_gof_cal$TP <- gof(comb_9m_Totals_summer_cal$TP_mod,comb_9m_Totals_summer_cal$TP_obs,na.rm=TRUE)
+
+comb_9m_Totals_summer_val <- left_join(obs_Totals_9m_summer_val,mod_totals2_9m_summer_val,by="DateTime") %>% 
+  select(-c("Month.x","Month.y"))
+summer_9m_gof_val$TP <- gof(comb_9m_Totals_summer_val$TP_mod,comb_9m_Totals_summer_val$TP_obs,na.rm=TRUE)
 
 # Select dates where we have observations and calculate ALL GOF parameters (can cull later!)
 # FULL YEAR
 comb_9m_Totals <- left_join(obs_Totals_9m,mod_totals2_9m,by="DateTime")
+all_9m_gof$TP <- gof(comb_9m_Totals$TP_mod,comb_9m_Totals$TP_obs,na.rm=TRUE)
 
-all_9m_gof$TP <- gof(comb_9m_Totals$TP_mod,comb_9m_Totals$TP_obs)
+comb_9m_Totals_cal <- left_join(obs_Totals_9m_cal,mod_totals2_9m_cal,by="DateTime")
+all_9m_gof_cal$TP <- gof(comb_9m_Totals_cal$TP_mod,comb_9m_Totals_cal$TP_obs,na.rm=TRUE)
 
+comb_9m_Totals_val <- left_join(obs_Totals_9m_val,mod_totals2_9m_val,by="DateTime")
+all_9m_gof_val$TP <- gof(comb_9m_Totals_val$TP_mod,comb_9m_Totals_val$TP_obs,na.rm=TRUE)
 
-# Add TN when datasheet is sorted out?
-summer_9m_gof$TN <- gof(comb_9m_Totals_summer$TN_mod,comb_9m_Totals_summer$TN_obs)
+# Add TN
+summer_9m_gof$TN <- gof(comb_9m_Totals_summer$TN_mod,comb_9m_Totals_summer$TN_obs,na.rm=TRUE)
+summer_9m_gof_cal$TN <- gof(comb_9m_Totals_summer_cal$TN_mod,comb_9m_Totals_summer_cal$TN_obs,na.rm=TRUE)
+summer_9m_gof_val$TN <- gof(comb_9m_Totals_summer_val$TN_mod,comb_9m_Totals_summer_val$TN_obs,na.rm=TRUE)
 
-all_9m_gof$TN <- gof(comb_9m_Totals$TN_mod,comb_9m_Totals$TN_obs)
+all_9m_gof$TN <- gof(comb_9m_Totals$TN_mod,comb_9m_Totals$TN_obs,na.rm=TRUE)
+all_9m_gof_cal$TN <- gof(comb_9m_Totals_cal$TN_mod,comb_9m_Totals_cal$TN_obs,na.rm=TRUE)
+all_9m_gof_val$TN <- gof(comb_9m_Totals_val$TN_mod,comb_9m_Totals_val$TN_obs,na.rm=TRUE)
 
-########################### COMPLETED: 9m_Summer and 9m_FullYear for 2013-2019 ################################
+####################### COMPLETED: 9m_Summer and 9m_FullYear for full period, calibration period, and validation period ####################
 
-# UP NEXT: Adapt code for calibration period (2013-2018) and validation period (2019) for both Summer and Full 
-# Year
+### NEXT UP: Format tables for 9m summer and 9m full year (following Ward et al. 2020 for now) ###
