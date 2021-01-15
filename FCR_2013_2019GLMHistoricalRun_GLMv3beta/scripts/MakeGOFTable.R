@@ -41,33 +41,33 @@ baseline <- file.path(sim_folder, 'FCR_2013_2019GLMHistoricalRun_GLMv3beta/outpu
 # Using all GOF parameters for now - will cull eventually
 # Summer, 9m, full period (2013-2019)
 summer_9m_gof <- setNames(data.frame(matrix(ncol=9,nrow=20)),c("Parameter","Temp","Oxy","NIT_amm","NIT_nit","SRP","DOC","TN","TP"))
-summer_9m_gof$Parameter <- c("ME","MAE","MSE","RMSE","NRMSE%","PBIAS%","RSR","rSD","NSE","mNSE","rNSE","d","md","rd","cp","r",
-                             "R2","bR2","KGE","VE")
+summer_9m_gof$Parameter <- c("ME_all","MAE_all","MSE_all","RMSE_all","NRMSE%_all","PBIAS%_all","RSR_all","rSD_all","NSE_all","mNSE_all","rNSE_all","d_all","md_all","rd_all","cp_all","r_all",
+                             "R2_all","bR2_all","KGE_all","VE_all")
 
 # Full year, 9m, full period (2013-2019)
 all_9m_gof <- setNames(data.frame(matrix(ncol=9,nrow=20)),c("Parameter","Temp","Oxy","NIT_amm","NIT_nit","SRP","DOC","TN","TP"))
-all_9m_gof$Parameter <- c("ME","MAE","MSE","RMSE","NRMSE%","PBIAS%","RSR","rSD","NSE","mNSE","rNSE","d","md","rd","cp","r",
-                             "R2","bR2","KGE","VE")
+all_9m_gof$Parameter <- c("ME_all","MAE_all","MSE_all","RMSE_all","NRMSE%_all","PBIAS%_all","RSR_all","rSD_all","NSE_all","mNSE_all","rNSE_all","d_all","md_all","rd_all","cp_all","r_all",
+             "R2_all","bR2_all","KGE_all","VE_all")
 
 # Summer, 9m, calibration period (2013-2018)
 summer_9m_gof_cal <- setNames(data.frame(matrix(ncol=9,nrow=20)),c("Parameter","Temp","Oxy","NIT_amm","NIT_nit","SRP","DOC","TN","TP"))
-summer_9m_gof_cal$Parameter <- c("ME","MAE","MSE","RMSE","NRMSE%","PBIAS%","RSR","rSD","NSE","mNSE","rNSE","d","md","rd","cp","r",
-                       "R2","bR2","KGE","VE")
+summer_9m_gof_cal$Parameter <- c("ME_cal","MAE_cal","MSE_cal","RMSE_cal","NRMSE%_cal","PBIAS%_cal","RSR_cal","rSD_cal","NSE_cal","mNSE_cal","rNSE_cal","d_cal","md_cal","rd_cal","cp_cal","r_cal",
+                                 "R2_cal","bR2_cal","KGE_cal","VE_cal")
 
 # Full year, 9m, calibration period (2013-2018)
 all_9m_gof_cal <- setNames(data.frame(matrix(ncol=9,nrow=20)),c("Parameter","Temp","Oxy","NIT_amm","NIT_nit","SRP","DOC","TN","TP"))
-all_9m_gof_cal$Parameter <- c("ME","MAE","MSE","RMSE","NRMSE%","PBIAS%","RSR","rSD","NSE","mNSE","rNSE","d","md","rd","cp","r",
-                    "R2","bR2","KGE","VE")
+all_9m_gof_cal$Parameter <- c("ME_cal","MAE_cal","MSE_cal","RMSE_cal","NRMSE%_cal","PBIAS%_cal","RSR_cal","rSD_cal","NSE_cal","mNSE_cal","rNSE_cal","d_cal","md_cal","rd_cal","cp_cal","r_cal",
+                              "R2_cal","bR2_cal","KGE_cal","VE_cal")
 
 # Summer, 9m, validation period (2019)
 summer_9m_gof_val <- setNames(data.frame(matrix(ncol=9,nrow=20)),c("Parameter","Temp","Oxy","NIT_amm","NIT_nit","SRP","DOC","TN","TP"))
-summer_9m_gof_val$Parameter <- c("ME","MAE","MSE","RMSE","NRMSE%","PBIAS%","RSR","rSD","NSE","mNSE","rNSE","d","md","rd","cp","r",
-                       "R2","bR2","KGE","VE")
+summer_9m_gof_val$Parameter <- c("ME_val","MAE_val","MSE_val","RMSE_val","NRMSE%_val","PBIAS%_val","RSR_val","rSD_val","NSE_val","mNSE_val","rNSE_val","d_val","md_val","rd_val","cp_val","r_val",
+                                 "R2_val","bR2_val","KGE_val","VE_val")
 
 # Full year, 9m, validation period (2019)
 all_9m_gof_val <- setNames(data.frame(matrix(ncol=9,nrow=20)),c("Parameter","Temp","Oxy","NIT_amm","NIT_nit","SRP","DOC","TN","TP"))
-all_9m_gof_val$Parameter <- c("ME","MAE","MSE","RMSE","NRMSE%","PBIAS%","RSR","rSD","NSE","mNSE","rNSE","d","md","rd","cp","r",
-                    "R2","bR2","KGE","VE")
+all_9m_gof_val$Parameter <- c("ME_val","MAE_val","MSE_val","RMSE_val","NRMSE%_val","PBIAS%_val","RSR_val","rSD_val","NSE_val","mNSE_val","rNSE_val","d_val","md_val","rd_val","cp_val","r_val",
+                              "R2_val","bR2_val","KGE_val","VE_val")
 
 ### 9m Summer TEMP ###
 # 9m Model temp
@@ -588,3 +588,54 @@ all_9m_gof_val$TN <- gof(comb_9m_Totals_val$TN_mod,comb_9m_Totals_val$TN_obs,na.
 ####################### COMPLETED: 9m_Summer and 9m_FullYear for full period, calibration period, and validation period ####################
 
 ### NEXT UP: Format tables for 9m summer and 9m full year (following Ward et al. 2020 for now) ###
+# Select GOF variables of interest for each time period
+summer_n_all <- c("n_all",length(comb_9m_temp_summer$DateTime),length(comb_9m_oxy_summer$DateTime),length(comb_9m_NIT_amm_summer$DateTime),
+          length(comb_9m_NIT_nit_summer$DateTime),length(comb_9m_PHS_frp_summer$DateTime),length(comb_9m_allDOC_summer$DateTime),
+          length(comb_9m_Totals_summer$TN_obs[!is.na(comb_9m_Totals_summer$TN_obs)]),length(comb_9m_Totals_summer$TP_obs[!is.na(comb_9m_Totals_summer$TP_obs)]))
+
+summer_9m_gof_all_table <- summer_9m_gof %>% 
+  filter(Parameter == "R2_all" | Parameter == "RMSE_all" | Parameter == "PBIAS%_all" | Parameter == "NSE_all" | Parameter == "MAE_all")
+
+summer_n_cal <- c("n_cal",length(comb_9m_temp_summer_cal$DateTime),length(comb_9m_oxy_summer_cal$DateTime),length(comb_9m_NIT_amm_summer_cal$DateTime),
+                  length(comb_9m_NIT_nit_summer_cal$DateTime),length(comb_9m_PHS_frp_summer_cal$DateTime),length(comb_9m_allDOC_summer_cal$DateTime),
+                  length(comb_9m_Totals_summer_cal$TN_obs[!is.na(comb_9m_Totals_summer_cal$TN_obs)]),length(comb_9m_Totals_summer_cal$TP_obs[!is.na(comb_9m_Totals_summer_cal$TP_obs)]))
+
+summer_9m_gof_cal_table <- summer_9m_gof_cal %>% 
+  filter(Parameter == "R2_cal" | Parameter == "RMSE_cal" | Parameter == "PBIAS%_cal" | Parameter == "NSE_cal" | Parameter == "MAE_cal")
+
+summer_n_val <- c("n_val",length(comb_9m_temp_summer_val$DateTime),length(comb_9m_oxy_summer_val$DateTime),length(comb_9m_NIT_amm_summer_val$DateTime),
+                  length(comb_9m_NIT_nit_summer_val$DateTime),length(comb_9m_PHS_frp_summer_val$DateTime),length(comb_9m_allDOC_summer_val$DateTime),
+                  length(comb_9m_Totals_summer_val$TN_obs[!is.na(comb_9m_Totals_summer_val$TN_obs)]),length(comb_9m_Totals_summer_val$TP_obs[!is.na(comb_9m_Totals_summer_val$TP_obs)]))
+
+summer_9m_gof_val_table <- summer_9m_gof_val %>% 
+  filter(Parameter == "R2_val" | Parameter == "RMSE_val" | Parameter == "PBIAS%_val" | Parameter == "NSE_val" | Parameter == "MAE_val")
+
+summer_9m_gof_table <- rbind(summer_n_all,summer_9m_gof_all_table,summer_n_cal,summer_9m_gof_cal_table,summer_n_val,summer_9m_gof_val_table)
+
+# Select GOF variables for the full year
+full_n_all <- c("n_all",length(comb_9m_temp$DateTime),length(comb_9m_oxy$DateTime),length(comb_9m_NIT_amm$DateTime),
+                length(comb_9m_NIT_nit$DateTime),length(comb_9m_PHS_frp$DateTime),length(comb_9m_allDOC$DateTime),
+                length(comb_9m_Totals$TN_obs[!is.na(comb_9m_Totals$TN_obs)]),length(comb_9m_Totals$TP_obs[!is.na(comb_9m_Totals$TP_obs)]))
+
+full_9m_gof_all_table <- all_9m_gof %>% 
+  filter(Parameter == "R2_all" | Parameter == "RMSE_all" | Parameter == "PBIAS%_all" | Parameter == "NSE_all" | Parameter == "MAE_all")
+
+full_n_cal <- c("n_cal",length(comb_9m_temp_cal$DateTime),length(comb_9m_oxy_cal$DateTime),length(comb_9m_NIT_amm_cal$DateTime),
+                length(comb_9m_NIT_nit_cal$DateTime),length(comb_9m_PHS_frp_cal$DateTime),length(comb_9m_allDOC_cal$DateTime),
+                length(comb_9m_Totals_cal$TN_obs[!is.na(comb_9m_Totals_cal$TN_obs)]),length(comb_9m_Totals_cal$TP_obs[!is.na(comb_9m_Totals_cal$TP_obs)]))
+
+full_9m_gof_cal_table <- all_9m_gof_cal %>% 
+  filter(Parameter == "R2_cal" | Parameter == "RMSE_cal" | Parameter == "PBIAS%_cal" | Parameter == "NSE_cal" | Parameter == "MAE_cal")
+
+full_n_val <- c("n_val",length(comb_9m_temp_val$DateTime),length(comb_9m_oxy_val$DateTime),length(comb_9m_NIT_amm_val$DateTime),
+                length(comb_9m_NIT_nit_val$DateTime),length(comb_9m_PHS_frp_val$DateTime),length(comb_9m_allDOC_val$DateTime),
+                length(comb_9m_Totals_val$TN_obs[!is.na(comb_9m_Totals_val$TN_obs)]),length(comb_9m_Totals_val$TP_obs[!is.na(comb_9m_Totals_val$TP_obs)]))
+
+full_9m_gof_val_table <- all_9m_gof_val %>% 
+  filter(Parameter == "R2_val" | Parameter == "RMSE_val" | Parameter == "PBIAS%_val" | Parameter == "NSE_val" | Parameter == "MAE_val")
+
+full_9m_gof_table <- rbind(full_n_all,full_9m_gof_all_table,full_n_cal,full_9m_gof_cal_table,full_n_val,full_9m_gof_val_table)
+
+write_csv(summer_9m_gof_table,'FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/table_gof_9m_summer.csv')
+
+write_csv(full_9m_gof_table,'FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/table_gof_9m_fullyear.csv')
