@@ -7,7 +7,7 @@
    non_avg = .true.
 /
 &wq_setup
-   wq_lib = 'aed'
+   wq_lib = 'aed2'
    wq_nml_file = 'aed2/aed2_20200701_2DOCpools.nml'
    ode_method = 1
    split_factor = 1

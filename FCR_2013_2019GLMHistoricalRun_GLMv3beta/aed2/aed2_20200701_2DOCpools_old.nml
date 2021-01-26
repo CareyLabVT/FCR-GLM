@@ -1,8 +1,8 @@
 !-------------------------------------------------------------------------------
-! aed_nml
+! aed2_nml
 !-------------------------------------------------------------------------------
 !
-! List here the available aed modules to be included in the simulation.
+! List here the available aed2 modules to be included in the simulation.
 ! It is important they are listed in the correct order so dependecicies can be
 ! set during the model set-up phase.
 !
@@ -10,22 +10,22 @@
 !     aed.see.uwa.edu.au/research/models/AED
 !
 !-------------------------------------------------------------------------------
-&aed_models
-   models = 'aed_sedflux',
-            'aed_noncohesive',
-            'aed_oxygen',
-            'aed_carbon',
-            'aed_silica',
-            'aed_nitrogen',
-            'aed_phosphorus',
-            'aed_organic_matter',
-            'aed_phytoplankton',
-           ! 'aed_zooplankton', 
-            'aed_totals'
+&aed2_models
+   models = 'aed2_sedflux',
+            'aed2_noncohesive',
+            'aed2_oxygen',
+            'aed2_carbon',
+            'aed2_silica',
+            'aed2_nitrogen',
+            'aed2_phosphorus',
+            'aed2_organic_matter',
+            'aed2_phytoplankton',
+           ! 'aed2_zooplankton', 
+            'aed2_totals'
 /
 
 !###############################################################################
-! SDF: aed_sedflux
+! SDF: aed2_sedflux
 !  sediment flux model types :
 !       "Constant" = sedimentation fluxes are constant values.
 !       "Constant2d" = Sedimentation fluxes may be different for
@@ -37,10 +37,10 @@
 !                                different benthic cells at different times
 !                                        - computed by model
 !-------------------------------------------------------------------------------
-&aed_sedflux
+&aed2_sedflux
    sedflux_model = 'Constant2D'  ! Refer to ../Geo/Zones.PNG
 /
-&aed_sed_const2d
+&aed2_sed_const2d
    n_zones  = 2
    Fsed_oxy = -28.64793,-2.789371342! -28.64794613,-2.789371342!-22.66674654,-10.27800944!-25.30429134,-8.444594424! -23.50785035,-10.06198843!-22.08945619,-6.775167763!-38.72966437,-5.879006793! -32.84404595,-6.480610699!-38.72966437,-5.879006793! -20.93638231,-5.386861486!-22.61978213,-14.59600758! -25.04550,-14.82423!-19.82500445,-6.95657003!-21.54700501,-8.109540123!-34.1613205,-15.92258046
    Fsed_ch4 = 15,232.6331575!1,108.1066833!0.1,108.8471097!199.804146952339,80.5621335068372
@@ -49,7 +49,7 @@
    Fsed_frp = 0.010134545,0.204607841!0.013163241,0.234991099!0.010134545,0.204607841!0.027218106,0.182354716!0.010645046,0.12!!0.019196182,0.102896316!0.006457374,0.2!0.146530067!0.004186303,0.097797053!0.02,0.15
 /
 !###############################################################################
-! aed_sed_constant
+! aed2_sed_constant
 !  Fsed_oxy  = Sedimentation flux for oxygen
 !  Fsed_rsi  = Sedimentation flux for silica
 !  Fsed_amm  = Sedimentation flux for ammonia
@@ -65,7 +65,7 @@
 !  Fsed_ch4  = Sedimentation flux for methane
 !  Fsed_feii = Sedimentation flux for iron
 !-------------------------------------------------------------------------------
-!&aed_sed_constant
+!&aed2_sed_constant
 !   Fsed_oxy = -9 ! intermediate for Sunapee (-0.005) and Mendota (-20)
 !   Fsed_rsi = 10 !*****5 for Sunapee; 10 for Mendota
 !   Fsed_amm = 5 !*****0.01 for Sunapee, 30 for Mendota
@@ -82,13 +82,13 @@
 !   Fsed_feii = 0 !*****10 for Sunapee, 0 for Mendota
 !/
 !###############################################################################
-! TRC: aed_tracer
+! TRC: aed2_tracer
 !   num_tracers = number of tracers to model
 !   decay       = list of decay rates for the tracers
 !   settling    = list of settling rates for the tracers
 !   fsed        = list of sedimentation fluxes for the tracers
 !-------------------------------------------------------------------------------
-!&aed_tracer
+!&aed2_tracer
 !   !-- Optional retention time tracer
 !    retention_time = .true.
 !   !-- Select number of tracers and their decay/sedflux/light properties
@@ -98,13 +98,13 @@
 !/
 !
 !###############################################################################
-! NCS: aed_noncohesive
+! NCS: aed2_noncohesive
 !
 ! Refer to the below link for module settings & parameter details:
 ! http://aquatic.science.uwa.edu.au/research/models/AED/aed_tracer.html
 !
 !-------------------------------------------------------------------------------
-&aed_noncohesive
+&aed2_noncohesive
    !-- Select SS groups and their light attenuation
     num_ss       = 0! turn this to 1 if you have phs_frp_ads on
     ss_initial   = 1,1
@@ -128,7 +128,7 @@
 /
 
 !###############################################################################
-! OXY: aed_oxygen - AED oxygen model
+! OXY: aed2_oxygen - AED oxygen model
 !-------------------------------------------------------------------------------
 ! oxy_initial   [float, unit = mmol/m^3]
 !                 initial O2 concentration (can be overwritten by GLM or TFV IC)
@@ -149,7 +149,7 @@
 ! DIAGNOSTICS:
 !
 !-------------------------------------------------------------------------------
-&aed_oxygen
+&aed2_oxygen
    oxy_initial = 225.0 !overwritten by GLM nml
 !  Fsed_oxy = 4.1! -24.21938847!-23.23110365!-20.75092427!-19.20335459!-16.92136875 !-9.52843 !-21 intermediate for Mendota and Sunapee
    Ksed_oxy = 8.726660435!3.028509309!12.16352701!10.27841885!10.33588638!12.06838551!10.33588638!5.592386891!10.9448867!12.03736263!1.31011614!3.864258583!5.861766454!13.05820905!1.972509566!8.385887191!10.29694024!9.882739714!9.735279645!8.573749872 !4.98461 !6.8 is same for Mendota and FCR
@@ -158,7 +158,7 @@
 /
 
 !###############################################################################
-! CAR: aed_carbon - AED carbon model
+! CAR: aed2_carbon - AED carbon model
 !-------------------------------------------------------------------------------
 ! dic_initial   [float, unit = mmol/m^3]
 !                 initial DIC concentration (can be overwritten by GLM or TFV IC)
@@ -201,7 +201,7 @@
 ! DIAGNOSTICS:
 !        -
 !-------------------------------------------------------------------------------
-&aed_carbon
+&aed2_carbon
    !-- DIC and pH --
    dic_initial = 91 !1600 for Mendota; Bobbie found TIC long-term average to be 4 mg/L or 91 mmol/3
    Fsed_dic = 0.001!10.84803103!3.890111!4 !7 !10 Sunapee, 100 Mendota, 4 manual; Ari 2.4; range = 0.34-3.8 Ari thesis
@@ -215,7 +215,6 @@
    ionic = 0.1 ! 0.1 for Sunapee, 0.1 for Mendota
    co2_piston_model = 1
    !-- CH4 --
-   simCH4ebb = .false.
    ch4_initial = 5! 1 !based on similar values for previous May weather in FCR; formerly 27.6
    Rch4ox = 0.1!2.979654686!0.837552434!0.0001!1.274784175!0.0001 !Julia 0.1 !!!! 0.01 in manual, Ari 0.048, range 0.01-0.21
    Kch4ox =  0.2!2.317212883!0.5 !0.74849557!0.5 !! 0.5 in manual [not in thesis]
@@ -230,7 +229,7 @@
 /
 
 !###############################################################################
-! SIL: aed_silica
+! SIL: aed2_silica
 !  rsi_initial              = Initial silica value
 !  Fsed_rsi                 = Sediment flux for silica
 !  Ksed_rsi                 = Release rate for silica
@@ -238,7 +237,7 @@
 !  silica_reactant_variable = link for silica reactant variable
 !  Fsed_rsi_variable        = silica flux variable link
 !-------------------------------------------------------------------------------
-&aed_silica
+&aed2_silica
    rsi_initial = 208 !!!! 12.5 from Jon's observed data in April 
    Fsed_rsi = 1.001875773!4!13.4512740071065!25 !Paul4 !!!! Kinneret1.8
    Ksed_rsi = 1.002457037!53.02575638!50 !Paul150 !!!! 50.0
@@ -248,7 +247,7 @@
 /
 
 !###############################################################################
-! NIT: aed_nitrogen - AED nitrogen model
+! NIT: aed2_nitrogen - AED nitrogen model
 !-------------------------------------------------------------------------------
 ! amm_initial   [float, unit = mmol/m^3]
 !                 initial NH4 concentration (can be overwritten by GLM or TFV IC)
@@ -292,7 +291,7 @@
 !        NIT_denit
 !
 !-------------------------------------------------------------------------------
-&aed_nitrogen
+&aed2_nitrogen
   !-- Initial values
    amm_initial = 2.6 !12.5 ! observational data from FCR
    nit_initial = 0.1 !27.6 ! observational data from FCR
@@ -344,7 +343,7 @@
 /
 
 !###############################################################################
-! PHO: aed_phosphorus - AED phosphorus model
+! PHO: aed2_phosphorus - AED phosphorus model
 !-------------------------------------------------------------------------------
 ! frp_initial   [float, unit = mmol/m^3]
 !                 initial PO4 concentration (can be overwritten by GLM or TFV IC)
@@ -384,7 +383,7 @@
 !        -
 !
 !-------------------------------------------------------------------------------
-&aed_phosphorus
+&aed2_phosphorus
    frp_initial = 0.05 !Kinneret&manual 0.29 from observational data
   ! Fsed_frp = 0.07!0.21243218!0.118264303!0.082020643!0.001 !!!!  manual 0.08 Paul 0.40
    Ksed_frp = 6.907107116!6.658704111!6.907107116!24.92392973!24.44440037!35.94895616!10 !!!! Kinneret 50.0 manual 80
@@ -408,7 +407,7 @@
 /
 
 !###############################################################################
-! OGM: aed_organic_matter - AED organic matter model
+! OGM: aed2_organic_matter - AED organic matter model
 !-------------------------------------------------------------------------------
 ! pom_initial     [float, unit = mmol/m^3]
 !                   initial PON conc (can be overwritten by GLM or TFV IC)
@@ -457,7 +456,7 @@
 !        -
 !
 !-------------------------------------------------------------------------------
-&aed_organic_matter
+&aed2_organic_matter
    !-- Initial concentrations for OM variables (mmol/m3)
      poc_initial  =  15!78.5 !all of these values are from Kinneret
      doc_initial  =  15!30 !edited
@@ -546,11 +545,11 @@
      !Fsed_don_variable = 'SDF_Fsed_don'
      !Fsed_dop_variable = 'SDF_Fsed_dop'
      !-- Other options
-      extra_diag = .true. !.true.
+      extra_diag = .false. !.true.
 /
 
 !###############################################################################
-! PHY: aed_phytoplankton - AED phytoplankton model
+! PHY: aed2_phytoplankton - AED phytoplankton model
 !-------------------------------------------------------------------------------
 ! num_phytos      [integer]
 !                   number of phytoplankton groups within this module to include
@@ -583,7 +582,7 @@
 !        PHY_gpp         (total module gross primary productivity)
 !
 !-------------------------------------------------------------------------------
-&aed_phytoplankton
+&aed2_phytoplankton
    num_phytos = 3!cyano,green,diatom!4
    the_phytos = 1,2,3!,4
    settling = 1,1,1!1,1,1,1
@@ -641,7 +640,7 @@
 !       -
 !
 !-------------------------------------------------------------------------------
-!&aed_zooplankton
+!&aed2_zooplankton
 !   num_zoops = 3 !!!! 1
 !   the_zoops = 1,2,3 !!!! 1
 !   dn_target_variable='OGM_don'  ! dissolved nitrogen target variable
@@ -654,7 +653,7 @@
 !/
 !
 !###############################################################################
-! TOT: aed_totals
+! TOT: aed2_totals
 !  TN_vars      = list of variable contributing to total nitrogen
 !  TN_varscale  = scaling of TN variables contribution
 !  TP_vars      = list of variable contributing to total phosphorus
@@ -664,7 +663,7 @@
 !  TSS_vars     = list of variable contributing to total suspended solids
 !  TSS_varscale = scaling of TSS variables contribution
 !-------------------------------------------------------------------------------
-&aed_totals
+&aed2_totals
    !outputLight  = .true.
    TN_vars =  'NIT_nit',
               'NIT_amm',
