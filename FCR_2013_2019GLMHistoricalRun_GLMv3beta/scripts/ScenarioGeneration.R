@@ -173,6 +173,7 @@ SSS_inflowALL <- SSS_inflowALL[(!duplicated(SSS_inflowALL$time)),] #remove repea
 
 #et voila! the final inflow file for the SSS for 2 pools of DOC
 write.csv(SSS_inflowALL, "inputs/FCR_SSS_inflow_2013_2019_20200829_OXIC_allfractions_2DOCpools.csv", row.names = FALSE)
+#this is the file that needs to be substituted into the glm.nml file to make it run for the oxic scenario!
 
 #run the model with the oxic SSS driver file, then
 oxic_file <- file.path(sim_folder, 'output/output_oxic.nc')
