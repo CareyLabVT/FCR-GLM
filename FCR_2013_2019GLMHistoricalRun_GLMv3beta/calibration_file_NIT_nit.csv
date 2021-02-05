@@ -1,3 +1,4 @@
 par,lb,ub,x0
-Fsed_nit,-1,-0.001,-0.1
-Ksed_nit,0.1,210,50
+Rdenit,0.1,10,5
+Kdenit,2,30,15
+theta_denit,1.06,1.12,1.08
