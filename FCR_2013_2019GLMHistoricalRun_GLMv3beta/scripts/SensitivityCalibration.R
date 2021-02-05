@@ -538,7 +538,7 @@ run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,250,25), par
 # 5b) nitrate
 file.copy('glm4.nml', 'glm3.nml', overwrite = TRUE)
 #file.copy('aed2/aed4.nml', 'aed2/aed2.nml', overwrite = TRUE)
-file.copy('aed2/aed4_20200701_2DOCpools.nml', 'aed2/aed2_20200701_2DOCpools.nml', overwrite = TRUE)
+file.copy('aed2/aed4_20210204_2DOCpools.nml', 'aed2/aed2_20210204_2DOCpools.nml', overwrite = TRUE)
 var = 'NIT_nit'
 calib <- read.csv(paste0('calibration_file_',var,'.csv'), stringsAsFactors = F)
 cal_pars = calib
@@ -547,14 +547,14 @@ pars <- cal_pars$par
 ub <- cal_pars$ub
 lb <- cal_pars$lb
 #Create initial files
-init.val <- (c(-0.1, 50) - lb) *10 /(ub-lb) # EDIT THESE
+init.val <- (c(5, 15,1.08) - lb) *10 /(ub-lb) # EDIT THESE
 obs <- read_field_obs('field_data/field_chem_hypo.csv', var)
 method = 'cmaes'
 calib.metric = 'RMSE'
 os = "Compiled"
 target_fit = -Inf#2.50 * 1000/32
 target_iter = 250#1000*length(init.val)^2
-nml_file = 'aed2/aed2_20200701_2DOCpools.nml'
+nml_file = 'aed2/aed2_20210204_2DOCpools.nml'
 run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,50,5), pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
 
