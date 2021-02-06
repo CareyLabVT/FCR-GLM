@@ -493,7 +493,7 @@
      don_miner_product_variable = 'NIT_amm'
      dop_miner_product_variable = 'PHS_frp'
      dom_miner_nit_reactant_var = 'NIT_nit'
-     f_an = 1.
+     f_an = 0.206388511!1.
      K_nit               = 10.0
    ! Kin_denitrat        = 20.0
    ! Kin_denitrit        = 0.297
