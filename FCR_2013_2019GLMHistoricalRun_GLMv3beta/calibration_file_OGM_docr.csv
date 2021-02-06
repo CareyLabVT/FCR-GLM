@@ -1,3 +1,4 @@
 par,lb,ub,x0
+f_an,0,1,0.5
 Rdom_minerl,0.0001,0.1,0.01
 Rdomr_minerl,0.0001,0.1,0.001
