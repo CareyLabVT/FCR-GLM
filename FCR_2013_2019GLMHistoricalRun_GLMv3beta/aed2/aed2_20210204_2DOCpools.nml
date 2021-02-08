@@ -263,9 +263,9 @@
 ! Fsed_nit      [float, unit = mmol/m^2/day]
 !                 sediment NH4 flux
 ! Knitrif        [float, unit = mmol/m^3 ]
-!                 half-saturation oxygen concentration for CH4 oxidation
+!                 half-saturation oxygen concentration for NH4 oxidation
 ! Kdenit        [float, unit = mmol/m^3 ]
-!                 half-saturation oxygen concentration for CH4 oxidation
+!                 half-saturation oxygen concentration for NH4 oxidation
 ! Ksed_amm      [float, unit = mmol/m^3]
 !                 half-saturation oxygen concentration controlling NH4 flux
 ! Ksed_nit      [float, unit = mmol/m^3]
