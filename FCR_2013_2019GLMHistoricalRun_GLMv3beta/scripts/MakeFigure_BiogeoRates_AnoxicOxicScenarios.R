@@ -5,6 +5,7 @@ library(zoo)
 library(tidyverse)
 library(lubridate)
 library(ncdf4)
+library(patchwork)
 
 setwd("./FCR_2013_2019GLMHistoricalRun_GLMv3beta")
 setwd("../") #if pulling from github, sets it to proper wd, which should be "/FCR_2013_2019GLMHistoricalRun_GLMv3beta"
@@ -21,109 +22,224 @@ anoxic <- file.path(sim_folder, 'output/output_anoxic.nc')
 #oxic scenario, SSS on in summer May 15-Nov 15 at full level
 oxic <- file.path(sim_folder, 'output/output_oxic.nc')
 
+sim_vars(anoxic) #get list of all output variables
+
 #####make the anoxic vs oxic dataset####
 #pull out deep-water rates from each output file
+#nitrogen fractions first
 A_anammox <- get_var(anoxic,'NIT_anammox',z_out=9,reference = 'surface') 
 O_anammox <- get_var(oxic,'NIT_anammox',z_out=9,reference = 'surface') 
-
-plot(A_anammox$DateTime, A_anammox$NIT_anammox_9)
-plot(O_anammox$DateTime, O_anammox$NIT_anammox_9)
 
 A_denit<- get_var(anoxic,'NIT_denit',z_out=9,reference = 'surface') 
 O_denit <- get_var(oxic,'NIT_denit',z_out=9,reference = 'surface') 
 
-plot(A_denit$DateTime, A_denit$NIT_denit_9)
-plot(O_denit$DateTime, O_denit$NIT_denit_9)
-
 A_dnra<- get_var(anoxic,'NIT_dnra',z_out=9,reference = 'surface') 
 O_dnra <- get_var(oxic,'NIT_dnra',z_out=9,reference = 'surface') 
-
-plot(A_dnra$DateTime, A_dnra$NIT_dnra_9)
-plot(O_dnra$DateTime, O_dnra$NIT_dnra_9)
 
 A_nitrif<- get_var(anoxic,'NIT_nitrif',z_out=9,reference = 'surface') 
 O_nitrif <- get_var(oxic,'NIT_nitrif',z_out=9,reference = 'surface') 
 
-plot(A_nitrif$DateTime, A_nitrif$NIT_nitrif_9)
-plot(O_nitrif$DateTime, O_nitrif$NIT_nitrif_9)
+A_sed_nit<- get_var(anoxic,'NIT_sed_nit',z_out=9,reference = 'surface') 
+O_sed_nit <- get_var(oxic,'NIT_sed_nit',z_out=9,reference = 'surface') 
 
-A_sed_cpom<- get_var(anoxic,'OGM_Psed_cpom',z_out=9,reference = 'surface') 
-O_sed_cpom <- get_var(oxic,'OGM_Psed_cpom',z_out=9,reference = 'surface') 
+A_sed_amm<- get_var(anoxic,'NIT_sed_amm',z_out=9,reference = 'surface') 
+O_sed_amm <- get_var(oxic,'NIT_sed_amm',z_out=9,reference = 'surface') 
 
-plot(A_sed_cpom$DateTime, A_sed_cpom$OGM_Psed_cpom_9)
-plot(O_sed_cpom$DateTime, O_sed_cpom$OGM_Psed_cpom_9)
+A_OGM_denit<- get_var(anoxic,'OGM_denit',z_out=9,reference = 'surface') 
+O_OGM_denit <- get_var(oxic,'OGM_denit',z_out=9,reference = 'surface') 
 
-A_sed_poc<- get_var(anoxic,'OGM_Psed_poc',z_out=9,reference = 'surface') 
-O_sed_poc <- get_var(oxic,'OGM_Psed_poc',z_out=9,reference = 'surface') 
+A_don_miner<- get_var(anoxic,'OGM_don_miner',z_out=9,reference = 'surface') 
+O_don_miner <- get_var(oxic,'OGM_don_miner',z_out=9,reference = 'surface') 
 
-plot(A_sed_poc$DateTime, A_sed_poc$OGM_Psed_poc_9)
-plot(O_sed_poc$DateTime, O_sed_poc$OGM_Psed_poc_9)
+A_donr_miner<- get_var(anoxic,'OGM_donr_miner',z_out=9,reference = 'surface') 
+O_donr_miner <- get_var(oxic,'OGM_donr_miner',z_out=9,reference = 'surface') 
 
-A_sed_phy<- get_var(anoxic,'PHY_Psed_phy',z_out=9,reference = 'surface') 
-O_sed_phy <- get_var(oxic,'PHY_Psed_phy',z_out=9,reference = 'surface') 
+A_phyto_nup_nh4<- get_var(anoxic,'PHY_NUP_nh4',z_out=9,reference = 'surface') 
+O_phyto_nup_nh4 <- get_var(oxic,'PHY_NUP_nh4',z_out=9,reference = 'surface') 
 
-plot(A_sed_phy$DateTime, A_sed_phy$PHY_Psed_phy_9)
-plot(O_sed_phy$DateTime, O_sed_phy$PHY_Psed_phy_9)
+A_phyto_nup_no3<- get_var(anoxic,'PHY_NUP_no3',z_out=9,reference = 'surface') 
+O_phyto_nup_no3 <- get_var(oxic,'PHY_NUP_no3',z_out=9,reference = 'surface') 
 
+#then carbon
+A_doc_miner<- get_var(anoxic,'OGM_doc_miner',z_out=9,reference = 'surface') 
+O_doc_miner <- get_var(oxic,'OGM_doc_miner',z_out=9,reference = 'surface') 
 
-#### open up the sediment flux rates ####
+A_docr_miner<- get_var(anoxic,'OGM_docr_miner',z_out=9,reference = 'surface') 
+O_docr_miner <- get_var(oxic,'OGM_docr_miner',z_out=9,reference = 'surface') 
 
-nc_a <- ncdf4::nc_open(anoxic)
+A_poc_hydrol<- get_var(anoxic,'OGM_poc_hydrol',z_out=9,reference = 'surface') 
+O_poc_hydrol <- get_var(oxic,'OGM_poc_hydrol',z_out=9,reference = 'surface') 
 
-A_sed_oxy<- ncdf4::ncvar_get(nc_a,'OXY_sed_oxy') 
-A_SDF_sed_oxy<- ncdf4::ncvar_get(nc_a,'SDF_Fsed_oxy') #first value = hypo, second value = epi???
+A_sed_doc<- get_var(anoxic,'OGM_sed_doc',z_out=9,reference = 'surface') 
+O_sed_doc <- get_var(oxic,'OGM_sed_doc',z_out=9,reference = 'surface') 
 
-A_sed_frp <- ncdf4::ncvar_get(nc_a,'PHS_sed_frp')
-A_SDF_sed_frp <- ncdf4::ncvar_get(nc_a,'SDF_Fsed_frp')
+#finally phosphorus
+A_dop_miner<- get_var(anoxic,'OGM_dop_miner',z_out=9,reference = 'surface') 
+O_dop_miner <- get_var(oxic,'OGM_dop_miner',z_out=9,reference = 'surface') 
 
-A_sed_amm<- ncdf4::ncvar_get(nc_a,'NIT_Fsed_amm') #first value = hypo, second value = epi
-A_SDF_sed_amm <- ncdf4::ncvar_get(nc_a,'SDF_Fsed_amm')
+A_dopr_miner<- get_var(anoxic,'OGM_dopr_miner',z_out=9,reference = 'surface') 
+O_dopr_miner <- get_var(oxic,'OGM_dopr_miner',z_out=9,reference = 'surface') 
 
-A_sed_nit<- ncdf4::ncvar_get(nc_a,'SDF_Fsed_nit') #first value = hypo, second value = epi
-A_SDF_sed_nit <- ncdf4::ncvar_get(nc_a,'SDF_Fsed_nit')
+A_sed_frp<- get_var(anoxic,'PHS_sed_frp',z_out=9,reference = 'surface') 
+O_sed_frp <- get_var(oxic,'PHS_sed_frp',z_out=9,reference = 'surface') 
 
-ncdf4::nc_close(nc_a)
-names(nc_a$var)#get list of variables in data
-names(nc_a$dim)
+A_phyto_pup<- get_var(anoxic,'PHY_PUP',z_out=9,reference = 'surface') 
+O_phyto_pup <- get_var(oxic,'PHY_PUP',z_out=9,reference = 'surface') 
 
-#lets make plots
-plot(A_sed_oxy[1,]) #there is some pattern here
-plot(A_sed_oxy[2,]) #nearly identical to the first row
-plot(A_sed_oxy[1,], A_sed_oxy[2,]) #why are these slightly different?
-plot(A_SDF_sed_oxy[1,], A_SDF_sed_oxy[2,]) #these 2 rows are mostly identical
-plot(A_SDF_sed_oxy[1,]) #why is this positive? what is the first row of data vs 2nd?
-points(A_SDF_sed_oxy[2,], col="red") #mostly identical values 
-#what is the difference between 'OXY_sed_oxy' and 'SDF_Fsed_oxy'?
-#why is flux positive? (shouldn't it be negative?)
+#these ones for fun and reality checks
+A_anaerobic<- get_var(anoxic,'OGM_anaerobic',z_out=9,reference = 'surface') 
+O_anaerobic <- get_var(oxic,'OGM_anaerobic',z_out=9,reference = 'surface') 
 
-
-plot(A_sed_frp[1,])#all set to 1
-plot(A_sed_frp[2,])#all set to 1
-plot(A_sed_frp[2,],A_sed_frp[1,]) #identical; all values =1
-plot(A_SDF_sed_frp[1,])
-points(A_SDF_sed_frp[2,], col="red")#what is difference between the 1st and 2nd row, and why does this vary every so slightly?
-#all togehter not too concerning though?
-
-plot(A_sed_amm[1,])#mostly values at 0 and then some intermittent large negative values at -15
-plot(A_sed_amm[2,])#positive very small values, but only at end of time series
-plot(A_sed_amm[2,],A_sed_amm[1,]) #values aren't identical
-plot(A_SDF_sed_amm[1,])
-points(A_SDF_sed_amm[2,], col="red")#what is difference between the 1st and 2nd row?
-#why is FRP flux positive but NH4 negative? #why is NH4 positive for one row of the output but not the other?
-
-plot(A_sed_nit[1,])#pattern looks mostly good?
-plot(A_sed_nit[2,])#mostly the same, minus 
-plot(A_sed_nit[2,],A_sed_nit[1,]) #values aren't identical
-plot(A_SDF_sed_nit[1,]) #this is identical to A_sed_nit- why????
-points(A_SDF_sed_nit[2,], col="red")#these are 
-#why is SDF_sed_nit and sed_nit identical but none of the other variables show this pattern?
+A_sed_oxy<- get_var(anoxic,'OXY_sed_oxy',z_out=9,reference = 'surface') 
+O_sed_oxy <- get_var(oxic,'OXY_sed_oxy',z_out=9,reference = 'surface') 
 
 
-#SDF_Fsed_nit
-#SDF_Fsed_ch4
+#bind the data!
+data<-as.data.frame(cbind(A_anammox,A_denit[,2],A_dnra[,2],A_nitrif[,2],A_sed_nit[,2],
+                          A_sed_amm[,2],A_OGM_denit[,2],A_don_miner[,2],A_donr_miner[,2],
+                          A_phyto_nup_nh4[,2],A_phyto_nup_no3[,2],
+                          A_doc_miner[,2],A_docr_miner[,2],A_poc_hydrol[,2],A_sed_doc[,2],
+                          A_dop_miner[,2],A_dopr_miner[,2],A_sed_frp[,2],A_phyto_pup[,2],
+                          A_anaerobic[,2],A_sed_oxy[,2],
+                          O_anammox[,2],O_denit[,2],O_dnra[,2],O_nitrif[,2],O_sed_nit[,2],
+                          O_sed_amm[,2],O_OGM_denit[,2],O_don_miner[,2],O_donr_miner[,2],
+                          O_phyto_nup_nh4[,2],O_phyto_nup_no3[,2],
+                          O_doc_miner[,2],O_docr_miner[,2],O_poc_hydrol[,2],O_sed_doc[,2],
+                          O_dop_miner[,2],O_dopr_miner[,2],O_sed_frp[,2],O_phyto_pup[,2],
+                          O_anaerobic[,2],O_sed_oxy[,2])) 
+colnames(data) = c("time", "A_anammox", "A_denit", "A_dnra", "A_nitrif","A_sed_nit",
+                   "A_sed_amm","A_OGM_denit", "A_don_miner", "A_donr_miner", 
+                   "A_phyto_nup_nh4", "A_phyto_nup_no3", 
+                   "A_doc_miner","A_docr_miner", "A_poc_hydrol", "A_sed_doc", 
+                   "A_dop_miner", "A_dopr_miner", "A_sed_frp","A_phyto_pup",
+                   "A_anaerobic","A_sed_oxy",
+                   "O_anammox", "O_denit", "O_dnra", "O_nitrif","O_sed_nit",
+                   "O_sed_amm","O_OGM_denit", "O_don_miner", "O_donr_miner", 
+                   "O_phyto_nup_nh4", "O_phyto_nup_no3", 
+                   "O_doc_miner","O_docr_miner", "O_poc_hydrol", "O_sed_doc", 
+                   "O_dop_miner", "O_dopr_miner", "O_sed_frp","O_phyto_pup",
+                   "O_anaerobic","O_sed_oxy") 
+
+######subsetting July 15-Oct 1 summer rates
+
+data1 <- data %>% 
+  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>% 
+  mutate(month_day = format(as.Date(time), "%m-%d")) %>%
+  mutate(year = year(time))%>%
+  dplyr::filter(month_day <= "10-01", month_day >= "07-15") %>%
+  select(-month_day)
+
+#write.csv(data1, "AllnutdataForQuinn.csv", row.names = F)
+
+######
+#ammonium first
+
+nh4data <- data1 %>% 
+  select(A_sed_amm, A_don_miner,A_donr_miner,A_nitrif,A_anammox,A_dnra,
+         O_sed_amm, O_don_miner,O_donr_miner,O_nitrif,O_anammox,O_dnra) %>% 
+  summarise_all(list(median)) %>% 
+  pivot_longer(cols = A_sed_amm:O_dnra, names_to = c("Scenario", "Rate"), names_sep ="_") %>% 
+  mutate(value = ifelse(Rate == "nitrif", -value, value),
+         value = ifelse(Rate == "anammox", -value, value)) %>% 
+  #pivot_wider(names_from = Scenario, values_from = value) %>% 
+  mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
+  mutate(Rate=recode(Rate, sed = "Sediment flux",don="DON mineralization", 
+                     donr="Recalc. DON mineralization",nitrif="Nitrification",
+                     anammox = "Anammox", dnra = "DNRA")) %>% 
+  mutate(nutrient = "NH4")
+
+###then nitrate
+no3data <- data1 %>% 
+  select(A_sed_nit, A_nitrif,A_denit,A_OGM_denit,A_dnra,
+         O_sed_nit, O_nitrif,O_denit,O_OGM_denit,O_dnra) %>% 
+  summarise_all(list(median)) %>%
+  mutate(A_Denitrification = A_denit + A_OGM_denit, O_Denitrification = O_denit + O_OGM_denit) %>% 
+  select(-A_denit,-A_OGM_denit,-O_denit,-O_OGM_denit) %>% 
+  pivot_longer(cols = A_sed_nit:O_Denitrification, names_to = c("Scenario", "Rate"), names_sep ="_") %>% 
+  mutate(value = ifelse(Rate == "Denitrification", -value, value),
+         value = ifelse(Rate == "dnra", -value, value)) %>% 
+  mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
+  mutate(Rate=recode(Rate, sed = "Sediment flux",nitrif="Nitrification",
+                     dnra = "DNRA")) %>% 
+  mutate(nutrient = "NO3")
+
+nitrogen <- rbind(nh4data, no3data)
+
+###now phosphorus
+po4data <- data1 %>% 
+  select(A_dop_miner, A_dopr_miner, A_sed_frp,
+         O_dop_miner, O_dopr_miner, O_sed_frp) %>% 
+  summarise_all(list(median)) %>%
+  pivot_longer(cols = A_dop_miner:O_sed_frp, names_to = c("Scenario", "Rate"), names_sep ="_") %>% 
+  #pivot_wider(names_from = Scenario, values_from = value) %>% 
+  mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
+  mutate(Rate=recode(Rate, sed = "Sediment flux", dop="DOP mineralization",
+                     dopr = "Recalc. DOP mineralization"))
+
+###finally carbon
+docdata <- data1 %>% 
+  select(A_doc_miner,A_docr_miner, A_poc_hydrol, A_sed_doc, 
+         O_doc_miner,O_docr_miner, O_poc_hydrol, O_sed_doc) %>% 
+  summarise_all(list(median)) %>%
+  pivot_longer(cols = A_doc_miner:O_sed_doc, names_to = c("Scenario", "Rate"), names_sep ="_") %>% 
+  mutate(value = ifelse(Rate == "doc", -value, value),
+         value = ifelse(Rate == "docr", -value, value)) %>% 
+  #pivot_wider(names_from = Scenario, values_from = value) %>% 
+  mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
+  mutate(Rate=recode(Rate, sed = "Sediment flux",doc="DOC mineralization",
+                     docr = "Recalc. DOC mineralization", poc= "POC hydrolysis"))
+
+
+
+cols_p <- c("Sediment flux" = "red", 
+          "DOP mineralization" = "darkgreen", 
+          "Recalc. DOP mineralization" = "green")
+
+cols_n <- c("Sediment flux" = "red", 
+            "DON mineralization" = "darkgreen", 
+            "Recalc. DON mineralization" = "green",
+            "Anammox" = "orange",
+            "Nitrification" = "blue",
+            "DNRA" = "brown",
+            "Denitrification" = "gray")
+
+cols_c <- c("Sediment flux" = "red", 
+            "DOC mineralization" = "darkgreen", 
+            "Recalc. DOC mineralization" = "green",
+            "POC hydrolysis" = "orange")
+
+p1 <- nitrogen %>% 
+  ggplot(aes(x = Scenario, y = value, fill = Rate)) +
+  geom_bar(position = "stack", stat = "identity") +
+  scale_fill_manual(values = cols_n) +
+  facet_wrap(facets = vars(nutrient),
+             labeller = as_labeller(c("NH4" = "NH[4]", "NO3" = "NO[3]"), default = label_parsed)) +
+  labs(x = "", y = expression(mmol~m^{-2}~day^{-1}), title = "Nitrogen") +
+  theme_bw()
+
+
+p2 <- po4data %>% 
+  ggplot(aes(x = Scenario, y = value, fill = Rate)) +
+  geom_bar(position = "stack", stat = "identity") +
+  scale_fill_manual(values = cols_p) +
+  labs(x = "", y = expression(mmol~m^{-2}~day^{-1}), title = "Phosphorus") +
+  theme_bw()
+
+p3 <- docdata %>% 
+  ggplot(aes(x = Scenario, y = value, fill = Rate)) +
+  geom_bar(position = "stack", stat = "identity") +
+  scale_fill_manual(values = cols_c) +
+  labs(x = "Scenario", y = expression(mmol~m^{-2}~day^{-1}), title = "Carbon") +
+  theme_bw()
+
+jpeg("./figures/Figure7_Draft_BiogeoRates.jpg", width = 6, height = 8, units = 'in', res = 800)
+draft <- p1 / p2 / p3
+draft
+dev.off()
+
 
 ###############
-#oxic one
+#playing with netcdf file
 nc_o <- ncdf4::nc_open(oxic)
 
 O_sed_oxy<- ncdf4::ncvar_get(nc_o,'OXY_sed_oxy') 
@@ -136,29 +252,6 @@ O_sed_amm<- ncdf4::ncvar_get(nc_o,'SDF_Fsed_amm') #first value = hypo, second va
 O_SDF_sed_amm <- ncdf4::ncvar_get(nc_o,'SDF_Fsed_amm')
 
 ncdf4::nc_close(nc_o)
-
-#lets make oxic plots
-plot(O_sed_oxy[1,]) #all zero
-plot(O_sed_oxy[2,]) #all zero
-plot(O_sed_oxy[1,], O_sed_oxy[2,]) 
-plot(O_SDF_sed_oxy[1,], O_SDF_sed_oxy[2,]) #these 2 rows are completely identical 
-plot(O_SDF_sed_oxy[1,]) #why is this positive? what is the first row of data vs 2nd?
-points(O_SDF_sed_oxy[2,], col="red") #mostly identical values 
-#what is the difference between 'OXY_sed_oxy' and 'SDF_Fsed_oxy'?
-#why is flux positive? (shouldn't it be negative?)
-
-
-plot(O_sed_frp[1,])#all set to 1
-plot(O_sed_frp[2,])#all set to 1
-plot(O_sed_frp[2,],O_sed_frp[1,]) #identical; all values =1
-plot(O_SDF_sed_frp[1,])
-points(O_SDF_sed_frp[2,], col="red")#what is difference between the 1st and 2nd row, and why does this vary every so slightly?
-#all together FRP is not too concerning though?
-
-plot(O_sed_amm[1,])#mostly values at 0 and then some intermittent large negative values at -15
-plot(O_sed_amm[2,])#positive very small values, but only at end of time series
-plot(O_sed_amm[2,],A_sed_amm[1,]) #values aren't identical
-plot(O_SDF_sed_amm[1,])
-points(O_SDF_sed_amm[2,], col="red")#what is difference between the 1st and 2nd row?
-#why is FRP flux positive but NH4 negative? #why is NH4 positive for one row of the output but not the other?
+names(nc_o$var)#get list of variables in data
+names(nc_o$dim)
 
