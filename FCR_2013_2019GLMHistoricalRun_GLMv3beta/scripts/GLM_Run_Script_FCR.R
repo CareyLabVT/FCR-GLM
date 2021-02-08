@@ -16,7 +16,7 @@ sim_folder <- getwd()
 
 #look at glm and aed nml files
 nml_file <- paste0(sim_folder,"/glm3.nml")
-aed_file <- paste0(sim_folder,"/aed2/aed2_20200701_2DOCpools.nml")
+aed_file <- paste0(sim_folder,"/aed2/aed2_20210204_2DOCpools.nml")
 aed_phytos_file <- paste0(sim_folder,"/aed2/aed2_phyto_pars_30June2020.nml")
 nml <- read_nml(nml_file) 
 aed <- read_nml(aed_file) #you may get a warning about an incomplete final line but it doesn't matter
