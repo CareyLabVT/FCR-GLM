@@ -585,8 +585,8 @@ run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,0.5,0.05), p
 
 
 # 7) dissolved organic carbon - recalcitrant fraction
-file.copy('glm4.nml', 'glm3.nml', overwrite = TRUE)
-file.copy('aed2/aed4_20200701_2DOCpools.nml', 'aed2/aed2_20200701_2DOCpools.nml', overwrite = TRUE)
+#file.copy('glm4.nml', 'glm3.nml', overwrite = TRUE)
+file.copy('aed2/aed4_20210204_2DOCpools.nml', 'aed2/aed2_20210204_2DOCpools.nml', overwrite = TRUE)
 var = 'OGM_docr'
 calib <- read.csv(paste0('calibration_file_',var,'.csv'), stringsAsFactors = F)
 cal_pars = calib
@@ -596,15 +596,15 @@ ub <- cal_pars$ub
 lb <- cal_pars$lb
 #Create initial files
 #init.val <- rep(5, nrow(cal_pars))
-init.val <- (c(0.01, 0.001) - lb) *10 /(ub-lb) # EDIT THESE
-obs <- read_field_obs('field_data/field_chem.csv', var)
+init.val <- (c(0.5,0.01, 0.001) - lb) *10 /(ub-lb) # EDIT THESE
+obs <- read_field_obs('field_data/field_chem_hypo.csv', var)
 #obs$PHS_frp <- obs$PHS_frp * 1000/31
 method = 'cmaes'
 calib.metric = 'RMSE'
 os = "Compiled"
 target_fit = -Inf#2.50 * 1000/32
 target_iter = 500#1000*length(init.val)^2
-nml_file = 'aed2/aed2_20200701_2DOCpools.nml'
+nml_file = 'aed2/aed2_20210204_2DOCpools.nml'
 run_calibvalid(var, cal_pars, var_unit = 'mmol/m3', var_seq = seq(0,500,50), pars, ub, lb, init.val, obs, method, 
                calib.metric, os, target_fit, target_iter, nml_file, flag = c())
 

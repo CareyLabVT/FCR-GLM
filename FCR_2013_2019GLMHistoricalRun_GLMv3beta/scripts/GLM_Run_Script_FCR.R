@@ -32,7 +32,6 @@ system2(paste0(sim_folder, "/", "glm"), stdout = TRUE, stderr = TRUE, env = past
 nc_file <- file.path(sim_folder, 'output/output.nc') #defines the output.nc file 
 
 
-
 #reality check of temp heat map
 plot_temp(nc_file, col_lim = c(0,30))
 
