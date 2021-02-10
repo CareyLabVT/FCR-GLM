@@ -20,7 +20,7 @@ vals<-c("Knitrif", "Kdenit", "Ksed_amm", "Ksed_nit", "Kanmx_nit","Kdnra_oxy",
         "Ksed_frp","Kpom_hydrol","Kdom_minerl","Ksed_dom")
 
 params<-as.data.frame(matrix(NA, nrow = length(vals), ncol = 4))
-colnames(params) <- c("Parameters","Value")
+colnames(params) <- c("K_Parameters","K_Value","Rates","Rate_Value")
 
 for(i in 1:length(vals)){
   params[i,1] <- vals[i]
@@ -30,14 +30,12 @@ for(i in 1:length(vals)){
 rates<-c("Rnitrif","Rdenit","Fsed_amm","Fsed_nit","Ranammox","Rdnra",
          "Fsed_frp","Rpom_hydrol","Rdom_minerl","Fsed_doc")
 
-for(i in 1:length(vals)){
+for(i in 1:length(rates)){
   params[i,3] <- rates[i]
-  params[i,4] <- get_nml_value(aed, paste0(vals[i]))[1]
+  params[i,4] <- get_nml_value(aed, paste0(rates[i]))[1]
 }
 
 
-Fsed_nit
-Fsed_amm
 
 write.csv(params, "./output/Kvalues_AED20210204.csv", row.names = F)
 
