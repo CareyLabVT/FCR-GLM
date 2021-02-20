@@ -480,8 +480,8 @@
      !Rdop_minerl  =   0.01 !manual is 0.001, Paul had 0.01! doesnt work
      theta_hydrol =   1.07
      theta_minerl =   1.07
-     Kpom_hydrol  =  31.25
-     Kdom_minerl  =  31.25
+     Kpom_hydrol  =  33.6659264
+     Kdom_minerl  =  22.36079058
      simDenitrification = 0
      dom_miner_oxy_reactant_var = 'OXY_oxy'
    ! dom_miner_no2_reactant_var = 'NIT_no2'
