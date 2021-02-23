@@ -138,12 +138,12 @@ nh4data <- data1 %>%
   select(A_sed_amm, A_don_miner,A_donr_miner,A_nitrif,A_anammox,A_dnra,
          O_sed_amm, O_don_miner,O_donr_miner,O_nitrif,O_anammox,O_dnra) %>% 
   summarise_all(list(median)) %>% 
-  pivot_longer(cols = A_sed_amm:O_dnra, names_to = c("Scenario", "Rate"), names_sep ="_") %>% 
-  mutate(value = ifelse(Rate == "nitrif", -value, value),
-         value = ifelse(Rate == "anammox", -value, value)) %>% 
+  pivot_longer(cols = A_sed_amm:O_dnra, names_to = c("Scenario", "Process"), names_sep ="_") %>% 
+  mutate(value = ifelse(Process == "nitrif", -value, value),
+         value = ifelse(Process == "anammox", -value, value)) %>% 
   #pivot_wider(names_from = Scenario, values_from = value) %>% 
   mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
-  mutate(Rate=recode(Rate, sed = "Sediment flux",don="DON mineralization", 
+  mutate(Process=recode(Process, sed = "Sediment flux",don="DON mineralization", 
                      donr="Recalc. DON mineralization",nitrif="Nitrification",
                      anammox = "Anammox", dnra = "DNRA")) %>% 
   mutate(nutrient = "NH4")
@@ -155,11 +155,11 @@ no3data <- data1 %>%
   summarise_all(list(median)) %>%
   mutate(A_Denitrification = A_denit + A_OGM_denit, O_Denitrification = O_denit + O_OGM_denit) %>% 
   select(-A_denit,-A_OGM_denit,-O_denit,-O_OGM_denit) %>% 
-  pivot_longer(cols = A_sed_nit:O_Denitrification, names_to = c("Scenario", "Rate"), names_sep ="_") %>% 
-  mutate(value = ifelse(Rate == "Denitrification", -value, value),
-         value = ifelse(Rate == "dnra", -value, value)) %>% 
+  pivot_longer(cols = A_sed_nit:O_Denitrification, names_to = c("Scenario", "Process"), names_sep ="_") %>% 
+  mutate(value = ifelse(Process == "Denitrification", -value, value),
+         value = ifelse(Process == "dnra", -value, value)) %>% 
   mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
-  mutate(Rate=recode(Rate, sed = "Sediment flux",nitrif="Nitrification",
+  mutate(Process=recode(Process, sed = "Sediment flux",nitrif="Nitrification",
                      dnra = "DNRA")) %>% 
   mutate(nutrient = "NO3")
 
@@ -170,10 +170,10 @@ po4data <- data1 %>%
   select(A_dop_miner, A_dopr_miner, A_sed_frp,
          O_dop_miner, O_dopr_miner, O_sed_frp) %>% 
   summarise_all(list(median)) %>%
-  pivot_longer(cols = A_dop_miner:O_sed_frp, names_to = c("Scenario", "Rate"), names_sep ="_") %>% 
+  pivot_longer(cols = A_dop_miner:O_sed_frp, names_to = c("Scenario", "Process"), names_sep ="_") %>% 
   #pivot_wider(names_from = Scenario, values_from = value) %>% 
   mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
-  mutate(Rate=recode(Rate, sed = "Sediment flux", dop="DOP mineralization",
+  mutate(Process=recode(Process, sed = "Sediment flux", dop="DOP mineralization",
                      dopr = "Recalc. DOP mineralization"))
 
 ###finally carbon
@@ -181,12 +181,12 @@ docdata <- data1 %>%
   select(A_doc_miner,A_docr_miner, A_poc_hydrol, A_sed_doc, 
          O_doc_miner,O_docr_miner, O_poc_hydrol, O_sed_doc) %>% 
   summarise_all(list(median)) %>%
-  pivot_longer(cols = A_doc_miner:O_sed_doc, names_to = c("Scenario", "Rate"), names_sep ="_") %>% 
-  mutate(value = ifelse(Rate == "doc", -value, value),
-         value = ifelse(Rate == "docr", -value, value)) %>% 
+  pivot_longer(cols = A_doc_miner:O_sed_doc, names_to = c("Scenario", "Process"), names_sep ="_") %>% 
+  mutate(value = ifelse(Process == "doc", -value, value),
+         value = ifelse(Process == "docr", -value, value)) %>% 
   #pivot_wider(names_from = Scenario, values_from = value) %>% 
   mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
-  mutate(Rate=recode(Rate, sed = "Sediment flux",doc="DOC mineralization",
+  mutate(Process=recode(Process, sed = "Sediment flux",doc="DOC mineralization",
                      docr = "Recalc. DOC mineralization", poc= "POC hydrolysis"))
 
 
@@ -200,8 +200,8 @@ cols_n <- c("Sediment flux" = "red",
             "Recalc. DON mineralization" = "green",
             "Anammox" = "orange",
             "Nitrification" = "blue",
-            "DNRA" = "brown",
-            "Denitrification" = "gray")
+            "DNRA" = "purple",
+            "Denitrification" = "pink")
 
 cols_c <- c("Sediment flux" = "red", 
             "DOC mineralization" = "darkgreen", 
@@ -209,33 +209,110 @@ cols_c <- c("Sediment flux" = "red",
             "POC hydrolysis" = "orange")
 
 p1 <- nitrogen %>% 
-  ggplot(aes(x = Scenario, y = value, fill = Rate)) +
+  ggplot(aes(x = Scenario, y = value, fill = Process)) +
   geom_bar(position = "stack", stat = "identity") +
-  scale_fill_manual(values = cols_n) +
+  scale_fill_manual(values = cols_n, name = "Process") +
   facet_wrap(facets = vars(nutrient),
              labeller = as_labeller(c("NH4" = "NH[4]", "NO3" = "NO[3]"), default = label_parsed)) +
-  labs(x = "", y = expression(mmol~m^{-2}~day^{-1}), title = "Nitrogen") +
+  labs(title = "Nitrogen", y = "", x = "") +
   theme_bw()
 
 
 p2 <- po4data %>% 
-  ggplot(aes(x = Scenario, y = value, fill = Rate)) +
+  ggplot(aes(x = Scenario, y = value, fill = Process)) +
   geom_bar(position = "stack", stat = "identity") +
-  scale_fill_manual(values = cols_p) +
+  scale_fill_manual(values = cols_p, name = "") +
   labs(x = "", y = expression(mmol~m^{-2}~day^{-1}), title = "Phosphorus") +
   theme_bw()
 
 p3 <- docdata %>% 
-  ggplot(aes(x = Scenario, y = value, fill = Rate)) +
+  ggplot(aes(x = Scenario, y = value, fill = Process)) +
   geom_bar(position = "stack", stat = "identity") +
-  scale_fill_manual(values = cols_c) +
-  labs(x = "Scenario", y = expression(mmol~m^{-2}~day^{-1}), title = "Carbon") +
+  scale_fill_manual(values = cols_c, name = "") +
+  labs(x = "Scenario", y = "", title = "Carbon") +
   theme_bw()
 
 jpeg("./figures/Figure7_Draft_BiogeoRates.jpg", width = 6, height = 8, units = 'in', res = 800)
 draft <- p1 / p2 / p3
 draft
 dev.off()
+
+
+###############Calculating Sediment burial rates
+#####carbon first
+A_POC <- get_var(anoxic, "OGM_Psed_poc",z_out=9.2,reference = 'surface')
+O_POC <- get_var(oxic, "OGM_Psed_poc",z_out=9.2,reference = 'surface')
+B_POC<- get_var(nc_file, "OGM_Psed_poc",z_out=9.2,reference = 'surface')
+
+plot(A_POC$DateTime, A_POC$OGM_Psed_poc_9, col="red", type="l")
+lines(O_POC$DateTime, O_POC$OGM_Psed_poc_9, col="blue")
+plot(B_POC$DateTime, B_POC$OGM_Psed_poc_9, col="green")
+
+data<-cbind(A_POC, O_POC)
+colnames(data)<-c("time", "Anoxic", "time2", "Oxic")
+
+# data1<-data %>%
+#   mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
+#   mutate(year=year(time),
+#          DOY = yday(time)) %>%
+#   dplyr::filter(DOY < 275, DOY > 195) %>% #July 15-Oct 1
+#   group_by(year) %>% 
+#   summarise(total_anoxic = sum(Anoxic), total_oxic=sum(Oxic))
+# t.test(data1$total_anoxic, data1$total_oxic, paired=T)
+
+data1 <- data %>% 
+  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>% 
+  mutate(year=year(time)) %>% 
+  group_by(year) %>% 
+  summarise(total_anoxic = sum(Anoxic), total_oxic=sum(Oxic))
+t.test(data1$total_anoxic, data1$total_oxic, paired=T)
+
+data2 <- data1 %>% drop_na() %>% 
+  summarise(mean_yearly_anoxic_C_burial = mean(total_anoxic), mean_yearly_oxic_C_burial = mean(total_oxic))
+#rates are in mmol/m2/d
+
+data2$mean_yearly_anoxic_C_burial*12*365/1000
+
+#######nitrogen second
+
+
+A_POC <- get_var(anoxic, "OGM_Psed_pon",z_out=9,reference = 'surface')
+O_POC <- get_var(oxic, "OGM_Psed_pon",z_out=9,reference = 'surface')
+B_POC<- get_var(nc_file, "OGM_Psed_pon",z_out=9,reference = 'surface')
+
+plot(A_POC$DateTime, A_POC$OGM_Psed_poc_9, col="red", type="l")
+lines(O_POC$DateTime, O_POC$OGM_Psed_poc_9, col="blue")
+plot(B_POC$DateTime, B_POC$OGM_Psed_poc_9, col="green")
+
+data<-cbind(A_POC, O_POC)
+colnames(data)<-c("time", "Anoxic", "time2", "Oxic")
+
+data1<-data %>%
+  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
+  mutate(year=year(time),
+         DOY = yday(time)) %>%
+  #dplyr::filter(DOY < 275, DOY > 195) %>% July 15-Oct 1
+  dplyr::filter(DOY < 289, DOY > 134) %>% 
+  group_by(year) %>% 
+  summarise(total_anoxic = sum(Anoxic), total_oxic=sum(Oxic))
+t.test(data1$total_anoxic, data1$total_oxic, paired=T)
+
+data1 <- data %>% 
+  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>% 
+  mutate(year=year(time)) %>% 
+  group_by(year) %>% 
+  summarise(total_anoxic = sum(Anoxic), total_oxic=sum(Oxic))
+t.test(data1$total_anoxic, data1$total_oxic, paired=T)
+
+
+
+
+
+PON <- get_var(anoxic, "OGM_Psed_pon",z_out=9,reference = 'surface')
+POP <- get_var(anoxic, "OGM_Psed_pop",z_out=9,reference = 'surface')
+
+
+
 
 
 ###############
