@@ -6,6 +6,7 @@ library(tidyverse)
 library(lubridate)
 library(ncdf4)
 library(patchwork)
+library(glmtools)
 
 setwd("./FCR_2013_2019GLMHistoricalRun_GLMv3beta")
 setwd("../") #if pulling from github, sets it to proper wd, which should be "/FCR_2013_2019GLMHistoricalRun_GLMv3beta"
@@ -191,22 +192,22 @@ docdata <- data1 %>%
 
 
 
-cols_p <- c("Sediment flux" = "red", 
-          "DOP mineralization" = "darkgreen", 
-          "Recalc. DOP mineralization" = "green")
+cols_p <- c("Sediment flux" = "#D55E00", 
+          "DOP mineralization" = "#44AA99", 
+          "Recalc. DOP mineralization" = "#117733")
 
-cols_n <- c("Sediment flux" = "red", 
-            "DON mineralization" = "darkgreen", 
-            "Recalc. DON mineralization" = "green",
-            "Anammox" = "orange",
-            "Nitrification" = "blue",
-            "DNRA" = "purple",
-            "Denitrification" = "pink")
+cols_n <- c("Sediment flux" = "#D55E00", 
+            "DON mineralization" = "#44AA99", 
+            "Recalc. DON mineralization" = "#117733",
+            "Anammox" = "#DDCC77",
+            "Nitrification" = "#332288",
+            "DNRA" = "#882255",
+            "Denitrification" = "#AA4499")
 
-cols_c <- c("Sediment flux" = "red", 
-            "DOC mineralization" = "darkgreen", 
-            "Recalc. DOC mineralization" = "green",
-            "POC hydrolysis" = "orange")
+cols_c <- c("Sediment flux" = "#D55E00", 
+            "DOC mineralization" = "#44AA99", 
+            "Recalc. DOC mineralization" = "#117733",
+            "POC hydrolysis" = "#DDCC77")
 
 p1 <- nitrogen %>% 
   ggplot(aes(x = Scenario, y = value, fill = Process)) +
@@ -215,7 +216,8 @@ p1 <- nitrogen %>%
   facet_wrap(facets = vars(nutrient),
              labeller = as_labeller(c("NH4" = "NH[4]", "NO3" = "NO[3]"), default = label_parsed)) +
   labs(title = "Nitrogen", y = "", x = "") +
-  theme_bw()
+  theme_bw()+
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 
 p2 <- po4data %>% 
@@ -223,14 +225,16 @@ p2 <- po4data %>%
   geom_bar(position = "stack", stat = "identity") +
   scale_fill_manual(values = cols_p, name = "") +
   labs(x = "", y = expression(mmol~m^{-2}~day^{-1}), title = "Phosphorus") +
-  theme_bw()
+  theme_bw()+
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 p3 <- docdata %>% 
   ggplot(aes(x = Scenario, y = value, fill = Process)) +
   geom_bar(position = "stack", stat = "identity") +
   scale_fill_manual(values = cols_c, name = "") +
   labs(x = "Scenario", y = "", title = "Carbon") +
-  theme_bw()
+  theme_bw()+
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 jpeg("./figures/Figure7_Draft_BiogeoRates.jpg", width = 6, height = 8, units = 'in', res = 800)
 draft <- p1 / p2 / p3
