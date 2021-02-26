@@ -1,3 +1,5 @@
+library(tidyverse)
+library(ggpubr)
 
 toc_boxplot <- mediandata%>%
   select(year, med_A_TOC, med_O_TOC)%>%
@@ -10,7 +12,7 @@ toc_boxplot <- mediandata%>%
   geom_jitter(width = 0.0001, size = 8, color = "black", pch = 21, fill = "grey50", alpha = 0.5)+
   geom_text(aes(label=year), size = 2)+
   scale_fill_manual(values = c("red","blue"))+
-  ylab(expression(paste("Hypolinetic TOC (mmol m" ^"-3",")")))+
+  ylab(expression(paste("Hypolimnetic TOC (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "a")+
   theme_classic()+
@@ -32,7 +34,7 @@ doc_boxplot <- mediandata%>%
   geom_jitter(width = 0.0001, size = 8, color = "black", pch = 21, fill = "grey50", alpha = 0.5)+
   geom_text(aes(label=year), size = 2)+
   scale_fill_manual(values = c("red","blue"))+
-  ylab(expression(paste("Hypolinetic DOC (mmol m" ^"-3",")")))+
+  ylab(expression(paste("Hypolimnetic DOC (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "d")+
   theme_classic()+
@@ -54,7 +56,7 @@ tn_boxplot <- mediandata%>%
   geom_jitter(width = 0.0001, size = 8, color = "black", pch = 21, fill = "grey50", alpha = 0.5)+
   geom_text(aes(label=year), size = 2)+
   scale_fill_manual(values = c("red","blue"))+
-  ylab(expression(paste("Hypolinetic TN (mmol m" ^"-3",")")))+
+  ylab(expression(paste("Hypolimnetic TN (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "b")+
   theme_classic()+
@@ -77,7 +79,7 @@ din_boxplot <- mediandata%>%
   geom_jitter(width = 0.0001, size = 8, color = "black", pch = 21, fill = "grey50", alpha = 0.5)+
   geom_text(aes(label=year), size = 2)+
   scale_fill_manual(values = c("red","blue"))+
-  ylab(expression(paste("Hypolinetic DIN (mmol m" ^"-3",")")))+
+  ylab(expression(paste("Hypolimnetic DIN (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "e")+
   theme_classic()+
@@ -100,7 +102,7 @@ nh4_boxplot <- mediandata%>%
   geom_jitter(width = 0.0001, size = 8, color = "black", pch = 21, fill = "grey50", alpha = 0.5)+
   geom_text(aes(label=year), size = 2)+
   scale_fill_manual(values = c("red","blue"))+
-  ylab(expression(paste("Hypolinetic NH" [" 4"],""^"+"," (mmol m" ^"-3",")")))+
+  ylab(expression(paste("Hypolimnetic NH" [" 4"],""^"+"," (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "f")+
   theme_classic()+
@@ -123,7 +125,7 @@ no3_boxplot <- mediandata%>%
   geom_jitter(width = 0.0001, size = 8, color = "black", pch = 21, fill = "grey50", alpha = 0.5)+
   geom_text(aes(label=year), size = 2)+
   scale_fill_manual(values = c("red","blue"))+
-  ylab(expression(paste("Hypolinetic NO" [" 3"],""^"-"," (mmol m" ^"-3",")")))+
+  ylab(expression(paste("Hypolimnetic NO" [" 3"],""^"-"," (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "g")+
   theme_classic()+
@@ -146,7 +148,7 @@ tp_boxplot <- mediandata%>%
   geom_jitter(width = 0.0001, size = 8, color = "black", pch = 21, fill = "grey50", alpha = 0.5)+
   geom_text(aes(label=year), size = 2)+
   scale_fill_manual(values = c("red","blue"))+
-  ylab(expression(paste("Hypolinetic TP (mmol m" ^"-3",")")))+
+  ylab(expression(paste("Hypolimnetic TP (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "c")+
   theme_classic()+
@@ -168,7 +170,7 @@ drp_boxplot <- mediandata%>%
   geom_jitter(width = 0.0001, size = 8, color = "black", pch = 21, fill = "grey50", alpha = 0.5)+
   geom_text(aes(label=year), size = 2)+
   scale_fill_manual(values = c("red","blue"))+
-  ylab(expression(paste("Hypolinetic DRP (mmol m" ^"-3",")")))+
+  ylab(expression(paste("Hypolimnetic DRP (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "h")+
   theme_classic()+
