@@ -93,6 +93,13 @@ carbon <- tibble(oxygen = oxy,
   mutate(Process=recode(Process, Ksed_dom = "Sediment flux",Kdom_minerl="DOC mineralization",
                         Kpom_hydrol= "POC hydrolysis"))
 
+carbon1 <- carbon %>% 
+  group_by(oxygen) %>% 
+  summarise(total = sum(Rate)) %>% 
+  ggplot(aes(x=oxygen, y=total)) + 
+  geom_line()
+
+
 p3 <- ggplot(carbon, aes(x = oxygen, y = Rate, color = Process)) +
   geom_line() +
   geom_hline(aes(yintercept = 0)) +
