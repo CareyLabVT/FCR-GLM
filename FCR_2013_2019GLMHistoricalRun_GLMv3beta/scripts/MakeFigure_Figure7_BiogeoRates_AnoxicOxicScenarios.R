@@ -178,23 +178,24 @@ docdata <- data1 %>%
                      docr = "Recalc. DOC mineralization", poc= "POC hydrolysis"))
 
 
+# Using the "Safe" color palette from rcartocolor: https://github.com/Nowosad/rcartocolor
 
 cols_p <- c("Sediment flux" = "#D55E00", 
-          "DOP mineralization" = "#44AA99", 
-          "Recalc. DOP mineralization" = "#117733")
+          "DOP mineralization" = "#CC6677", 
+          "Recalc. DOP mineralization" = "#DDCC77")
 
 cols_n <- c("Sediment flux" = "#D55E00", 
-            "DON mineralization" = "#44AA99", 
-            "Recalc. DON mineralization" = "#117733",
-            "Anammox" = "#DDCC77",
-            "Nitrification" = "#332288",
+            "DON mineralization" = "#117733", 
+            "Recalc. DON mineralization" = "#332288",
+            "Anammox" = "#AA4499",
+            "Nitrification" = "#999933",
             "DNRA" = "#882255",
-            "Denitrification" = "#AA4499")
+            "Denitrification" = "#88CCEE")   
 
 cols_c <- c("Sediment flux" = "#D55E00", 
-            "DOC mineralization" = "#44AA99", 
-            "Recalc. DOC mineralization" = "#117733",
-            "POC hydrolysis" = "#DDCC77")
+            "DOC mineralization" = "#6699CC", 
+            "Recalc. DOC mineralization" = "#888888",
+            "POC hydrolysis" = "#E58606")
 
 p1 <- nitrogen %>% 
   ggplot(aes(x = Scenario, y = value, fill = Process)) +
@@ -203,6 +204,9 @@ p1 <- nitrogen %>%
   facet_wrap(facets = vars(nutrient),
              labeller = as_labeller(c("NH4" = "NH[4]", "NO3" = "NO[3]"), default = label_parsed)) +
   labs(title = "Nitrogen", y = "", x = "") +
+  geom_hline(yintercept = 0, lty = "dashed")+
+  labs(x = "", y = expression(mmol~m^{-2}~day^{-1}), title = "Nitrogen") +
+  ylim(-0.5, 2.1)+
   theme_bw()+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
@@ -211,7 +215,8 @@ p2 <- po4data %>%
   ggplot(aes(x = Scenario, y = value, fill = Process)) +
   geom_bar(position = "stack", stat = "identity") +
   scale_fill_manual(values = cols_p, name = "") +
-  labs(x = "", y = expression(mmol~m^{-2}~day^{-1}), title = "Phosphorus") +
+  labs(x = "Scenario", y = "", title = "Phosphorus") +
+  geom_hline(yintercept = 0, lty = "dashed")+
   theme_bw()+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
@@ -220,11 +225,13 @@ p3 <- docdata %>%
   geom_bar(position = "stack", stat = "identity") +
   scale_fill_manual(values = cols_c, name = "") +
   labs(x = "Scenario", y = "", title = "Carbon") +
+  ylim(-0.5, 2.0)+
+  geom_hline(yintercept = 0, lty = "dashed")+
   theme_bw()+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
-jpeg("./figures/Figure7_Draft_BiogeoRates.jpg", width = 6, height = 8, units = 'in', res = 800)
-draft <- p1 / p2 / p3
+jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure7_Draft_BiogeoRates.jpg", width = 6, height = 8, units = 'in', res = 800)
+draft <- p3 / p1 / p2
 draft
 dev.off()
 
@@ -322,7 +329,7 @@ colnames(data)<-c("time", "Anoxic", "time2", "Oxic", "time3", "Baseline")
 #   mutate(year=year(time)) %>% 
 #   group_by(year) %>% 
 #   summarise(total = sum(OGM_Psed_poc_9.2))
-
+ß
 # data1<-data %>%
 #   mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
 #   mutate(year=year(time),
