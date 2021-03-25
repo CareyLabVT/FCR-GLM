@@ -8,22 +8,9 @@ library(ncdf4)
 library(patchwork)
 library(glmtools)
 
-setwd("./FCR_2013_2019GLMHistoricalRun_GLMv3beta")
-setwd("../") #if pulling from github, sets it to proper wd, which should be "/FCR_2013_2019GLMHistoricalRun_GLMv3beta"
-sim_folder <- getwd()
-
-#set GLM output files for analysis & figures
-
-#baseline scenario, based on observed SSS practices
-nc_file <- file.path(sim_folder, 'output/output_2013_2019.nc')
-
-#anoxic scenario, no SSS activation throughout
-anoxic <- file.path(sim_folder, 'output/output_anoxic.nc')
-
-#oxic scenario, SSS on in summer May 15-Nov 15 at full level
-oxic <- file.path(sim_folder, 'output/output_oxic.nc')
-
-sim_vars(anoxic) #get list of all output variables
+nc_main <- file.path('./FCR_2013_2019GLMHistoricalRun_GLMv3beta/output/output_2013_2019.nc')
+oxic <- file.path('./FCR_2013_2019GLMHistoricalRun_GLMv3beta/output/output_oxic.nc') 
+anoxic <- file.path('./FCR_2013_2019GLMHistoricalRun_GLMv3beta/output/output_anoxic.nc')
 
 #####make the anoxic vs oxic dataset####
 #pull out deep-water rates from each output file

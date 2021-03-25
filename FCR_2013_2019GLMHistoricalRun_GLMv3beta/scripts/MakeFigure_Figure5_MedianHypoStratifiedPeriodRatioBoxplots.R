@@ -195,6 +195,6 @@ din_drp_boxplot <- mediandata%>%
 
 
 jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure5_MedianStratPeriodBoxplots_v1.jpg", width = 20, height = 25, units = 'in', res = 800)
-figure5 <- (toc_tn_boxplot|toc_tp_boxplot)/(tn_tp_boxplot|doc_din_boxplot)/(doc_drp_boxplot|din_drp_boxplot)/(doc_nh4_boxplot|doc_no3_boxplot)
+figure5 <- (toc_tn_boxplot|toc_tp_boxplot)/(doc_din_boxplot|doc_nh4_boxplot)/(doc_no3_boxplot|doc_drp_boxplot)/(tn_tp_boxplot|din_drp_boxplot)
 figure5
 dev.off()

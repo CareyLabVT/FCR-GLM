@@ -183,7 +183,7 @@ drp_export <- retention_full_year%>%
 
 
 jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure6_AnnualExportScenarios.jpg", width = 20, height = 25, units = 'in', res = 800)
-figure6 <- (toc_export|tn_export)/(tp_export|doc_export)/(din_export|nh4_export)/(no3_export|drp_export)
+figure6 <- (toc_export|doc_export)/(tn_export|din_export)/(nh4_export|no3_export)/(tp_export|drp_export)
 figure6
 dev.off()
 
@@ -378,6 +378,6 @@ drp_export <- retention_stratified_period%>%
 
 
 jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure6_StratifiedPeriodExportScenarios.jpg", width = 20, height = 25, units = 'in', res = 800)
-figure6x <- (toc_export|tn_export)/(tp_export|doc_export)/(din_export|nh4_export)/(no3_export|drp_export)
+figure6x <- (toc_export|doc_export)/(tn_export|din_export)/(nh4_export|no3_export)/(tp_export|drp_export)
 figure6x
 dev.off()

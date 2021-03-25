@@ -10,9 +10,9 @@
 # get the packages we will need for the plotting exercises
 # install.packages('remotes')
 # install.packages('devtools')
-# remotes::install_github('usgs-r/glmtools')
+#remotes::install_github('CareyLabVT/glmtools', force = T)
 # devtools::install_github("GLEON/GLMr")
-
+# 
 if (!require('pacman')) install.packages('pacman'); library('pacman')
 pacman::p_load(tidyverse, dplyr, lubridate, reshape2, patchwork, ncdf4, glmtools, GLMr)
 
@@ -59,7 +59,7 @@ mod_oxy_anoxic <- get_var(nc_anoxic, "OXY_oxy", reference="surface", z_out=9) %>
   mutate(OXYcum = cumsum(OXY_oxy))
 
 sss_oxy<-read.csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/Calc_HOX_flow_DO_20190916.csv') %>%
-  rename(DateTime = ï..time) %>%
+  rename(DateTime = time) %>%
   select(DateTime, mmol.O2.m3.day)%>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) 
 

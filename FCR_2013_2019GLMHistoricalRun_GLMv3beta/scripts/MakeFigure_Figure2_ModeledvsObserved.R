@@ -125,7 +125,8 @@ TP <- ggplot(mod_total_pools, aes(DateTime, totalP))+
 
 #patch all of the figures together using patchwork
 #this resolution might be a bit much but I am going to leave it for now (RPM:06 January 21)
-jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure2_Model_vs_Observed_FCR_GLM.jpg", width = 20, height = 25, units = 'in', res = 800)
-figure2 <- (temp|oxy)/(NIT_amm|NIT_nit)/(SRP|DOC)/(TN|TP)
+# Ryan reduced the resolution from 800 to 300 dpi (which is the general requirement for most papers) (RPM:25Mar21)
+jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure2_Model_vs_Observed_FCR_GLM.jpg", width = 20, height = 25, units = 'in', res = 300)
+figure2 <- (temp|oxy)/(DOC|TN)/(NIT_amm|NIT_nit)/(TP|SRP)
 figure2
 dev.off()

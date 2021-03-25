@@ -3,7 +3,7 @@
 
 ### Figure #3 --> Oxic Vs Anoxic Scenarios
 
-### Last update 06Jan21
+### Last update 25Mar21 --> reduced dpi to 300
 
 temp_scenarios <- ggplot()+
   geom_line(data = modtemp_oxic, aes(DateTime, temp, color = "Oxic"), size = 1.3)+
@@ -141,7 +141,7 @@ TP_scenarios <- ggplot()+
         legend.text = element_text(size = 16, color = "black"))
 
 
-jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure3_Oxic_vs_Anoxic_scenarios.jpg", width = 20, height = 25, units = 'in', res = 800)
-figure3 <- (temp_scenarios|oxy_scenarios)/(amm_scenarios|nit_scenarios)/(srp_scenarios|doc_scenarios)/(TN_scenarios|TP_scenarios)
+jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure3_Oxic_vs_Anoxic_scenarios.jpg", width = 20, height = 25, units = 'in', res = 300)
+figure3 <- (temp_scenarios|oxy_scenarios)/(doc_scenarios|TN_scenarios)/(amm_scenarios|nit_scenarios)/(TP_scenarios|srp_scenarios)
 figure3
 dev.off()
