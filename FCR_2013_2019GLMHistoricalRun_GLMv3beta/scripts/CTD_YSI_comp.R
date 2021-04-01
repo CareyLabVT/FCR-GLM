@@ -6,10 +6,10 @@ pacman::p_load(tidyverse,lubridate,data.table,ggpubr,Metrics)
 
 #import CTD observations from EDI
 #inUrl1  <- "https://pasta.lternet.edu/package/data/eml/edi/200/10/2461524a7da8f1906bfc3806d594f94c" 
-#infile1 <- paste0(getwd(),"/fielddata/CTD_final_2013_2019.csv")
+#infile1 <- paste0(getwd(),"/field_data/CTD_final_2013_2019.csv")
 #download.file(inUrl1,infile1,method="curl")
 
-ctd<-read.csv('fielddata/CTD_final_2013_2019.csv') %>% #read in observed CTD data, which has multiple casts on the same day (problematic for comparison)
+ctd<-read.csv('field_data/CTD_final_2013_2019.csv') %>% #read in observed CTD data, which has multiple casts on the same day (problematic for comparison)
   dplyr::filter(Reservoir=="FCR") %>%
   dplyr::filter(Site==50) %>%
   mutate(Date = as.POSIXct(strptime(Date, "%Y-%m-%d", tz="EST"))) %>%
@@ -18,10 +18,10 @@ ctd<-read.csv('fielddata/CTD_final_2013_2019.csv') %>% #read in observed CTD dat
 
 #import YSI observations from EDI
 #inUrl2 <- "https://pasta.lternet.edu/package/data/eml/edi/198/7/25b5e8b7f4291614d5c6d959a08148d8"
-#infile2 <- paste0(getwd(),"/fielddata/YSI_PAR_profiles_2013-2019.csv")
+#infile2 <- paste0(getwd(),"/field_data/YSI_PAR_profiles_2013-2019.csv")
 #download.file(inUrl2,infile2,method="curl")
 
-ysi <- read_csv('fielddata/YSI_PAR_profiles_2013-2019.csv') %>%
+ysi <- read_csv('field_data/YSI_PAR_profiles_2013-2019.csv') %>%
   dplyr::filter(Reservoir=="FCR") %>%
   dplyr::filter(Site==50) %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%m/%d/%y", tz="EST"))) %>%
@@ -149,8 +149,6 @@ shapiro.test(ctd_vs_ysi$ysi_do) #p < 0.05
 shapiro.test(ctd_vs_ysi$ctd_temp) # p < 0.05
 shapiro.test(ctd_vs_ysi$ysi_temp) #p < 0.05
 
-##TAKEHOME: cannot assume normality for any of the data 
-
 #testing for homoscedasticity - DO
 lmMod_do <- lm(ctd_do ~ ysi_do, data=ctd_vs_ysi) 
 par(mfrow=c(2,2)) 
@@ -185,3 +183,6 @@ sd(c(ctd_vs_ysi$ysi_do,ctd_vs_ysi$ctd_do))
 mean(ctd_vs_ysi$ctd_temp)
 mean(ctd_vs_ysi$ysi_temp)
 sd(c(ctd_vs_ysi$ysi_temp,ctd_vs_ysi$ctd_temp))
+
+#number of unique days
+length(unique(ctd_vs_ysi$Date))
