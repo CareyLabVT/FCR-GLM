@@ -1,7 +1,13 @@
-# Basic script to run GLM for FCR
-# CCC for 2013-2019 run
+# Basic script to run GLM for FCR during 2013-2019
+# Written by Cayelan Carey 
 # written originally 16 July 2018
-# last updated 2 June 2020
+# last updated 28 May 2021
+
+remotes::install_github("CareyLabVT/GLMr", force = T)
+remotes::install_github("CareyLabVT/glmtools", force = T)
+
+if (!require('pacman')) install.packages('pacman'); library('pacman')
+pacman::p_load(tidyverse, lubridate, ncdf4, GLMr, glmtools)
 
 # Load packages, set sim folder, load nml file ####
 library(GLMr)
@@ -30,7 +36,6 @@ system2(paste0(sim_folder, "/", "glm"), stdout = TRUE, stderr = TRUE, env = past
 #sometimes, you'll get an error that says "Error in file, 'Time(Date)' is not first column!
 #in this case, open the input file in Excel, set the column in Custom ("YYYY-MM-DD") format, resave, and close the file
 nc_file <- file.path(sim_folder, 'output/output.nc') #defines the output.nc file 
-
 
 #reality check of temp heat map
 plot_temp(nc_file, col_lim = c(0,30))
