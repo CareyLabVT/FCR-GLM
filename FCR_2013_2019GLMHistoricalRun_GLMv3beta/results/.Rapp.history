@@ -1,3 +1,5 @@
+library(GLMr)
+library(glmtools)
 library(glmtools) #load the two packages that you need to run GLM and manipulate its output#
 #note: you may get lots of output messages at this step- if this worked successfully, you should read: "This
 library(GLMr) #if this worked, you should be able to successfully get GLMr to load without any error messages.
@@ -335,64 +337,45 @@ install.packages('Hmisc')
 install.packages('MALDIquant')
 library(MALDIquant)
 install.packages('ncdf4')
+remove.packages('ncdf4')
+install.packages('ncdf4')
+nc <- nc_open("/Users/cayelan/Dropbox/ComputerFiles/SCC/FCR-GLM/FCR_2013_2017GLMHistoricalRun_GLMv3beta/output/output.nc")
 library(ncdf4)
-nc<-nc_open('/Users/cayelan/Desktop/output.nc')
-str(nc)
-install.packages('doBy')
-install.packages('segmented')
-install.packages('MuMin')
-y
-install.packages('MuMIn')
-install.packages('gganimate')
+nc <- nc_open("/Users/cayelan/Dropbox/ComputerFiles/SCC/FCR-GLM/FCR_2013_2017GLMHistoricalRun_GLMv3beta/output/output.nc")
+remove.packages('ncdf4')
+library(ncdf4)
+nc <- nc_open("/Users/cayelan/Dropbox/ComputerFiles/SCC/FCR-GLM/FCR_2013_2017GLMHistoricalRun_GLMv3beta/output/output.nc")
+setwd("/Users/cayelan/Dropbox/ComputerFiles/SCC/AutomatedCalibration/results")
 par(mfrow=c(3,4))#
-data<-read.csv("results/calib_results_RMSE_NIT_amm.csv", header=T)#
+data<-read.csv("calib_results_RMSE_NIT_nit.csv", header=T)#
 temp<-seq(1,length(data$DateTime),1)#
-for(i in 1:length(init.val)){#
-  plot(temp,data[,i+1],type="l",xlab="Iteration", ylab=(colnames(data[i+1])))#
+for(i in 1:(ncol(data))+1){#
+  plot(temp,data[,i],type="l",xlab="Iteration", ylab=(colnames(data[i])))#
+}
+data<-read.csv("calib_results_RMSE_NIT_nit.csv", header=T)
+setwd("/Users/cayelan/Dropbox/ComputerFiles/SCC/FCR-GLM/FCR_2013_2019GLMHistoricalRun_GLMv3beta/results")
+data<-read.csv("calib_results_RMSE_NIT_nit.csv", header=T)
+par(mfrow=c(3,4))#
+data<-read.csv("calib_results_RMSE_NIT_nit.csv", header=T)#
+temp<-seq(1,length(data$DateTime),1)#
+for(i in 1:(ncol(data))+1){#
+  plot(temp,data[,i],type="l",xlab="Iteration", ylab=(colnames(data[i])))#
 }
 par(mfrow=c(3,4))#
-data<-read.csv("results/calib_results_RMSE_NIT_amm.csv", header=T)#
+data<-read.csv("calib_results_RMSE_NIT_nit.csv", header=T)#
 temp<-seq(1,length(data$DateTime),1)#
-for(i in 1:length(init.val)){#
-  plot(temp,data[,i+1],type="l",xlab="Iteration", ylab=(colnames(data[i+1])))#
-}
-getwd()
-par(mfrow=c(3,4))#
-data<-read.csv("calib_results_RMSE_NIT_amm.csv", header=T)#
-temp<-seq(1,length(data$DateTime),1)#
-for(i in 1:length(init.val)){#
-  plot(temp,data[,i+1],type="l",xlab="Iteration", ylab=(colnames(data[i+1])))#
-}
-init.val <- (c(5, 20, 10, 1.04) - lb) *10 /(ub-lb)
-init.val <- c(5, 20, 10, 1.04)
-par(mfrow=c(3,4))#
-data<-read.csv("calib_results_RMSE_NIT_amm.csv", header=T)#
-temp<-seq(1,length(data$DateTime),1)#
-for(i in 1:length(init.val)){#
-  plot(temp,data[,i+1],type="l",xlab="Iteration", ylab=(colnames(data[i+1])))#
+for(i in 1:(ncol(data))+1){#
+  plot(temp,data[,i],type="l",xlab="Iteration", ylab=(colnames(data[i])))#
 }
 par(mfrow=c(3,4))#
-data<-read.csv("calib_results_RMSE_NIT_amm.csv", header=T)#
+data<-read.csv("calib_results_RMSE_NIT_nit.csv", header=T)#
 temp<-seq(1,length(data$DateTime),1)#
-for(i in 1:length(init.val)){#
-  plot(temp,data[,i+1],type="l",xlab="Iteration", ylab=(colnames(data[i+1])))#
+for(i in 1:(ncol(data))+1){#
+  plot(temp,data[,i],type="l",xlab="Iteration", ylab=(colnames(data[i])))#
 }
-par(mfrow=c(3,4))#
-data<-read.csv("calib_results_RMSE_NIT_amm.csv", header=T)#
+data<-read.csv("calib_results_RMSE_NIT_nit.csv", header=T)
+data<-read.csv("calib_results_RMSE_NIT_nit_5Feb2021.csv", header=T)
 temp<-seq(1,length(data$DateTime),1)#
-for(i in 1:length(init.val)){#
-  plot(temp,data[,i+1],type="l",xlab="Iteration", ylab=(colnames(data[i+1])))#
+for(i in 1:(ncol(data))+1){#
+  plot(temp,data[,i],type="l",xlab="Iteration", ylab=(colnames(data[i])))#
 }
-par(mfrow=c(3,4))#
-data<-read.csv("calib_results_RMSE_NIT_amm.csv", header=T)#
-temp<-seq(1,length(data$DateTime),1)#
-for(i in 1:length(init.val)){#
-  plot(temp,data[,i+1],type="l",xlab="Iteration", ylab=(colnames(data[i+1])))#
-}
-par(mfrow=c(3,4))#
-data<-read.csv("calib_results_RMSE_NIT_amm.csv", header=T)#
-temp<-seq(1,length(data$DateTime),1)#
-for(i in 1:length(init.val)){#
-  plot(temp,data[,i+1],type="l",xlab="Iteration", ylab=(colnames(data[i+1])))#
-}
-plot(data$Ksed_amm, data$RMSE)
