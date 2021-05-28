@@ -1,24 +1,17 @@
 #*****************************************************************
-#*      Cary Institute of Ecosystem Studies (Millbrook, NY)      *
 #*                                                               *
-#* TITLE:   CNH-GLM_sunapee_inflowoutflow_23Mar2017.r            *
-#* AUTHOR:  B. Steele                                            *
-#* DATE:    23Mar2017                                            *
-#* PROJECT: CNH-GLM                                              *
-#* PURPOSE: using previously-truthed Schuler model inflows for   *
-#*          Sunapee based on NLDAS-2 met data and GIS analysis   *
-#*          of impervious surfaces,  model in-stream temperature *
-#*          based on NLDAS-2 met data                            *      
-#* BY:      B. Steele, modified by N.K. Ward                     *
-#* NOTES:   this is a compilation of code from the R files       *
-#*          LS_streaminflow_21Mar2017 and LS_GLM_21Mar2017       *
+#* TITLE:   Falling Creek Reservoir Inflow Calculations          *
+#* AUTHORS:  B. Steele, modified by N.K. Ward, W.M. Woelmer,     *
+#*              & C.C. Carey                                     *
+#* DATE:   Last modified 12 June 2019                            *
+#* NOTES:  W.M. Woelmer modified B. Steele and N.K. Ward's code 
+#*         originally developed for Lake Sunapee for on September 2019 for CCC to estimate reservoir inflows for FCR
 #*****************************************************************
 
 #####Whitney Woelmer modified on September 2019 for CCC to estimate reservoir inflows for FCR
+###CCC subsequently edited on 12 June 2020 for FCR and made tidy
 
-###CCC subsequently edited on 12 June 2020 for FCR and make tidy
-
-setwd("~/Dropbox/ComputerFiles/SCC/FCR-GLM/FCR_2013_2019GLMHistoricalRun_GLMv3beta/inputs")
+setwd("./inputs")
 
 library(dplyr)
 library(tidyverse)

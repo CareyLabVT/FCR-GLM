@@ -376,14 +376,19 @@ write.csv(FCRchem, "totalNP.csv", row.names = F)
 ###########################################################
 ###### ANCILLARY LAB CHEMISTRY DATASETS NEEDED FOR CALIBRATION 
 
-#read in lab dataset of dissolved silica, measured by Jon in summer 2014 only
-silica <- read.csv("FCR2014_Chemistry.csv", header=T) %>%
-  select(Date, Depth, DRSI_mgL) %>%
-  mutate(Date = as.POSIXct(strptime(Date, "%Y-%m-%d", tz="EST"))) %>%
-  dplyr::filter(Depth < 10) %>% #to exclude depth 999, which = weir inflow site
+#read in lab dataset of dissolved silica, measured in summer 2014 only
+inUrl1  <- "https://pasta.lternet.edu/package/data/eml/edi/542/1/791ec9ca0f1cb9361fa6a03fae8dfc95" 
+infile1 <- paste0(getwd(),"/silica_master_df.csv")
+download.file(inUrl1,infile1,method="curl")
+
+silica <- read.csv("silica_master_df.csv", header=T) %>%
+  dplyr::filter(Reservoir == "FCR") %>% 
+  dplyr::filter(Site == 50) %>% #50 = weir inflow site
+  select(DateTime, DRSI_mgL) %>%
   rename(DateTime = Date, SIL_rsi=DRSI_mgL) %>%
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
   mutate(SIL_rsi = SIL_rsi*1000*(1/60.08)) #convert to molar units
-write.csv(silica, "field_silica.csv", row.names = F)
+#write.csv(silica, "field_silica.csv", row.names = F)
 
 #read in lab dataset of dissolved methane concentrations, measured in FCR
 ch4 <- read.csv("Dissolved_GHG_data_FCR_BVR_site50_inf_wet_15_19_not_final.csv", header=T) %>%
@@ -395,7 +400,7 @@ ch4 <- read.csv("Dissolved_GHG_data_FCR_BVR_site50_inf_wet_15_19_not_final.csv",
   mutate(CAR_pCO2 = CAR_pCO2*(0.0018/1000000)/0.0005667516) %>% #to convert umol/L to pCO2
   group_by(DateTime, Depth) %>%
   summarise(CAR_pCO2=mean(CAR_pCO2), CAR_ch4=mean(CAR_ch4))
-write.csv(ch4, "field_gases.csv", row.names=F)
+#write.csv(ch4, "field_gases.csv", row.names=F)
 
 ###########################################################
 ###### SECCHI DATA FROM EDI

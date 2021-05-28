@@ -399,6 +399,108 @@ data4 <- data2 %>%
             mean_O_A_DOC_PO4 = mean(O_A_DOC_PO4))
 #paragraph 5 in results, comparing anoxic vs oxic ratios
 
+#calculate biogeochemical rates from each output file
+#nitrogen fractions first
+A_anammox <- get_var(anoxic,'NIT_anammox',z_out=9,reference = 'surface') 
+O_anammox <- get_var(oxic,'NIT_anammox',z_out=9,reference = 'surface') 
+
+A_denit<- get_var(anoxic,'NIT_denit',z_out=9,reference = 'surface') 
+O_denit <- get_var(oxic,'NIT_denit',z_out=9,reference = 'surface') 
+
+A_dnra<- get_var(anoxic,'NIT_dnra',z_out=9,reference = 'surface') 
+O_dnra <- get_var(oxic,'NIT_dnra',z_out=9,reference = 'surface') 
+
+A_nitrif<- get_var(anoxic,'NIT_nitrif',z_out=9,reference = 'surface') 
+O_nitrif <- get_var(oxic,'NIT_nitrif',z_out=9,reference = 'surface') 
+
+A_sed_nit<- get_var(anoxic,'NIT_sed_nit',z_out=9,reference = 'surface') 
+O_sed_nit <- get_var(oxic,'NIT_sed_nit',z_out=9,reference = 'surface') 
+
+A_sed_amm<- get_var(anoxic,'NIT_sed_amm',z_out=9,reference = 'surface') 
+O_sed_amm <- get_var(oxic,'NIT_sed_amm',z_out=9,reference = 'surface') 
+
+A_OGM_denit<- get_var(anoxic,'OGM_denit',z_out=9,reference = 'surface') 
+O_OGM_denit <- get_var(oxic,'OGM_denit',z_out=9,reference = 'surface') 
+
+A_don_miner<- get_var(anoxic,'OGM_don_miner',z_out=9,reference = 'surface') 
+O_don_miner <- get_var(oxic,'OGM_don_miner',z_out=9,reference = 'surface') 
+
+A_donr_miner<- get_var(anoxic,'OGM_donr_miner',z_out=9,reference = 'surface') 
+O_donr_miner <- get_var(oxic,'OGM_donr_miner',z_out=9,reference = 'surface') 
+
+A_phyto_nup_nh4<- get_var(anoxic,'PHY_NUP_nh4',z_out=9,reference = 'surface') 
+O_phyto_nup_nh4 <- get_var(oxic,'PHY_NUP_nh4',z_out=9,reference = 'surface') 
+
+A_phyto_nup_no3<- get_var(anoxic,'PHY_NUP_no3',z_out=9,reference = 'surface') 
+O_phyto_nup_no3 <- get_var(oxic,'PHY_NUP_no3',z_out=9,reference = 'surface') 
+
+#then carbon
+A_doc_miner<- get_var(anoxic,'OGM_doc_miner',z_out=9,reference = 'surface') 
+O_doc_miner <- get_var(oxic,'OGM_doc_miner',z_out=9,reference = 'surface') 
+
+A_docr_miner<- get_var(anoxic,'OGM_docr_miner',z_out=9,reference = 'surface') 
+O_docr_miner <- get_var(oxic,'OGM_docr_miner',z_out=9,reference = 'surface') 
+
+A_poc_hydrol<- get_var(anoxic,'OGM_poc_hydrol',z_out=9,reference = 'surface') 
+O_poc_hydrol <- get_var(oxic,'OGM_poc_hydrol',z_out=9,reference = 'surface') 
+
+A_sed_doc<- get_var(anoxic,'OGM_sed_doc',z_out=9,reference = 'surface') 
+O_sed_doc <- get_var(oxic,'OGM_sed_doc',z_out=9,reference = 'surface') 
+
+#finally phosphorus
+A_dop_miner<- get_var(anoxic,'OGM_dop_miner',z_out=9,reference = 'surface') 
+O_dop_miner <- get_var(oxic,'OGM_dop_miner',z_out=9,reference = 'surface') 
+
+A_dopr_miner<- get_var(anoxic,'OGM_dopr_miner',z_out=9,reference = 'surface') 
+O_dopr_miner <- get_var(oxic,'OGM_dopr_miner',z_out=9,reference = 'surface') 
+
+A_sed_frp<- get_var(anoxic,'PHS_sed_frp',z_out=9,reference = 'surface') 
+O_sed_frp <- get_var(oxic,'PHS_sed_frp',z_out=9,reference = 'surface') 
+
+A_phyto_pup<- get_var(anoxic,'PHY_PUP',z_out=9,reference = 'surface') 
+O_phyto_pup <- get_var(oxic,'PHY_PUP',z_out=9,reference = 'surface') 
+
+#these ones for fun and reality checks
+A_anaerobic<- get_var(anoxic,'OGM_anaerobic',z_out=9,reference = 'surface') 
+O_anaerobic <- get_var(oxic,'OGM_anaerobic',z_out=9,reference = 'surface') 
+
+A_sed_oxy<- get_var(anoxic,'OXY_sed_oxy',z_out=9,reference = 'surface') 
+O_sed_oxy <- get_var(oxic,'OXY_sed_oxy',z_out=9,reference = 'surface') 
+
+
+#bind the data!
+data<-as.data.frame(cbind(A_anammox,A_denit[,2],A_dnra[,2],A_nitrif[,2],A_sed_nit[,2],
+                          A_sed_amm[,2],A_OGM_denit[,2],A_don_miner[,2],A_donr_miner[,2],
+                          A_phyto_nup_nh4[,2],A_phyto_nup_no3[,2],
+                          A_doc_miner[,2],A_docr_miner[,2],A_poc_hydrol[,2],A_sed_doc[,2],
+                          A_dop_miner[,2],A_dopr_miner[,2],A_sed_frp[,2],A_phyto_pup[,2],
+                          A_anaerobic[,2],A_sed_oxy[,2],
+                          O_anammox[,2],O_denit[,2],O_dnra[,2],O_nitrif[,2],O_sed_nit[,2],
+                          O_sed_amm[,2],O_OGM_denit[,2],O_don_miner[,2],O_donr_miner[,2],
+                          O_phyto_nup_nh4[,2],O_phyto_nup_no3[,2],
+                          O_doc_miner[,2],O_docr_miner[,2],O_poc_hydrol[,2],O_sed_doc[,2],
+                          O_dop_miner[,2],O_dopr_miner[,2],O_sed_frp[,2],O_phyto_pup[,2],
+                          O_anaerobic[,2],O_sed_oxy[,2])) 
+colnames(data) = c("time", "A_anammox", "A_denit", "A_dnra", "A_nitrif","A_sed_nit",
+                   "A_sed_amm","A_OGM_denit", "A_don_miner", "A_donr_miner", 
+                   "A_phyto_nup_nh4", "A_phyto_nup_no3", 
+                   "A_doc_miner","A_docr_miner", "A_poc_hydrol", "A_sed_doc", 
+                   "A_dop_miner", "A_dopr_miner", "A_sed_frp","A_phyto_pup",
+                   "A_anaerobic","A_sed_oxy",
+                   "O_anammox", "O_denit", "O_dnra", "O_nitrif","O_sed_nit",
+                   "O_sed_amm","O_OGM_denit", "O_don_miner", "O_donr_miner", 
+                   "O_phyto_nup_nh4", "O_phyto_nup_no3", 
+                   "O_doc_miner","O_docr_miner", "O_poc_hydrol", "O_sed_doc", 
+                   "O_dop_miner", "O_dopr_miner", "O_sed_frp","O_phyto_pup",
+                   "O_anaerobic","O_sed_oxy") 
+
+data1 <- data %>% 
+  mutate(month_day = format(as.Date(time), "%m-%d")) %>%
+  mutate(year = year(time))%>%
+  dplyr::filter(month_day <= "10-01", month_day >= "07-15") %>%
+  mutate(A_O_sed_amm = A_sed_amm/O_sed_amm,
+         A_O_sed_frp = A_sed_frp/O_sed_frp,
+         )
 
 
 

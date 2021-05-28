@@ -60,13 +60,17 @@ FCRchem <- read.csv("chem.csv", header=T) %>%
   filter(TP_ugL < 100) %>% #remove outliers
   select(time:DIC_mgL) 
 
-#read in lab dataset of dissolved silica, measured by Jon in summer 2014 only
-silica <- read.csv("FCR2014_Chemistry.csv", header=T) %>%
-  select(Date, Depth, DRSI_mgL) %>%
-  mutate(Date = as.POSIXct(strptime(Date, "%Y-%m-%d", tz="EST"))) %>%
-  dplyr::filter(Depth == 999) %>% #999 = weir inflow site
-  select(Date, DRSI_mgL) %>%
-  rename(time = Date)
+#read in lab dataset of dissolved silica, measured in summer 2014 only
+inUrl1  <- "https://pasta.lternet.edu/package/data/eml/edi/542/1/791ec9ca0f1cb9361fa6a03fae8dfc95" 
+infile1 <- paste0(getwd(),"/silica_master_df.csv")
+download.file(inUrl1,infile1,method="curl")
+
+silica <- read.csv("silica_master_df.csv", header=T) %>%
+  dplyr::filter(Reservoir == "FCR") %>% 
+  dplyr::filter(Site == 100) %>% #100 = weir inflow site
+  select(DateTime, DRSI_mgL) %>%
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
+  rename(time = DateTime)
   
 #diagnostic plot of silica
 plot(silica$time, silica$DRSI_mgL)
@@ -210,7 +214,7 @@ write.csv(weir_inflow, "FCR_weir_inflow_2013_2019_20200828_allfractions_2poolsDO
 #copying dataframe in workspace to be used later
 alltdata = alldata
 
-########SKIP THIS STEP IF YOU WANT TO USE 2 POOLS OF OC! 
+########SKIP THIS STEP IF YOU WANT TO USE 2 POOLS OF OC! The code below is for the 1 pool option
 #note, because there is no recalcitrant DOC, there similarly isn't any recalcitrant DON or DOP
 #This is making the weir inflow with only *1* pool of DOC
 #need to convert mass observed data into mmol/m3 units for ONE pool of organic carbon
