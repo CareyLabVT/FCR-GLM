@@ -1,6 +1,6 @@
 # Script to make GOF tables for main MS and supplementary
-# 12 Jan 2021
-# A Hounshell
+# Written by: Alexandria (Alex) Hounshell
+# Originally created: 12 Jan 2021
 # Updated w/ new output file: 04 Mar 2021 - focus on FULL YEAR ONLY!
 
 # Load in libraries
@@ -25,7 +25,7 @@ baseline <- file.path(sim_folder, 'FCR_2013_2019GLMHistoricalRun_GLMv3beta/outpu
 # Then use various field observations from the observed/field files for the various parameters
 
 ############################# START WITH MAIN MS TABLE ####################################
-# Notes from CCC: For the main text, I was looking for a 9m-only comparison of water temp, DO, DOC, etc 
+# Notes from C. Carey: For the main text, I was looking for a 9m-only comparison of water temp, DO, DOC, etc 
 # (all the variables in Fig 2) for the calibration period (2013-2018), validation period (2019 only) and then 
 # complete simulation period (2013-2019). When I talked to Nicole about it for her recommendations, she suggested 
 # focusing on summer only conditions, which is also what we did in Kait’s Ecol Modeling paper (May 15-Oct 15 is 
@@ -70,7 +70,7 @@ all_9m_gof_val <- setNames(data.frame(matrix(ncol=9,nrow=21)),c("Parameter","Tem
 all_9m_gof_val$Parameter <- c("ME_val","MAE_val","MSE_val","RMSE_val","NRMSE%_val","PBIAS%_val","RSR_val","rSD_val","NSE_val","mNSE_val","rNSE_val","d_val","md_val","rd_val","cp_val","r_val",
                               "R2_val","bR2_val","KGE_val","VE_val","r.Spearman")
 
-### 9m Summer TEMP ###
+### 9m TEMP ###
 # 9m Model temp
 mod_temp_9m <- get_temp(baseline,z_out=9,reference='surface') %>% 
   mutate(DateTime = as.POSIXct(strptime(DateTime,'%Y-%m-%d',tz="EST"))) %>% 
@@ -136,7 +136,7 @@ all_9m_gof_cal$Temp <- gof(comb_9m_temp_cal$temp_mod,comb_9m_temp_cal$temp_obs,d
 comb_9m_temp_val <- left_join(obs_temp_9m_val,mod_temp_9m_val,by="DateTime")
 all_9m_gof_val$Temp <- gof(comb_9m_temp_val$temp_mod,comb_9m_temp_val$temp_obs,do.spearman = TRUE)
 
-### 9m summer OXY ###
+### 9m OXY ###
 # 9m modeled oxy
 mod_oxy_9m <- get_var(baseline,'OXY_oxy',z_out=9,reference='surface') %>% 
   mutate(DateTime = as.POSIXct(strptime(DateTime,'%Y-%m-%d',tz="EST"))) %>% 
@@ -202,7 +202,7 @@ all_9m_gof_cal$Oxy <- gof(comb_9m_oxy_cal$oxy_mod,comb_9m_oxy_cal$oxy_obs,do.spe
 comb_9m_oxy_val <- left_join(obs_oxy_9m_val,mod_oxy_9m_val,by="DateTime")
 all_9m_gof_val$Oxy <- gof(comb_9m_oxy_val$oxy_mod,comb_9m_oxy_val$oxy_obs,do.spearman = TRUE)
 
-### 9 m summer NIT-amm ###
+### 9 m NIT-amm ###
 mod_NIT_amm_9m <- get_var(baseline,'NIT_amm',z_out=9,reference='surface') %>% 
   mutate(DateTime = as.POSIXct(strptime(DateTime,'%Y-%m-%d',tz="EST"))) %>% 
   rename(NIT_amm_mod = NIT_amm_9)
@@ -268,7 +268,7 @@ all_9m_gof_cal$NIT_amm <- gof(comb_9m_NIT_amm_cal$NIT_amm_mod,comb_9m_NIT_amm_ca
 comb_9m_NIT_amm_val <- left_join(obs_NIT_amm_9m_val,mod_NIT_amm_9m_val,by="DateTime")
 all_9m_gof_val$NIT_amm <- gof(comb_9m_NIT_amm_val$NIT_amm_mod,comb_9m_NIT_amm_val$NIT_amm_obs,do.spearman = TRUE)
 
-### 9m summer NIT_nit ###
+### 9m NIT_nit ###
 mod_NIT_nit_9m <- get_var(baseline,'NIT_nit',z_out=9,reference='surface') %>% 
   mutate(DateTime = as.POSIXct(strptime(DateTime,'%Y-%m-%d',tz="EST"))) %>% 
   rename(NIT_nit_mod = NIT_nit_9)
