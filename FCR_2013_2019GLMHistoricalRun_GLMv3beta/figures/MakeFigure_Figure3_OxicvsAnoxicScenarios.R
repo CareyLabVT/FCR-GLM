@@ -11,16 +11,17 @@ temp_scenarios <- ggplot()+
   scale_color_manual(breaks = c("Oxic", "Anoxic"),
                      values = c("Oxic" = "blue", "Anoxic" = "red"))+
   theme_classic()+
-  ylab(expression('Temperature ('*~degree*C*')'))+
+  ylab(expression('Hypolimnetic Temperature ('*~degree*C*')'))+
   xlab("")+
   ylim(0,20)+
-  labs(title = "a")+
+  labs(title = "A")+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = c(0.15,0.9),
         legend.title = element_blank(),
-        legend.text = element_text(size = 24, color = "black"))
+        legend.text = element_text(size = 30, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 oxy_scenarios <- ggplot()+
   geom_line(data = mod_oxy_oxic, aes(DateTime, OXY_oxy, color = "Oxic"), size = 1.3)+
@@ -28,15 +29,16 @@ oxy_scenarios <- ggplot()+
   scale_color_manual(breaks = c("Oxic", "Anoxic"),
                      values = c("Oxic" = "blue", "Anoxic" = "red"))+
   theme_classic()+
-  ylab(expression(paste("Oxygen (mmol m" ^"-3",")")))+
+  ylab(expression(paste("Hypolimnetic Oxygen (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "b")+
+  labs(title = "B")+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 16, color = "black"))
+        legend.text = element_text(size = 16, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 amm_scenarios <- ggplot()+
   geom_line(data = mod_amm_oxic, aes(DateTime, NIT_amm, color = "Oxic"), size = 1.3)+
@@ -44,15 +46,16 @@ amm_scenarios <- ggplot()+
   scale_color_manual(breaks = c("Oxic", "Anoxic"),
                      values = c("Oxic" = "blue", "Anoxic" = "red"))+
   theme_classic()+
-  ylab(expression(paste("Ammonium (mmol m" ^"-3",")")))+
+  ylab(expression(paste("Hypolimnetic NH" [" 4"],""^"+"," (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "c")+
+  labs(title = "E")+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 16, color = "black"))
+        legend.text = element_text(size = 16, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 
 
@@ -62,15 +65,16 @@ nit_scenarios <- ggplot()+
   scale_color_manual(breaks = c("Oxic", "Anoxic"),
                      values = c("Oxic" = "blue", "Anoxic" = "red"))+
   theme_classic()+
-  ylab(expression(paste("Nitrate (mmol m" ^"-3",")")))+
+  ylab(expression(paste("Hypolimnetic NO" [" 3"],""^"-"," (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "d")+
+  labs(title = "F")+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 16, color = "black"))
+        legend.text = element_text(size = 16, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 
 srp_scenarios <- ggplot()+
@@ -79,15 +83,16 @@ srp_scenarios <- ggplot()+
   scale_color_manual(breaks = c("Oxic", "Anoxic"),
                      values = c("Oxic" = "blue", "Anoxic" = "red"))+
   theme_classic()+
-  ylab(expression(paste("Dissolved Reactive Phosphorus (mmol m" ^"-3",")")))+
+  ylab(expression(paste("Hypolimnetic DRP (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "e")+
+  labs(title = "H")+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 16, color = "black"))
+        legend.text = element_text(size = 16, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 
 doc_scenarios <- ggplot()+
@@ -96,15 +101,16 @@ doc_scenarios <- ggplot()+
   scale_color_manual(breaks = c("Oxic", "Anoxic"),
                      values = c("Oxic" = "blue", "Anoxic" = "red"))+
   theme_classic()+
-  ylab(expression(paste("Dissolved Organic Carbon (mmol m" ^"-3",")")))+
+  ylab(expression(paste("Hypolimnetic DOC (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "f")+
+  labs(title = "C")+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 16, color = "black"))
+        legend.text = element_text(size = 16, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 
 TN_scenarios <- ggplot()+
@@ -113,15 +119,16 @@ TN_scenarios <- ggplot()+
   scale_color_manual(breaks = c("Oxic", "Anoxic"),
                      values = c("Oxic" = "blue", "Anoxic" = "red"))+
   theme_classic()+
-  ylab(expression(paste("Total Nitrogen (mmol m" ^"-3",")")))+
+  ylab(expression(paste("Hypolimnetic TN (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "g")+
+  labs(title = "D")+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 16, color = "black"))
+        legend.text = element_text(size = 16, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 
 TP_scenarios <- ggplot()+
@@ -130,18 +137,19 @@ TP_scenarios <- ggplot()+
   scale_color_manual(breaks = c("Oxic", "Anoxic"),
                      values = c("Oxic" = "blue", "Anoxic" = "red"))+
   theme_classic()+
-  ylab(expression(paste("Total Phosphorus (mmol m" ^"-3",")")))+
+  ylab(expression(paste("Hypolimnetic TP (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "h")+
+  labs(title = "G")+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 16, color = "black"))
+        legend.text = element_text(size = 16, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 
-jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure3_Oxic_vs_Anoxic_scenarios.jpg", width = 20, height = 25, units = 'in', res = 300)
+jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure3_Oxic_vs_Anoxic_scenarios.jpg", width = 20, height = 25, units = 'in', res = 1000)
 figure3 <- (temp_scenarios|oxy_scenarios)/(doc_scenarios|TN_scenarios)/(amm_scenarios|nit_scenarios)/(TP_scenarios|srp_scenarios)
 figure3
 dev.off()

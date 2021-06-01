@@ -14,14 +14,15 @@ toc_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic TOC (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "a")+
+  labs(title = "A")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 24, color = "black"))
+        legend.text = element_text(size = 30, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 doc_boxplot <- mediandata%>%
   select(year, med_A_DOC, med_O_DOC)%>%
@@ -36,14 +37,15 @@ doc_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic DOC (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "d")+
+  labs(title = "B")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 24, color = "black"))
+        legend.text = element_text(size = 24, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 tn_boxplot <- mediandata%>%
   select(year, med_A_TN, med_O_TN)%>%
@@ -58,14 +60,15 @@ tn_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic TN (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "b")+
+  labs(title = "C")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 24, color = "black"))
+        legend.text = element_text(size = 24, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 
 din_boxplot <- mediandata%>%
@@ -81,14 +84,15 @@ din_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic DIN (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "e")+
+  labs(title = "D")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 24, color = "black"))
+        legend.text = element_text(size = 24, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 
 nh4_boxplot <- mediandata%>%
@@ -104,14 +108,15 @@ nh4_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic NH" [" 4"],""^"+"," (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "f")+
+  labs(title = "E")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 24, color = "black"))
+        legend.text = element_text(size = 24, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 
 no3_boxplot <- mediandata%>%
@@ -127,14 +132,15 @@ no3_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic NO" [" 3"],""^"-"," (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "g")+
+  labs(title = "F")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 24, color = "black"))
+        legend.text = element_text(size = 24, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 
 tp_boxplot <- mediandata%>%
@@ -150,14 +156,15 @@ tp_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic TP (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "c")+
+  labs(title = "G")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 24, color = "black"))
+        legend.text = element_text(size = 24, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 drp_boxplot <- mediandata%>%
   select(year, med_A_PO4, med_O_PO4)%>%
@@ -172,16 +179,17 @@ drp_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic DRP (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "h")+
+  labs(title = "H")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 24, color = "black"))
+        legend.text = element_text(size = 24, color = "black"),
+        plot.title = element_text(face = "bold"))
 
-jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure4_StratifiedPeriodMedianHypoCNP_concetrations_v1.jpg", width = 20, height = 25, units = 'in', res = 800)
+jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure4_StratifiedPeriodMedianHypoCNP_concetrations_v1.jpg", width = 20, height = 25, units = 'in', res = 1000)
 figure4 <- (toc_boxplot|doc_boxplot)/(tn_boxplot|din_boxplot)/(nh4_boxplot|no3_boxplot)/(tp_boxplot|drp_boxplot)
 figure4
 dev.off()

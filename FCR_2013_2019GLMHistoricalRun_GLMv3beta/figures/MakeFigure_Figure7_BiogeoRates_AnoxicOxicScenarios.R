@@ -162,7 +162,8 @@ po4data <- data1 %>%
   #pivot_wider(names_from = Scenario, values_from = value) %>% 
   mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
   mutate(Process=recode(Process, sed = "Sediment flux", dop="DOP mineralization",
-                     dopr = "Recalc. DOP mineralization"))
+                     dopr = "Recalc. DOP mineralization"))%>% 
+  mutate(nutrient = "DOP")
 
 ###finally carbon
 docdata <- data1 %>% 
@@ -175,7 +176,8 @@ docdata <- data1 %>%
   #pivot_wider(names_from = Scenario, values_from = value) %>% 
   mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
   mutate(Process=recode(Process, sed = "Sediment flux",doc="DOC mineralization",
-                     docr = "Recalc. DOC mineralization", poc= "POC hydrolysis"))
+                     docr = "Recalc. DOC mineralization", poc= "POC hydrolysis"))%>% 
+  mutate(nutrient = "TOC")
 
 
 # Using the "Safe" color palette from rcartocolor: https://github.com/Nowosad/rcartocolor
@@ -215,6 +217,7 @@ p2 <- po4data %>%
   ggplot(aes(x = Scenario, y = value, fill = Process)) +
   geom_bar(position = "stack", stat = "identity") +
   scale_fill_manual(values = cols_p, name = "") +
+  facet_wrap(facets = vars(nutrient))+
   labs(x = "Scenario", y = "", title = "Phosphorus") +
   geom_hline(yintercept = 0, lty = "dashed")+
   theme_bw()+
@@ -224,151 +227,152 @@ p3 <- docdata %>%
   ggplot(aes(x = Scenario, y = value, fill = Process)) +
   geom_bar(position = "stack", stat = "identity") +
   scale_fill_manual(values = cols_c, name = "") +
+  facet_wrap(facets = vars(nutrient))+
   labs(x = "Scenario", y = "", title = "Carbon") +
   ylim(-0.5, 2.0)+
   geom_hline(yintercept = 0, lty = "dashed")+
   theme_bw()+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
-jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure7_Draft_BiogeoRates.jpg", width = 6, height = 8, units = 'in', res = 800)
+jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure7_Draft_BiogeoRates.jpg", width = 6, height = 8, units = 'in', res = 1000)
 draft <- p3 / p1 / p2
 draft
 dev.off()
 
-
-###############Calculating Sediment burial rates
-#####carbon first
-A_POC <- get_var(anoxic, "OGM_Psed_poc",z_out=9.2,reference = 'surface')
-O_POC <- get_var(oxic, "OGM_Psed_poc",z_out=9.2,reference = 'surface')
-B_POC<- get_var(nc_file, "OGM_Psed_poc",z_out=9.2,reference = 'surface')
-
-plot(A_POC$DateTime, A_POC$OGM_Psed_poc_9, col="red", type="l")
-lines(O_POC$DateTime, O_POC$OGM_Psed_poc_9, col="blue")
-plot(B_POC$DateTime, B_POC$OGM_Psed_poc_9, col="green")
-
-data<-cbind(A_POC, O_POC, B_POC)
-colnames(data)<-c("time", "Anoxic", "time2", "Oxic", "time3", "Baseline")
-
-# data<-B_POC %>% 
-#   mutate(time = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
+# 
+# ###############Calculating Sediment burial rates
+# #####carbon first
+# A_POC <- get_var(anoxic, "OGM_Psed_poc",z_out=9.2,reference = 'surface')
+# O_POC <- get_var(oxic, "OGM_Psed_poc",z_out=9.2,reference = 'surface')
+# B_POC<- get_var(nc_file, "OGM_Psed_poc",z_out=9.2,reference = 'surface')
+# 
+# plot(A_POC$DateTime, A_POC$OGM_Psed_poc_9, col="red", type="l")
+# lines(O_POC$DateTime, O_POC$OGM_Psed_poc_9, col="blue")
+# plot(B_POC$DateTime, B_POC$OGM_Psed_poc_9, col="green")
+# 
+# data<-cbind(A_POC, O_POC, B_POC)
+# colnames(data)<-c("time", "Anoxic", "time2", "Oxic", "time3", "Baseline")
+# 
+# # data<-B_POC %>% 
+# #   mutate(time = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
+# #   mutate(year=year(time)) %>% 
+# #   group_by(year) %>% 
+# #   summarise(total = sum(OGM_Psed_poc_9.2))
+# 
+# # data1<-data %>%
+# #   mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
+# #   mutate(year=year(time),
+# #          DOY = yday(time)) %>%
+# #   dplyr::filter(DOY < 275, DOY > 195) %>% #July 15-Oct 1
+# #   group_by(year) %>% 
+# #   summarise(total_anoxic = sum(Anoxic), total_oxic=sum(Oxic))
+# # t.test(data1$total_anoxic, data1$total_oxic, paired=T)
+# 
+# data1 <- data %>% 
+#   mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>% 
 #   mutate(year=year(time)) %>% 
 #   group_by(year) %>% 
-#   summarise(total = sum(OGM_Psed_poc_9.2))
-
-# data1<-data %>%
-#   mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
-#   mutate(year=year(time),
-#          DOY = yday(time)) %>%
-#   dplyr::filter(DOY < 275, DOY > 195) %>% #July 15-Oct 1
-#   group_by(year) %>% 
-#   summarise(total_anoxic = sum(Anoxic), total_oxic=sum(Oxic))
-# t.test(data1$total_anoxic, data1$total_oxic, paired=T)
-
-data1 <- data %>% 
-  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>% 
-  mutate(year=year(time)) %>% 
-  group_by(year) %>% 
-  summarise(mean_anoxic = mean(Anoxic), mean_oxic=mean(Oxic), mean_baseline = mean(Baseline))
-t.test(data1$mean_anoxic, data1$mean_oxic, paired=T)
-
-data2 <- data1 %>% drop_na() %>% 
-  mutate(total_anoxic = mean_anoxic*12*365*24*60*60/1000,
-         total_oxic = mean_oxic*12*365*24*60*60/1000,
-         total_baseline= mean_baseline*12*365*24*60*60/1000) %>% 
-  summarise(mean_yearly_anoxic_C_burial = mean(total_anoxic), sd_anoxic = std_err(total_anoxic),
-            mean_yearly_oxic_C_burial = mean(total_oxic), sd_oxic = std_err(total_oxic),
-            mean_yearly_baseline_C_burial = mean(total_baseline), sd_base = std_err(total_baseline)) 
-#rates are in mmol/m2/second and need to be converted to g/m2/yr by multiplying by
-#12*365*24*60*60/1000
-
-
-#######nitrogen second
-
-A_PON <- get_var(anoxic, "OGM_Psed_pon",z_out=9.2,reference = 'surface')
-O_PON <- get_var(oxic, "OGM_Psed_pon",z_out=9.2,reference = 'surface')
-B_PON<- get_var(nc_file, "OGM_Psed_pon",z_out=9.2,reference = 'surface')
-
-plot(A_PON$DateTime, A_PON$OGM_Psed_pon_9.2, col="red", type="l")
-lines(O_PON$DateTime, O_PON$OGM_Psed_pon_9.2, col="blue")
-plot(B_PON$DateTime, B_PON$OGM_Psed_pon_9.2, col="green")
-
-data<-cbind(A_PON, O_PON, B_PON)
-colnames(data)<-c("time", "Anoxic", "time2", "Oxic", "time3", "Baseline")
-
-data1 <- data %>% 
-  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>% 
-  mutate(year=year(time)) %>% 
-  group_by(year) %>% 
-  summarise(mean_anoxic = mean(Anoxic), mean_oxic=mean(Oxic), mean_baseline = mean(Baseline))
-t.test(data1$mean_anoxic, data1$mean_oxic, paired=T)
-
-data2 <- data1 %>% drop_na() %>% 
-  mutate(total_anoxic = mean_anoxic*14*365*24*60*60/1000,
-         total_oxic = mean_oxic*14*365*24*60*60/1000,
-         total_baseline= mean_baseline*14*365*24*60*60/1000) %>% 
-  summarise(mean_yearly_anoxic_N_burial = mean(total_anoxic), sd_anoxic = std_err(total_anoxic),
-            mean_yearly_oxic_N_burial = mean(total_oxic), sd_oxic = std_err(total_oxic),
-            mean_yearly_baseline_N_burial = mean(total_baseline), sd_base = std_err(total_baseline)) 
-#rates are in mmol/m2/second and need to be converted to g/m2/yr by multiplying by
-#12*365*24*60*60/1000
-
-#######phosphorus third
-A_POP <- get_var(anoxic, "OGM_Psed_pop",z_out=9.2,reference = 'surface')
-O_POP <- get_var(oxic, "OGM_Psed_pop",z_out=9.2,reference = 'surface')
-B_POP<- get_var(nc_file, "OGM_Psed_pop",z_out=9.2,reference = 'surface')
-
-plot(A_POP$DateTime, A_POP$OGM_Psed_pop_9.2, col="red", type="l")
-lines(O_POP$DateTime, O_POP$OGM_Psed_pop_9.2, col="blue")
-plot(B_POP$DateTime, B_POP$OGM_Psed_pop_9.2, col="green")
-
-data<-cbind(A_POP, O_POP, B_POP)
-colnames(data)<-c("time", "Anoxic", "time2", "Oxic", "time3", "Baseline")
-
-# data<-B_POC %>% 
-#   mutate(time = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
+#   summarise(mean_anoxic = mean(Anoxic), mean_oxic=mean(Oxic), mean_baseline = mean(Baseline))
+# t.test(data1$mean_anoxic, data1$mean_oxic, paired=T)
+# 
+# data2 <- data1 %>% drop_na() %>% 
+#   mutate(total_anoxic = mean_anoxic*12*365*24*60*60/1000,
+#          total_oxic = mean_oxic*12*365*24*60*60/1000,
+#          total_baseline= mean_baseline*12*365*24*60*60/1000) %>% 
+#   summarise(mean_yearly_anoxic_C_burial = mean(total_anoxic), sd_anoxic = std_err(total_anoxic),
+#             mean_yearly_oxic_C_burial = mean(total_oxic), sd_oxic = std_err(total_oxic),
+#             mean_yearly_baseline_C_burial = mean(total_baseline), sd_base = std_err(total_baseline)) 
+# #rates are in mmol/m2/second and need to be converted to g/m2/yr by multiplying by
+# #12*365*24*60*60/1000
+# 
+# 
+# #######nitrogen second
+# 
+# A_PON <- get_var(anoxic, "OGM_Psed_pon",z_out=9.2,reference = 'surface')
+# O_PON <- get_var(oxic, "OGM_Psed_pon",z_out=9.2,reference = 'surface')
+# B_PON<- get_var(nc_file, "OGM_Psed_pon",z_out=9.2,reference = 'surface')
+# 
+# plot(A_PON$DateTime, A_PON$OGM_Psed_pon_9.2, col="red", type="l")
+# lines(O_PON$DateTime, O_PON$OGM_Psed_pon_9.2, col="blue")
+# plot(B_PON$DateTime, B_PON$OGM_Psed_pon_9.2, col="green")
+# 
+# data<-cbind(A_PON, O_PON, B_PON)
+# colnames(data)<-c("time", "Anoxic", "time2", "Oxic", "time3", "Baseline")
+# 
+# data1 <- data %>% 
+#   mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>% 
 #   mutate(year=year(time)) %>% 
 #   group_by(year) %>% 
-#   summarise(total = sum(OGM_Psed_poc_9.2))
-ß
-# data1<-data %>%
-#   mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
-#   mutate(year=year(time),
-#          DOY = yday(time)) %>%
-#   dplyr::filter(DOY < 275, DOY > 195) %>% #July 15-Oct 1
+#   summarise(mean_anoxic = mean(Anoxic), mean_oxic=mean(Oxic), mean_baseline = mean(Baseline))
+# t.test(data1$mean_anoxic, data1$mean_oxic, paired=T)
+# 
+# data2 <- data1 %>% drop_na() %>% 
+#   mutate(total_anoxic = mean_anoxic*14*365*24*60*60/1000,
+#          total_oxic = mean_oxic*14*365*24*60*60/1000,
+#          total_baseline= mean_baseline*14*365*24*60*60/1000) %>% 
+#   summarise(mean_yearly_anoxic_N_burial = mean(total_anoxic), sd_anoxic = std_err(total_anoxic),
+#             mean_yearly_oxic_N_burial = mean(total_oxic), sd_oxic = std_err(total_oxic),
+#             mean_yearly_baseline_N_burial = mean(total_baseline), sd_base = std_err(total_baseline)) 
+# #rates are in mmol/m2/second and need to be converted to g/m2/yr by multiplying by
+# #12*365*24*60*60/1000
+# 
+# #######phosphorus third
+# A_POP <- get_var(anoxic, "OGM_Psed_pop",z_out=9.2,reference = 'surface')
+# O_POP <- get_var(oxic, "OGM_Psed_pop",z_out=9.2,reference = 'surface')
+# B_POP<- get_var(nc_file, "OGM_Psed_pop",z_out=9.2,reference = 'surface')
+# 
+# plot(A_POP$DateTime, A_POP$OGM_Psed_pop_9.2, col="red", type="l")
+# lines(O_POP$DateTime, O_POP$OGM_Psed_pop_9.2, col="blue")
+# plot(B_POP$DateTime, B_POP$OGM_Psed_pop_9.2, col="green")
+# 
+# data<-cbind(A_POP, O_POP, B_POP)
+# colnames(data)<-c("time", "Anoxic", "time2", "Oxic", "time3", "Baseline")
+# 
+# # data<-B_POC %>% 
+# #   mutate(time = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
+# #   mutate(year=year(time)) %>% 
+# #   group_by(year) %>% 
+# #   summarise(total = sum(OGM_Psed_poc_9.2))
+# 
+# # data1<-data %>%
+# #   mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
+# #   mutate(year=year(time),
+# #          DOY = yday(time)) %>%
+# #   dplyr::filter(DOY < 275, DOY > 195) %>% #July 15-Oct 1
+# #   group_by(year) %>% 
+# #   summarise(total_anoxic = sum(Anoxic), total_oxic=sum(Oxic))
+# # t.test(data1$total_anoxic, data1$total_oxic, paired=T)
+# 
+# data1 <- data %>% 
+#   mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>% 
+#   mutate(year=year(time)) %>% 
 #   group_by(year) %>% 
-#   summarise(total_anoxic = sum(Anoxic), total_oxic=sum(Oxic))
-# t.test(data1$total_anoxic, data1$total_oxic, paired=T)
-
-data1 <- data %>% 
-  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>% 
-  mutate(year=year(time)) %>% 
-  group_by(year) %>% 
-  summarise(mean_anoxic = mean(Anoxic), mean_oxic=mean(Oxic), mean_baseline = mean(Baseline))
-t.test(data1$mean_anoxic, data1$mean_oxic, paired=T)
-
-data2 <- data1 %>% drop_na() %>% 
-  mutate(total_anoxic = mean_anoxic*31*365*24*60*60/1000,
-         total_oxic = mean_oxic*31*365*24*60*60/1000,
-         total_baseline= mean_baseline*31*365*24*60*60/1000) %>% 
-  summarise(mean_yearly_anoxic_P_burial = mean(total_anoxic), sd_anoxic = std_err(total_anoxic),
-            mean_yearly_oxic_P_burial = mean(total_oxic), sd_oxic = std_err(total_oxic),
-            mean_yearly_baseline_P_burial = mean(total_baseline), sd_base = std_err(total_baseline)) 
-
-
-###############
-#playing with netcdf file
-nc_o <- ncdf4::nc_open(oxic)
-
-O_sed_oxy<- ncdf4::ncvar_get(nc_o,'OXY_sed_oxy') 
-O_SDF_sed_oxy<- ncdf4::ncvar_get(nc_o,'SDF_Fsed_oxy') #first value = hypo, second value = epi???
-
-O_sed_frp <- ncdf4::ncvar_get(nc_o,'PHS_sed_frp')
-O_SDF_sed_frp <- ncdf4::ncvar_get(nc_o,'SDF_Fsed_frp')
-
-O_sed_amm<- ncdf4::ncvar_get(nc_o,'SDF_Fsed_amm') #first value = hypo, second value = epi
-O_SDF_sed_amm <- ncdf4::ncvar_get(nc_o,'SDF_Fsed_amm')
-
-ncdf4::nc_close(nc_o)
-names(nc_o$var)#get list of variables in data
-names(nc_o$dim)
-
+#   summarise(mean_anoxic = mean(Anoxic), mean_oxic=mean(Oxic), mean_baseline = mean(Baseline))
+# t.test(data1$mean_anoxic, data1$mean_oxic, paired=T)
+# 
+# data2 <- data1 %>% drop_na() %>% 
+#   mutate(total_anoxic = mean_anoxic*31*365*24*60*60/1000,
+#          total_oxic = mean_oxic*31*365*24*60*60/1000,
+#          total_baseline= mean_baseline*31*365*24*60*60/1000) %>% 
+#   summarise(mean_yearly_anoxic_P_burial = mean(total_anoxic), sd_anoxic = std_err(total_anoxic),
+#             mean_yearly_oxic_P_burial = mean(total_oxic), sd_oxic = std_err(total_oxic),
+#             mean_yearly_baseline_P_burial = mean(total_baseline), sd_base = std_err(total_baseline)) 
+# 
+# 
+# ###############
+# #playing with netcdf file
+# nc_o <- ncdf4::nc_open(oxic)
+# 
+# O_sed_oxy<- ncdf4::ncvar_get(nc_o,'OXY_sed_oxy') 
+# O_SDF_sed_oxy<- ncdf4::ncvar_get(nc_o,'SDF_Fsed_oxy') #first value = hypo, second value = epi???
+# 
+# O_sed_frp <- ncdf4::ncvar_get(nc_o,'PHS_sed_frp')
+# O_SDF_sed_frp <- ncdf4::ncvar_get(nc_o,'SDF_Fsed_frp')
+# 
+# O_sed_amm<- ncdf4::ncvar_get(nc_o,'SDF_Fsed_amm') #first value = hypo, second value = epi
+# O_SDF_sed_amm <- ncdf4::ncvar_get(nc_o,'SDF_Fsed_amm')
+# 
+# ncdf4::nc_close(nc_o)
+# names(nc_o$var)#get list of variables in data
+# names(nc_o$dim)
+# 

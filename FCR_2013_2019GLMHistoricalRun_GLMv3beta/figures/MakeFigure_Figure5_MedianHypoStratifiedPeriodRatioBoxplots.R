@@ -13,16 +13,17 @@ toc_tn_boxplot <- mediandata%>%
   geom_jitter(width = 0.0001, size = 8, color = "black", pch = 21, fill = "grey50", alpha = 0.5)+
   geom_text(aes(label=year), size = 2)+
   scale_fill_manual(values = c("red","blue"))+
-  ylab("TOC:TN")+
+  ylab("Hypolimnetic TOC:TN")+
   xlab("")+
-  labs(title = "a")+
+  labs(title = "A")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 24, color = "black"))
+        legend.text = element_text(size = 24, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 scenario <- c("Anoxic", "Anoxic", "Anoxic", "Anoxic", "Anoxic", "Anoxic", "Anoxic")
 ratio <- c(38, 38, 38, 38, 38, 38, 38)
@@ -43,16 +44,17 @@ doc_no3_boxplot <- mediandata%>%
   geom_point(data = mis_point, aes(scenario, as.numeric(ratio)), pch = 4, size = 30, color = "red")+
   scale_shape_identity()+
   scale_fill_manual(values = c("red","blue"))+
-  ylab(expression(paste("DOC:NO" [" 3"],""^"-")))+
+  ylab(expression(paste("Hypolimnetic DOC:NO" [" 3"],""^"-")))+
   xlab("")+
-  labs(title = "h")+
+  labs(title = "E")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 24, color = "black"))
+        legend.text = element_text(size = 24, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 doc_nh4_boxplot <- mediandata%>%
   select(year, med_A_DOC_NH4, med_O_DOC_NH4)%>%
@@ -65,16 +67,17 @@ doc_nh4_boxplot <- mediandata%>%
   geom_jitter(width = 0.0001, size = 8, color = "black", pch = 21, fill = "grey50", alpha = 0.5)+
   geom_text(aes(label=year), size = 2)+
   scale_fill_manual(values = c("red","blue"))+
-  ylab(expression(paste("DOC:NH" [" 4"],""^"+")))+
+  ylab(expression(paste("Hypolimnetic DOC:NH" [" 4"],""^"+")))+
   xlab("")+
-  labs(title = "g")+
+  labs(title = "D")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 24, color = "black"))
+        legend.text = element_text(size = 24, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 
 toc_tp_boxplot <- mediandata%>%
@@ -88,16 +91,17 @@ toc_tp_boxplot <- mediandata%>%
   geom_jitter(width = 0.0001, size = 8, color = "black", pch = 21, fill = "grey50", alpha = 0.5)+
   geom_text(aes(label=year), size = 2)+
   scale_fill_manual(values = c("red","blue"))+
-  ylab("TOC:TP")+
+  ylab("Hypolimnetic TOC:TP")+
   xlab("")+
-  labs(title = "b")+
+  labs(title = "B")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 24, color = "black"))
+        legend.text = element_text(size = 24, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 
 doc_drp_boxplot <- mediandata%>%
@@ -111,16 +115,17 @@ doc_drp_boxplot <- mediandata%>%
   geom_jitter(width = 0.0001, size = 8, color = "black", pch = 21, fill = "grey50", alpha = 0.5)+
   geom_text(aes(label=year), size = 2)+
   scale_fill_manual(values = c("red","blue"))+
-  ylab("DOC:DRP")+
+  ylab("Hypolimnetic DOC:DRP")+
   xlab("")+
-  labs(title = "e")+
+  labs(title = "F")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 24, color = "black"))
+        legend.text = element_text(size = 24, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 
 tn_tp_boxplot <- mediandata%>%
@@ -134,16 +139,17 @@ tn_tp_boxplot <- mediandata%>%
   geom_jitter(width = 0.0001, size = 8, color = "black", pch = 21, fill = "grey50", alpha = 0.5)+
   geom_text(aes(label=year), size = 2)+
   scale_fill_manual(values = c("red","blue"))+
-  ylab("TN:TP")+
+  ylab("Hypolimnetic TN:TP")+
   xlab("")+
-  labs(title = "c")+
+  labs(title = "G")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 24, color = "black"))
+        legend.text = element_text(size = 24, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 
 doc_din_boxplot <- mediandata%>%
@@ -157,16 +163,17 @@ doc_din_boxplot <- mediandata%>%
   geom_jitter(width = 0.0001, size = 8, color = "black", pch = 21, fill = "grey50", alpha = 0.5)+
   geom_text(aes(label=year), size = 2)+
   scale_fill_manual(values = c("red","blue"))+
-  ylab("DOC:DIN")+
+  ylab("Hypolimnetic DOC:DIN")+
   xlab("")+
-  labs(title = "d")+
+  labs(title = "C")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 24, color = "black"))
+        legend.text = element_text(size = 24, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 
 din_drp_boxplot <- mediandata%>%
@@ -181,20 +188,21 @@ din_drp_boxplot <- mediandata%>%
   geom_jitter(width = 0.0001, size = 8, color = "black", pch = 21, fill = "grey50", alpha = 0.5)+
   geom_text(aes(label=year), size = 2)+
   scale_fill_manual(values = c("red","blue"))+
-  ylab("DIN:DRP")+
+  ylab("Hypolimnetic DIN:DRP")+
   xlab("")+
-  labs(title = "f")+
+  labs(title = "H")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
-        legend.text = element_text(size = 24, color = "black"))
+        legend.text = element_text(size = 24, color = "black"),
+        plot.title = element_text(face = "bold"))
 
 
 
-jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure5_MedianStratPeriodBoxplots_v1.jpg", width = 20, height = 25, units = 'in', res = 800)
+jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure5_MedianStratPeriodBoxplots_v1.jpg", width = 20, height = 25, units = 'in', res = 1000)
 figure5 <- (toc_tn_boxplot|toc_tp_boxplot)/(doc_din_boxplot|doc_nh4_boxplot)/(doc_no3_boxplot|doc_drp_boxplot)/(tn_tp_boxplot|din_drp_boxplot)
 figure5
 dev.off()
