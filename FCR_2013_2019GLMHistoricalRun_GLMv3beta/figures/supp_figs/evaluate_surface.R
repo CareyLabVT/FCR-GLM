@@ -26,7 +26,7 @@ obstemp<-read_csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/CleanedObs
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
   filter(Depth==1)
 
-modtemp <- get_temp(nc_main, reference="surface", z_out=1) %>%
+modtemp <- get_temp(nc_main, reference="surface", z_out=1.6) %>%
   pivot_longer(cols=starts_with("temp_"), names_to="Depth", names_prefix="temp_", values_to = "temp") %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) 
 
