@@ -35,11 +35,12 @@ oxy <- ggplot(sss_oxy, aes(DateTime, mmol.O2.m3.day))+
   geom_line(data = mod_oxy, aes(DateTime, OXY_oxy), size = 1, color = "black")+
   geom_point(data = obs_oxy, aes(DateTime, OXY_oxy),pch = 16, size = 2.5, color = "red")+
   theme_classic()+
-  ylim(0,750)+
+  ylim(0,600)+
   ylab(expression(paste("Hypolimnetic Oxygen (mmol m" ^"-3",")")))+
   xlab("")+
   scale_y_continuous(sec.axis = sec_axis( trans=~.*1, name=expression(paste("SSS Oxygen addition (mmol m" ^"-3","d" ^"-1",")"))))+
   labs(title = "B")+
+  ylim(0,600)+
   #labs(title = expression(paste("RMSE = 100.5 mmol m" ^"-3","")))+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),

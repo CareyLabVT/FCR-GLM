@@ -10,11 +10,12 @@
 # get the packages we will need for the plotting exercises
 # install.packages('remotes')
 # install.packages('devtools')
-#remotes::install_github('CareyLabVT/glmtools', force = T)
-# devtools::install_github("GLEON/GLMr")
+devtools::install_github("GLEON/GLMr", INSTALL_opts=c("--no-multiarch"))
+remotes::install_github('CareyLabVT/glmtools', force = T, INSTALL_opts=c("--no-multiarch"))
 # 
+
 if (!require('pacman')) install.packages('pacman'); library('pacman')
-pacman::p_load(tidyverse, dplyr, lubridate, reshape2, patchwork, ncdf4, glmtools, GLMr)
+pacman::p_load(tidyverse, dplyr, lubridate, reshape2, patchwork, ncdf4, GLM3r)
 
 nc_main <- file.path('./FCR_2013_2019GLMHistoricalRun_GLMv3beta/output/output_2013_2019.nc')
 nc_oxic <- file.path('./FCR_2013_2019GLMHistoricalRun_GLMv3beta/output/output_oxic.nc') 
@@ -110,6 +111,13 @@ mod_nit_anoxic <- get_var(nc_anoxic, var, reference="surface", z_out=9) %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
   mutate(NITcum = cumsum(NIT_nit))
 
+DIN_oxic <- left_join(mod_nit_oxic,mod_amm_oxic, by = "DateTime")%>%
+  mutate(DIN_oxic = NIT_nit + NIT_amm)%>%
+  select(DateTime, DIN_oxic)
+
+DIN_anoxic <- left_join(mod_nit_anoxic,mod_amm_anoxic, by = "DateTime")%>%
+  mutate(DIN_anoxic = NIT_nit + NIT_amm)%>%
+  select(DateTime, DIN_anoxic)
 #SRP
 var="PHS_frp"
 
