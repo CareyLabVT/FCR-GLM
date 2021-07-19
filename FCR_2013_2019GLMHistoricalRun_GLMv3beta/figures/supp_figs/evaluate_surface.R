@@ -70,9 +70,9 @@ field_file <- file.path('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/fiel
 obs_amm <-read.csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/field_chem.csv', header=TRUE) %>% #read in observed chemistry data
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
   select(DateTime, Depth, var) %>%
-  filter(Depth==1)
+  filter(Depth==1.6)
 
-mod_amm <- get_var(nc_main, var, reference="surface", z_out=1) %>%
+mod_amm <- get_var(nc_main, var, reference="surface", z_out=1.0) %>%
   pivot_longer(cols=starts_with(paste0(var,"_")), names_to="Depth", names_prefix=paste0(var,"_"), values_to = var) %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST")))   %>%
   mutate(AMMcum = cumsum(NIT_amm))
