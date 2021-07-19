@@ -6,15 +6,9 @@
 remotes::install_github("CareyLabVT/GLMr", force = T)
 remotes::install_github("CareyLabVT/glmtools", force = T)
 
+# Load packages, set sim folder, load nml file ####
 if (!require('pacman')) install.packages('pacman'); library('pacman')
 pacman::p_load(tidyverse, lubridate, ncdf4, GLMr, glmtools)
-
-# Load packages, set sim folder, load nml file ####
-library(GLMr)
-library(glmtools)
-library(tidyverse)
-library(lubridate)
-library(ncdf4)
 
 setwd("./FCR_2013_2019GLMHistoricalRun_GLMv3beta")
 setwd("../") #if pulling from github, sets it to proper wd, which should be "/FCR_2013_2019GLMHistoricalRun_GLMv3beta"
