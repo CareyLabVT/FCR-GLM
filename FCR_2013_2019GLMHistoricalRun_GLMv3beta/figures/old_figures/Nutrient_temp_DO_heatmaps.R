@@ -131,6 +131,15 @@ p_interp%>%
   theme(panel.border = element_rect(fill = NA))
 #dev.off()
 
+#-------------------------
+# Function for red --> green color gradient
+red2green2blue <- function(n){
+  rgb.tables(n,
+             red = c(0.2, 0.2, 1),
+             green = c(0.5, 0.4, 0.8),
+             blue = c(0.8, 0.2, 1))
+}
+
 #DO heatmap
 #jpeg("./figures/DO_heatmap.jpg",width = 8, height = 6, units = "in", res = 300)
 do_interp%>%
@@ -139,7 +148,7 @@ do_interp%>%
   geom_raster()+
   scale_y_reverse(expand = c(0,0))+ theme(legend.spacing = unit(3, "cm")) +
   labs(x = "", y = "Depth (m)", title = "Dissolved Oxygen",fill=expression(paste('mmol/m'^'3'))) +
-  scale_fill_gradientn(colours = blue2green2red(100), na.value="gray")+
+  scale_fill_gradientn(colours = red2green2blue(100), na.value="gray")+
   geom_point(data = do, aes(x=DateTime, y=0.2), size = .2, fill = "black")+
   scale_x_date(expand = c(0,0))+
   theme(panel.border = element_rect(fill = NA))
