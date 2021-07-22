@@ -132,7 +132,7 @@ nh4data <- data1 %>%
   #pivot_wider(names_from = Scenario, values_from = value) %>% 
   mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
   mutate(Process=recode(Process, sed = "Sediment flux",don="DON mineralization", 
-                     donr="Recalc. DON mineralization",nitrif="Nitrification",
+                     donr="DON mineralization (recalc.)",nitrif="Nitrification",
                      anammox = "Anammox", dnra = "DNRA")) %>% 
   mutate(nutrient = "NH4")
 
@@ -162,8 +162,8 @@ po4data <- data1 %>%
   #pivot_wider(names_from = Scenario, values_from = value) %>% 
   mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
   mutate(Process=recode(Process, sed = "Sediment flux", dop="DOP mineralization",
-                     dopr = "Recalc. DOP mineralization"))%>% 
-  mutate(nutrient = "DOP")
+                     dopr = "DOP mineralization (recalc.)"))%>% 
+  mutate(nutrient = "DRP")
 
 ###finally carbon
 docdata <- data1 %>% 
@@ -176,28 +176,28 @@ docdata <- data1 %>%
   #pivot_wider(names_from = Scenario, values_from = value) %>% 
   mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
   mutate(Process=recode(Process, sed = "Sediment flux",doc="DOC mineralization",
-                     docr = "Recalc. DOC mineralization", poc= "POC hydrolysis"))%>% 
-  mutate(nutrient = "TOC")
+                     docr = "DOC mineralization (recalc.)", poc= "POC hydrolysis"))%>% 
+  mutate(nutrient = "DOC")
 
 
 # Using the "Safe" color palette from rcartocolor: https://github.com/Nowosad/rcartocolor
 
-cols_p <- c("Sediment flux" = "#D55E00", 
-          "DOP mineralization" = "#CC6677", 
-          "Recalc. DOP mineralization" = "#DDCC77")
-
-cols_n <- c("Sediment flux" = "#D55E00", 
-            "DON mineralization" = "#117733", 
-            "Recalc. DON mineralization" = "#332288",
-            "Anammox" = "#AA4499",
-            "Nitrification" = "#999933",
-            "DNRA" = "#882255",
-            "Denitrification" = "#88CCEE")   
-
 cols_c <- c("Sediment flux" = "#D55E00", 
             "DOC mineralization" = "#6699CC", 
-            "Recalc. DOC mineralization" = "#888888",
+            "DOC mineralization (recalc.)" = "#888888",
             "POC hydrolysis" = "#E58606")
+
+cols_p <- c("Sediment flux" = "#D55E00", 
+          "DOP mineralization" = "#6699CC", 
+          "DOP mineralization (recalc.)" = "#888888")
+
+cols_n <- c("Sediment flux" = "#D55E00", 
+            "DON mineralization" = "#6699CC", 
+            "DON mineralization (recalc.)" = "#888888",
+            "Anammox" = "#AA4499",
+            "Nitrification" = "#332288",
+            "DNRA" = "#117733",
+            "Denitrification" = "#88CCEE")   
 
 p1 <- nitrogen %>% 
   ggplot(aes(x = Scenario, y = value, fill = Process)) +
@@ -234,7 +234,7 @@ p3 <- docdata %>%
   theme_bw()+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
-jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure7_Draft_BiogeoRates.jpg", width = 6, height = 8, units = 'in', res = 1000)
+jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure7_BiogeoRates.jpg", width = 6, height = 8, units = 'in', res = 1000)
 draft <- p3 / p1 / p2
 draft
 dev.off()
