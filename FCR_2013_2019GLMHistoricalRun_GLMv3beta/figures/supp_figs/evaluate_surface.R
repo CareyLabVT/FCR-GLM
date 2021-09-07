@@ -26,7 +26,7 @@ obstemp<-read_csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/CleanedObs
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
   filter(Depth==1)
 
-modtemp <- get_temp(nc_main, reference="surface", z_out=1.6) %>%
+modtemp <- get_temp(nc_main, reference="surface", z_out=1) %>%
   pivot_longer(cols=starts_with("temp_"), names_to="Depth", names_prefix="temp_", values_to = "temp") %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) 
 
@@ -72,17 +72,17 @@ obs_amm <-read.csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/field_che
   select(DateTime, Depth, var) %>%
   filter(Depth==1.6)
 
-mod_amm <- get_var(nc_main, var, reference="surface", z_out=1.0) %>%
+mod_amm <- get_var(nc_main, var, reference="surface", z_out=1.6) %>%
   pivot_longer(cols=starts_with(paste0(var,"_")), names_to="Depth", names_prefix=paste0(var,"_"), values_to = var) %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST")))   %>%
   mutate(AMMcum = cumsum(NIT_amm))
 
-mod_amm_oxic <- get_var(nc_oxic, var, reference="surface", z_out=1) %>%
+mod_amm_oxic <- get_var(nc_oxic, var, reference="surface", z_out=1.6) %>%
   pivot_longer(cols=starts_with(paste0(var,"_")), names_to="Depth", names_prefix=paste0(var,"_"), values_to = var) %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST")))   %>%
   mutate(AMMcum = cumsum(NIT_amm))
 
-mod_amm_anoxic <- get_var(nc_anoxic, var, reference="surface", z_out=1) %>%
+mod_amm_anoxic <- get_var(nc_anoxic, var, reference="surface", z_out=1.6) %>%
   pivot_longer(cols=starts_with(paste0(var,"_")), names_to="Depth", names_prefix=paste0(var,"_"), values_to = var) %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST")))   %>%
   mutate(AMMcum = cumsum(NIT_amm))
@@ -93,19 +93,19 @@ var="NIT_nit"
 obs_nit <-read.csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/field_chem.csv', header=TRUE) %>% #read in observed chemistry data
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
   select(DateTime, Depth, var) %>%
-  filter(Depth==1)
+  filter(Depth==1.6)
 
-mod_nit <- get_var(nc_main, var, reference="surface", z_out=1) %>%
+mod_nit <- get_var(nc_main, var, reference="surface", z_out=1.6) %>%
   pivot_longer(cols=starts_with(paste0(var,"_")), names_to="Depth", names_prefix=paste0(var,"_"), values_to = var) %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST")))  %>%
   mutate(NITcum = cumsum(NIT_nit))
 
-mod_nit_oxic <- get_var(nc_oxic, var, reference="surface", z_out=1) %>%
+mod_nit_oxic <- get_var(nc_oxic, var, reference="surface", z_out=1.6) %>%
   pivot_longer(cols=starts_with(paste0(var,"_")), names_to="Depth", names_prefix=paste0(var,"_"), values_to = var) %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
   mutate(NITcum = cumsum(NIT_nit))
 
-mod_nit_anoxic <- get_var(nc_anoxic, var, reference="surface", z_out=1) %>%
+mod_nit_anoxic <- get_var(nc_anoxic, var, reference="surface", z_out=1.6) %>%
   pivot_longer(cols=starts_with(paste0(var,"_")), names_to="Depth", names_prefix=paste0(var,"_"), values_to = var) %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
   mutate(NITcum = cumsum(NIT_nit))
@@ -116,18 +116,18 @@ var="PHS_frp"
 obs_srp <-read.csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/field_chem.csv', header=TRUE) %>% #read in observed chemistry data
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
   select(DateTime, Depth, var) %>%
-  filter(Depth==1)
+  filter(Depth==1.6)
 
-mod_srp <- get_var(nc_main, var, reference="surface", z_out=1) %>%
+mod_srp <- get_var(nc_main, var, reference="surface", z_out=1.6) %>%
   pivot_longer(cols=starts_with(paste0(var,"_")), names_to="Depth", names_prefix=paste0(var,"_"), values_to = var) %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) 
 
-mod_srp_oxic <- get_var(nc_oxic, var, reference="surface", z_out=1) %>%
+mod_srp_oxic <- get_var(nc_oxic, var, reference="surface", z_out=1.6) %>%
   pivot_longer(cols=starts_with(paste0(var,"_")), names_to="Depth", names_prefix=paste0(var,"_"), values_to = var) %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
   mutate(SRPcum = cumsum(PHS_frp))
 
-mod_srp_anoxic <- get_var(nc_anoxic, var, reference="surface", z_out=1) %>%
+mod_srp_anoxic <- get_var(nc_anoxic, var, reference="surface", z_out=1.6) %>%
   pivot_longer(cols=starts_with(paste0(var,"_")), names_to="Depth", names_prefix=paste0(var,"_"), values_to = var) %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
   mutate(SRPcum = cumsum(PHS_frp))
@@ -138,17 +138,17 @@ var="OGM_doc"
 obs_doc <-read.csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/field_chem.csv', header=TRUE) %>% #read in observed chemistry data
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
   select(DateTime, Depth, var) %>%
-  filter(Depth==1)
+  filter(Depth==1.6)
 
-mod_doc <- get_var(nc_main, var, reference="surface", z_out=1) %>%
+mod_doc <- get_var(nc_main, var, reference="surface", z_out=1.6) %>%
   pivot_longer(cols=starts_with(paste0(var,"_")), names_to="Depth", names_prefix=paste0(var,"_"), values_to = var) %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) 
 
-mod_doc_oxic <- get_var(nc_oxic, var, reference="surface", z_out=1) %>%
+mod_doc_oxic <- get_var(nc_oxic, var, reference="surface", z_out=1.6) %>%
   pivot_longer(cols=starts_with(paste0(var,"_")), names_to="Depth", names_prefix=paste0(var,"_"), values_to = var) %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) 
 
-mod_doc_anoxic <- get_var(nc_anoxic, var, reference="surface", z_out=1) %>%
+mod_doc_anoxic <- get_var(nc_anoxic, var, reference="surface", z_out=1.6) %>%
   pivot_longer(cols=starts_with(paste0(var,"_")), names_to="Depth", names_prefix=paste0(var,"_"), values_to = var) %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) 
 
@@ -157,17 +157,17 @@ var="OGM_docr"
 obs_docr <-read.csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/field_chem.csv', header=TRUE) %>% #read in observed chemistry data
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
   select(DateTime, Depth, var) %>%
-  filter(Depth==1)
+  filter(Depth==1.6)
 
-mod_docr <- get_var(nc_main, var, reference="surface", z_out=1) %>%
+mod_docr <- get_var(nc_main, var, reference="surface", z_out=1.6) %>%
   pivot_longer(cols=starts_with(paste0(var,"_")), names_to="Depth", names_prefix=paste0(var,"_"), values_to = var) %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) 
 
-mod_docr_oxic <- get_var(nc_oxic, var, reference="surface", z_out=1) %>%
+mod_docr_oxic <- get_var(nc_oxic, var, reference="surface", z_out=1,6) %>%
   pivot_longer(cols=starts_with(paste0(var,"_")), names_to="Depth", names_prefix=paste0(var,"_"), values_to = var) %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) 
 
-mod_docr_anoxic <- get_var(nc_anoxic, var, reference="surface", z_out=1) %>%
+mod_docr_anoxic <- get_var(nc_anoxic, var, reference="surface", z_out=1.6) %>%
   pivot_longer(cols=starts_with(paste0(var,"_")), names_to="Depth", names_prefix=paste0(var,"_"), values_to = var) %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) 
 
@@ -186,19 +186,19 @@ modDOC_anoxic <-merge(mod_doc_anoxic,mod_docr_anoxic, by="DateTime") %>%
   mutate(DOCcum = cumsum(DOCall))
 
 # total N, P, and C pools
-TN <- get_var(nc_main, "TOT_tn",z_out=1,reference = 'surface')
-TP <- get_var(nc_main, "TOT_tp",z_out=1,reference = 'surface')
-TOC <- get_var(nc_main, "TOT_toc",z_out=1,reference = 'surface')
+TN <- get_var(nc_main, "TOT_tn",z_out=1.6,reference = 'surface')
+TP <- get_var(nc_main, "TOT_tp",z_out=1.6,reference = 'surface')
+TOC <- get_var(nc_main, "TOT_toc",z_out=1.6,reference = 'surface')
 
-TN_oxic <- get_var(nc_oxic, "TOT_tn",z_out=1,reference = 'surface')
-TP_oxic <- get_var(nc_oxic, "TOT_tp",z_out=1,reference = 'surface')
-TOC_oxic <- get_var(nc_oxic, "TOT_toc",z_out=1,reference = 'surface')
+TN_oxic <- get_var(nc_oxic, "TOT_tn",z_out=1.6,reference = 'surface')
+TP_oxic <- get_var(nc_oxic, "TOT_tp",z_out=1.6,reference = 'surface')
+TOC_oxic <- get_var(nc_oxic, "TOT_toc",z_out=1.6,reference = 'surface')
 
-TN_anoxic <- get_var(nc_anoxic, "TOT_tn",z_out=1,reference = 'surface')
-TP_anoxic <- get_var(nc_anoxic, "TOT_tp",z_out=1,reference = 'surface')
-TOC_anoxic <- get_var(nc_anoxic, "TOT_toc",z_out=1,reference = 'surface')
+TN_anoxic <- get_var(nc_anoxic, "TOT_tn",z_out=1.6,reference = 'surface')
+TP_anoxic <- get_var(nc_anoxic, "TOT_tp",z_out=1.6,reference = 'surface')
+TOC_anoxic <- get_var(nc_anoxic, "TOT_toc",z_out=1.6,reference = 'surface')
 
-cyano <- get_var(nc_main,var_name = 'PHY_cyano',z_out=1,reference = 'surface') %>% 
+cyano <- get_var(nc_main,var_name = 'PHY_cyano',z_out=1.6,reference = 'surface') %>% 
   pivot_longer(cols=starts_with(paste0("PHY_cyano_")), names_to="Depth", names_prefix="PHY_cyano_",values_to = "CyanoConc") %>%
   mutate(cyanoN = CyanoConc*0.12,
          cyanoP = CyanoConc*0.0005,
@@ -206,7 +206,7 @@ cyano <- get_var(nc_main,var_name = 'PHY_cyano',z_out=1,reference = 'surface') %
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
   select(DateTime,Depth,cyanoN, cyanoP, cyanoC)
 
-cyano_oxic <- get_var(nc_oxic,var_name = 'PHY_cyano',z_out=1,reference = 'surface') %>% 
+cyano_oxic <- get_var(nc_oxic,var_name = 'PHY_cyano',z_out=1.6,reference = 'surface') %>% 
   pivot_longer(cols=starts_with(paste0("PHY_cyano_")), names_to="Depth", names_prefix="PHY_cyano_",values_to = "CyanoConc") %>%
   mutate(cyanoN = CyanoConc*0.12,
          cyanoP = CyanoConc*0.0005,
@@ -214,7 +214,7 @@ cyano_oxic <- get_var(nc_oxic,var_name = 'PHY_cyano',z_out=1,reference = 'surfac
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
   select(DateTime,Depth,cyanoN, cyanoP, cyanoC)
 
-cyano_anoxic <- get_var(nc_anoxic,var_name = 'PHY_cyano',z_out=1,reference = 'surface') %>% 
+cyano_anoxic <- get_var(nc_anoxic,var_name = 'PHY_cyano',z_out=1.6,reference = 'surface') %>% 
   pivot_longer(cols=starts_with(paste0("PHY_cyano_")), names_to="Depth", names_prefix="PHY_cyano_",values_to = "CyanoConc") %>%
   mutate(cyanoN = CyanoConc*0.12,
          cyanoP = CyanoConc*0.0005,
@@ -222,7 +222,7 @@ cyano_anoxic <- get_var(nc_anoxic,var_name = 'PHY_cyano',z_out=1,reference = 'su
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
   select(DateTime,Depth,cyanoN, cyanoP, cyanoC)
 
-green <- get_var(nc_main,var_name = 'PHY_green',z_out=1,reference = 'surface') %>% 
+green <- get_var(nc_main,var_name = 'PHY_green',z_out=1.6,reference = 'surface') %>% 
   pivot_longer(cols=starts_with(paste0("PHY_green_")), names_to="Depth", names_prefix="PHY_green_",values_to = "GreenConc") %>%
   mutate(greenN = GreenConc*0.12,
          greenP = GreenConc*0.0005,
@@ -230,7 +230,7 @@ green <- get_var(nc_main,var_name = 'PHY_green',z_out=1,reference = 'surface') %
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
   select(DateTime,Depth,greenN, greenP, greenC)
 
-green_oxic <- get_var(nc_oxic,var_name = 'PHY_green',z_out=1,reference = 'surface') %>% 
+green_oxic <- get_var(nc_oxic,var_name = 'PHY_green',z_out=1.6,reference = 'surface') %>% 
   pivot_longer(cols=starts_with(paste0("PHY_green_")), names_to="Depth", names_prefix="PHY_green_",values_to = "GreenConc") %>%
   mutate(greenN = GreenConc*0.12,
          greenP = GreenConc*0.0005,
@@ -238,7 +238,7 @@ green_oxic <- get_var(nc_oxic,var_name = 'PHY_green',z_out=1,reference = 'surfac
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
   select(DateTime,Depth,greenN, greenP, greenC)
 
-green_anoxic <- get_var(nc_anoxic,var_name = 'PHY_green',z_out=1,reference = 'surface') %>% 
+green_anoxic <- get_var(nc_anoxic,var_name = 'PHY_green',z_out=1.6,reference = 'surface') %>% 
   pivot_longer(cols=starts_with(paste0("PHY_green_")), names_to="Depth", names_prefix="PHY_green_",values_to = "GreenConc") %>%
   mutate(greenN = GreenConc*0.12,
          greenP = GreenConc*0.0005,
@@ -246,7 +246,7 @@ green_anoxic <- get_var(nc_anoxic,var_name = 'PHY_green',z_out=1,reference = 'su
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
   select(DateTime,Depth,greenN, greenP, greenC)
 
-diatom <- get_var(nc_main,var_name = 'PHY_diatom',z_out=1,reference = 'surface') %>% 
+diatom <- get_var(nc_main,var_name = 'PHY_diatom',z_out=1.6,reference = 'surface') %>% 
   pivot_longer(cols=starts_with(paste0("PHY_diatom_")), names_to="Depth", names_prefix="PHY_diatom_",values_to = "DiatomConc") %>%
   mutate(diatomN = DiatomConc*0.12,
          diatomP = DiatomConc*0.0005,
@@ -254,7 +254,7 @@ diatom <- get_var(nc_main,var_name = 'PHY_diatom',z_out=1,reference = 'surface')
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
   select(DateTime,Depth, diatomN, diatomP, diatomC)
 
-diatom_oxic <- get_var(nc_oxic,var_name = 'PHY_diatom',z_out=1,reference = 'surface') %>% 
+diatom_oxic <- get_var(nc_oxic,var_name = 'PHY_diatom',z_out=1.6,reference = 'surface') %>% 
   pivot_longer(cols=starts_with(paste0("PHY_diatom_")), names_to="Depth", names_prefix="PHY_diatom_",values_to = "DiatomConc") %>%
   mutate(diatomN = DiatomConc*0.12,
          diatomP = DiatomConc*0.0005,
@@ -262,7 +262,7 @@ diatom_oxic <- get_var(nc_oxic,var_name = 'PHY_diatom',z_out=1,reference = 'surf
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
   select(DateTime,Depth, diatomN, diatomP, diatomC)
 
-diatom_anoxic <- get_var(nc_anoxic,var_name = 'PHY_diatom',z_out=1,reference = 'surface') %>% 
+diatom_anoxic <- get_var(nc_anoxic,var_name = 'PHY_diatom',z_out=1.6,reference = 'surface') %>% 
   pivot_longer(cols=starts_with(paste0("PHY_diatom_")), names_to="Depth", names_prefix="PHY_diatom_",values_to = "DiatomConc") %>%
   mutate(diatomN = DiatomConc*0.12,
          diatomP = DiatomConc*0.0005,
@@ -321,7 +321,7 @@ mod_total_pools_anoxic <- data_anoxic %>%
 
 obs_total_pools <-read_csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/totalNP.csv') %>% #read in observed chemistry data
   dplyr::mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
-  filter(Depth==1) %>% 
+  filter(Depth==1.6) %>% 
   na.omit()
 
 
