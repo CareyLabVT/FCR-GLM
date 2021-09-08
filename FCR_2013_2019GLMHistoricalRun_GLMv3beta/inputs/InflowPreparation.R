@@ -1,5 +1,13 @@
-#originally written by CCC on 16 July 2018 to create weir and wetland inflow files + outflow for FCR GLM model
-#updated 1 June 2020 to be made "tidy" and update nutrient fractions for inflows
+#*****************************************************************                                                           *
+#* TITLE:   Falling Creek Reservoir GLM-AED stream inflow file 
+#*          preparation                                          *
+#* AUTHORS:  C.C. Carey                                          *
+#* DATE:   Originally developed 16 July 2018; Last modified 8 Sept 2021                            
+#* NOTES:  CCC developed to estimate reservoir inflows for FCR; 
+#*         CCC subsequently edited on 1 June 2020 and made tidy,
+#*         with subsequent tweaks to annotation in summer 2021
+#*****************************************************************
+
 
 setwd("./inputs")
 sim_folder <- getwd()
@@ -11,6 +19,7 @@ library(EcoHydRology)
 library(rMR)
 library(tidyverse)
 library(lubridate)
+library(dplyr)
 
 #first read in FCR weir inflow file from EDI
 inUrl1  <- "https://pasta.lternet.edu/package/data/eml/edi/202/6/96bdffa73741ec6b43a98f2c5d15daeb" 
@@ -34,11 +43,12 @@ datelist<-as.data.frame(datelist)
 colnames(datelist)=c("time")
 datelist$time<-as.POSIXct(strptime(datelist$time, "%Y-%m-%d", tz="EST"))
 
-#merge inflow file with datelist to make sure that we have all days covered
+#merge inflow file with datelist to make sure that we have all days covered 
+  #interpolating the few missing days
 weir <- merge(datelist, inflow, by="time", all.x=TRUE) %>%
   mutate(FLOW = na.fill(na.approx(FLOW),"extend")) %>%
   mutate(TEMP = na.fill(na.approx(TEMP),"extend")) %>%
-  mutate(SALT = rep(0,length(weir$time)))
+  mutate(SALT = rep(0,length(datelist)))
 
 #some diagnostic plots of inflow weir
 plot(weir$time, weir$FLOW, type = "o")
@@ -75,20 +85,26 @@ silica <- read.csv("silica_master_df.csv", header=T) %>%
 #diagnostic plot of silica
 plot(silica$time, silica$DRSI_mgL)
 hist(silica$DRSI_mgL)
-median(silica$DRSI_mgL) #this median concentration is going to be used to set as the constant Si inflow conc in both wetland & weir inflows
+median(silica$DRSI_mgL) #this median concentration is going to be used to set as 
+#the constant Si inflow conc in both wetland & weir inflows
 
 alldata<-merge(weir, FCRchem, by="time", all.x=TRUE)
 
-#read in lab dataset of CH4 from 2015-2019
-ghg <- read.csv("Dissolved_GHG_data_FCR_BVR_site50_inf_wet_15_19_not_final.csv", header=T) %>%
+#read in dataset of CH4 from EDI
+inUrl1  <- "https://pasta.lternet.edu/package/data/eml/edi/551/5/38d72673295864956cccd6bbba99a1a3" 
+infile1 <- paste0(getwd(),"/Dissolved_CO2_CH4_Virginia_Reservoirs.csv")
+download.file(inUrl1,infile1,method="curl")
+
+ghg <- read.csv("Dissolved_CO2_CH4_Virginia_Reservoirs.csv", header=T) %>%
   dplyr::filter(Reservoir == "FCR") %>%
-  dplyr::filter(Depth_m == 100) %>% #weir inflow
+  dplyr::filter(Site == 100) %>% #weir inflow
   select(DateTime, ch4_umolL) %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
   rename(time = DateTime, CAR_ch4 = ch4_umolL) %>%
   group_by(time) %>%
+  drop_na %>% 
   summarise(CAR_ch4 = mean(CAR_ch4)) %>%
-  dplyr::filter(CAR_ch4<0.2)
+  dplyr::filter(CAR_ch4<0.2) #remove outliers
 plot(ghg$time, ghg$CAR_ch4)
 
 datelist2<-seq.Date(as.Date(first(ghg$time)),as.Date(last(ghg$time)), "days")
@@ -171,22 +187,19 @@ weir_inflow <- alldata %>%
   mutate(NIT_nit = NO3NO2_ugL*1000*0.001*(1/62.00)) %>% #as all NO2 is converted to NO3
   mutate(PHS_frp = SRP_ugL*1000*0.001*(1/94.9714)) %>% 
   mutate(OGM_doc = DOC_mgL*1000*(1/12.01)* 0.10) %>% #assuming 10% of total DOC is in labile DOC pool (Wetzel page 753)
-  mutate(OGM_docr = DOC_mgL*1000*(1/12.01)* 0.90) %>% #assuming 90% of total DOC is in labile DOC pool
+  mutate(OGM_docr = DOC_mgL*1000*(1/12.01)* 0.90) %>% #assuming 90% of total DOC is in recalcitrant DOC pool
   mutate(TN_ugL = TN_ugL*1000*0.001*(1/14)) %>% 
   mutate(TP_ugL = TP_ugL*1000*0.001*(1/30.97)) %>% 
   mutate(OGM_poc = 0.1*(OGM_doc+OGM_docr)) %>% #assuming that 10% of DOC is POC (Wetzel page 755)
   mutate(OGM_don = (5/6)*(TN_ugL-(NIT_amm+NIT_nit))*0.10) %>% #DON is ~5x greater than PON (Wetzel page 220)
   mutate(OGM_donr = (5/6)*(TN_ugL-(NIT_amm+NIT_nit))*0.90) %>% #to keep mass balance with DOC, DONr is 90% of total DON
-  mutate(OGM_pon = (1/6)*(TN_ugL-(NIT_amm+NIT_nit))) %>%
+  mutate(OGM_pon = (1/6)*(TN_ugL-(NIT_amm+NIT_nit))) %>% #detemined by subtraction
   mutate(OGM_dop = 0.3*(TP_ugL-PHS_frp)*0.10) %>% #Wetzel page 241, 70% of total organic P = particulate organic; 30% = dissolved organic P
-  mutate(OGM_dopr = 0.3*(TP_ugL-PHS_frp)*0.90) %>% #Wetzel page 241, 70% of total organic P = particulate organic; 30% = dissolved organic P
-  mutate(OGM_pop = 10*TP_ugL) %>% #0.7*(TP_ugL-PHS_frp)) %>% #ADDED IN MORE POP AS COMPLEXED P
-  #mutate(PHS_frp_ads = PHS_frp) %>% #Following Farrell et al. 2020 EcolMod
-  mutate(CAR_dic = DIC_mgL*1000*(1/52.515)) #Long-term avg pH of FCR is 6.5, at which point CO2/HCO3 is about 50-50
+  mutate(OGM_dopr = 0.3*(TP_ugL-PHS_frp)*0.90) %>% #to keep mass balance with DOC & DON, DOPr is 90% of total DOP
+  mutate(OGM_pop = 10*TP_ugL) %>% # #In lieu of having the adsorbed P pool activated in the model, need to have higher complexed P
+  mutate(CAR_dic = DIC_mgL*1000*(1/52.515)) #Long-term median pH of FCR is 6.5, at which point CO2/HCO3 is about 50-50
 #given this disparity, using a 50-50 weighted molecular weight (44.01 g/mol and 61.02 g/mol, respectively)
-#note: we are not using a DONr recalcitrant pool for inflows because "bacterial utilization of these 
-  #compounds [i.e. DON] is extremely rapid" Wetzel p. 220
-#because we have added the pool of PHS_frp_ads, which functionally is DOPr, not adding a DOPr pool
+
   
 #reality check of mass balance: these histograms should be at zero minus rounding errors
 hist(weir_inflow$TP_ugL - (weir_inflow$PHS_frp + weir_inflow$OGM_dop + weir_inflow$OGM_dopr + weir_inflow$OGM_pop))
@@ -214,9 +227,10 @@ write.csv(weir_inflow, "FCR_weir_inflow_2013_2019_20200828_allfractions_2poolsDO
 #copying dataframe in workspace to be used later
 alltdata = alldata
 
-########SKIP THIS STEP IF YOU WANT TO USE 2 POOLS OF OC! The code below is for the 1 pool option
-#note, because there is no recalcitrant DOC, there similarly isn't any recalcitrant DON or DOP
-#This is making the weir inflow with only *1* pool of DOC
+########SKIP THIS STEP IF YOU WANT TO USE 2 POOLS OF OC! 
+#The code below is for the 1 pool option
+#note, because there is no recalcitrant DOC in this inflow, there similarly isn't any recalcitrant DON or DOP
+#This is making the weir inflow with only *1* pool of DOC, DON, or DOP
 #need to convert mass observed data into mmol/m3 units for ONE pool of organic carbon
 weir_inflow <- alldata %>% 
   mutate(NIT_amm = NH4_ugL*1000*0.001*(1/18.04)) %>% 
@@ -257,11 +271,18 @@ write.csv(weir_inflow, "FCR_weir_inflow_2013_2019_20200607_allfractions_1poolDOC
 
 ##############################################################
 ##############################################################
-#now we make the inflow file for the wetland, using observed comparisons of discharge
-#the general approach is that we're going to add precip-driven discharge modeled using
-#the Schuler eqn for the wetland to a fraction of the weir baseflow, which is from gauged measurements. 
+#Now we make the inflow file for the wetland stream, based on observed comparisons of discharge.
+#The general approach is that we're going to first divide total discharge at the weir into
+#precipitation-driven flow and baseflow. We will use intermittent observations of baseflow from 
+#Falling Creek to determine a constant baseflow rate based on a ratio of Tunnel Branch:Falling
+#Creek baseflow, and then add that to the precipitation-driven flow calculated in the 
+#"WetlandInflowPrep.R" script in the "field_data" directory via the Schuler eqn method (Ward et al. 2020).
 
-#first let's read in the wetland runoff from the Schuler equation
+#Tunnel Branch = weir inflow
+#Falling Creek = wetland inflow
+
+#First let's read in the wetland pricipitation-driven flow (runoff) calculated from the Schuler equation
+# as output of the WetlandInflowPrep.R script.
 runoff <- read.csv("WetlandWeir_Runoff_FCR_20200615.csv", header=T) %>% 
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
   rename(time=DateTime)
@@ -293,30 +314,13 @@ weir_inflow <- merge(datelist, inflow, by="time", all.x=TRUE) %>%
 #some diagnostic plots of inflow weir
 plot(weir_inflow$time, weir_inflow$FLOW, type = "o")
 
-#there are two ways to get baseflow of the inflow
-#first, subtract the Schuler-derived weir precipitation runoff from the measured (gauged) inflow
-#OR, use the EcoHydrology "BaseflowSeparation" function to model baseflow
-#let's try both and compare!
-
+#next, subtract the Schuler-derived weir precipitation runoff from the measured (gauged) inflow
 weir_data <- merge(runoff, weir_inflow, by="time") %>% 
   mutate(baseflow_subtracted = FLOW-weir_runoff_m3s) 
-#calculate the subtracted method first
 
-baseflow_modeled = BaseflowSeparation(weir_data$FLOW, passes=3) 
-weir_data1 <- as.data.frame(cbind(weir_data, baseflow_modeled)) %>% 
-  rename(baseflow_modeled = bt)
+plot(weir_data$time, weir_data$FLOW, type="l", ylab="m3/s")
+  lines(weir_data$time, weir_data$baseflow_subtracted, col="red")
 
-plot(weir_data1$baseflow_subtracted, weir_data1$baseflow_modeled)
-  abline(0,1, col="red")
-#so generally both are similar but the modeled is slightly slower than the subtracted inflow
-#given that we are going with Schuler for the wetland inflow runoff, will use the
-  #weir gauge minus the Schuler-derived precip runoff to calculate the weir baseflow
-
-plot(weir_data1$time, weir_data1$FLOW, type="l", ylab="m3/s")
-  lines(weir_data1$time, weir_data1$baseflow_subtracted, col="red")
-  lines(weir_data1$time, weir_data1$baseflow_modeled, col="blue")
-
-  
 #now we need to determine the ratio of baseflows from weir:wetland  
 discharge <- read_csv("2019_Continuum_Discharge.csv") %>%
   dplyr::filter(Reservoir=="FCR")  %>%
@@ -333,7 +337,6 @@ data <- merge(inflow,discharge, by="time", all=FALSE)  %>%
 data <- data[which(is.finite(data$ratio)),] #remove INFs
 
 #comparing weir vs. wetland inflows
-median(data$ratio) #1.29
 mean(data$ratio) #1.73
 hist(data$ratio)
 plot(data$time, data$ratio)
@@ -341,7 +344,7 @@ plot(data$time, data$ratio)
 Flowratio <- mean(data$ratio)
 
 #now let's finalize the water budget for the wetland inflow
-wetland_inf <- weir_data1 %>% 
+wetland_inf <- weir_data %>% 
   mutate(total = wetland_runoff_m3s + baseflow_subtracted*1/Flowratio) %>% 
   #this gives us the sum of the overland precip-runoff + baseflow for the wetland
   select(time, total, TEMP) %>% 
@@ -380,11 +383,11 @@ TPratio <- max(FCRchem$TP)
 NH4ratio <- 10*max(FCRchem$NH4)#range is from 0.111 to 1.8; median = 0.32, mean = 0.399; [23] = 0.9
 NO3ratio <- 10*max(FCRchem$NO3) #median = 0.766, max = 14.666
 SRPratio <- median(FCRchem$SRP)#range is from 0.33 to 4.75, median = 1.75, mean = 1.98
-DOCratio <- sort(FCRchem$DOC)[6]#note that this is from tuning
+DOCratio <- sort(FCRchem$DOC)[6]#note that this ratio emerged from model tuning
 DICratio <- median(FCRchem$DIC)
 
-#read in lab dataset of CH4 from 2015-2019
-ghg_inflows <- read.csv("Dissolved_GHG_data_FCR_BVR_site50_inf_wet_15_19_not_final.csv", header=T) %>%
+#read in dataset of CH4 from 2015-2019
+ghg_inflows <- read.csv("Dissolved_CO2_CH4_Virginia_Reservoirs.csv", header=T) %>%
   filter(Reservoir == "FCR") %>%
   filter(Depth_m==100 | Depth_m==200) %>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
@@ -594,11 +597,11 @@ write.csv(wetland_1pool, "FCR_wetland_inflow_newEDI_2013_2019_20200607_allfracti
 
 ##############################################################
 ##############################################################
-##############################################################
+
 #REGARDLESS OF YOUR OC POOLS, WILL NEED TO MAKE OUTFLOW!
 #now need to make new spillway outflow that sums the weir + wetland inflows to keep water balance
 
-outflow <- weir_data %>% #from line 289 above: this has both inflows together
+outflow <- weir_data %>% #from above: this has both stream inflows together
   mutate(total = FLOW + wetland_runoff_m3s + baseflow_subtracted*1/Flowratio) %>% 
   select(time, total) %>%
   rename(FLOW = total) %>%
@@ -610,102 +613,3 @@ hist(outflow$FLOW - (wetland$FLOW + weir_inflow$FLOW)) #should be at zero minus 
 
 #write file
 write.csv(outflow, "FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv", row.names=F)
-
-
-##############################################################
-##############################################################
-##############################################################
-#trying to figure out the inflows situation by adding more DOCr to the wetland inflows
-
-sim_folder <- "~/Dropbox/ComputerFiles/SCC/FCR-GLM/FCR_2013_2019GLMHistoricalRun_GLMv3beta"
-nc_file <- file.path(sim_folder, 'output/output.nc') #defines the output.nc file 
-
-docr1 <- get_var(file=nc_file,var_name = 'OGM_docr',z_out=0.1,reference = 'surface') %>%
-  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
-  rename(mod_docr = OGM_docr_0.1)
-
-obs <- read.csv('field_data/field_chem.csv', header=TRUE) %>% #read in observed chemistry data
-  select(DateTime, Depth, OGM_docr) %>%
-  dplyr::filter(Depth == 0.1) %>%
-  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
-  rename(obs_docr = OGM_docr) %>%
-  select(DateTime, obs_docr)%>%
-  na.omit()
-
-residuals <- merge(obs, docr1, by="DateTime") %>% 
-  mutate(resids = obs_docr - mod_docr) 
-
-inflow1<-read.csv("inputs/FCR_wetland_inflow_2013_2019_20200630_allfractions_2DOCpools.csv", header=T) %>%
-  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST")))
-
-inflow <- inflow1 %>%
-  rename(DateTime = time) %>%
-  select(DateTime, OGM_docr, FLOW, TEMP) 
-
-more <- merge(residuals, inflow, by="DateTime") %>% 
-  mutate(DOY = yday(DateTime))
-
-outflow = read.csv("inputs/FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv", header=T) %>%
-  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST")))
-
-
-#trying to figure out what combination of flow, wetland DOCr concentration, and DOY predict residuals
-#need to add a subsidy DOCr pool into DOCr inflow to explain 
-library(MuMIn)
-library(lubridate)
-
-more1 = more %>% 
-  select(resids:DOY) %>% 
-  na.omit()#remove time date stamp for dredge function
-model1 = lm(resids ~ DOY + FLOW + OGM_docr + TEMP + 
-              DOY*FLOW + DOY*OGM_docr + DOY*TEMP +
-              FLOW*OGM_docr + FLOW*TEMP +
-              OGM_docr*TEMP + 
-              DOY*FLOW*OGM_docr +  
-              + FLOW*OGM_docr*TEMP +
-              DOY*FLOW*TEMP +
-              DOY*FLOW*OGM_docr*TEMP,
-            data=more1, na.action='na.fail') #global model to compare all possibilities
-allmodels <- dredge(model1, beta='none', evaluate=TRUE, rank="AICc", extra="adjR^2")
-#all possible models for comparison; tried temperature but does not contribute meaningfully to models, so excluded it here
-
-bestmodel <- subset(allmodels, delta<2)
-bestmodel[1]
-#gives us best model with lowest AICc
-#hist(bestmodel1$residuals)
-
-#this is the best model with temperature; excluded here
-bestmodel<-lm(resids ~ DOY + FLOW + OGM_docr + TEMP +
-                 DOY*FLOW + DOY*OGM_docr + DOY*TEMP +
-                 FLOW*OGM_docr + FLOW*TEMP +
-                 OGM_docr*TEMP +
-                 DOY*FLOW*OGM_docr +
-                 DOY*FLOW*TEMP + DOY*OGM_docr*TEMP,
-                 data=more1, na.action="na.fail")
-summary(bestmodel)
-#now need to turn this model into predictions which will then be run for the wetland dataset and added into the OGM_docr pool
-
-#let's use the model predictions as extra inflow DOCr! Formerly included best model that had temp; now removed
-wetland_extraOC <- merge(inflow1,outflow, by="time") %>% 
-  mutate(DOY = yday(time)) %>% 
-  rename(FLOW = FLOW.x) %>% 
-  #mutate(preds = -1.442e+02 + 1.199e+00*DOY + 4.296e+03*FLOW + 5.611e-01*OGM_docr +
-  #      (-4.037e+01*DOY*FLOW) + (-2.611e-03*DOY*OGM_docr) + (-1.620e+01*FLOW*OGM_docr) +
-  #        1.159e-01*DOY*FLOW*OGM_docr) %>% #best model terms (best model not including temp)
-  #mutate(preds1 = -2.664e+02 + 1.753e+00*DOY + 8.115e+02*FLOW + 1.465e+00*OGM_docr +
-  #       8.885e+00*TEMP + (-2.755e+01*DOY*FLOW) + (-8.157e-03*DOY*OGM_docr) + 
-  #       (-3.757e-02*DOY*TEMP) + (-1.263e+01*FLOW*OGM_docr) + (2.317e+02*FLOW*TEMP) +
-  #       (-7.338e-02*OGM_docr*TEMP) + 1.225e-01*DOY*FLOW*OGM_docr + (-1.189e+00*DOY*FLOW*TEMP) +
-  #       (3.893e-04*DOY*OGM_docr*TEMP))
-  mutate(preds1 = -263.2070 + 1.727140*DOY + 704.5604*FLOW + 1.482740*OGM_docr +
-           8.286827*TEMP + (-27.39587*DOY*FLOW) + (-0.008109236*DOY*OGM_docr) +
-           (-0.03454047*DOY*TEMP) + (-12.74106*FLOW*OGM_docr) + (236.84212*FLOW*TEMP) +
-           (-0.07210827*OGM_docr*TEMP) + 0.1222970*DOY*FLOW*OGM_docr + (-1.183907*DOY*FLOW*TEMP) +
-           (0.0003783986*DOY*OGM_docr*TEMP)) %>% #best model terms that include temp
-  #mutate(preds = preds*(FLOW + FLOW.y)/FLOW) %>% 
-  mutate(preds1 = preds1*(FLOW.y/FLOW)) %>% 
-  mutate(OGM_docr = OGM_docr + preds1) %>% #choosing the best model with temperature
-  select(time:SIL_rsi)
-
-#FIX THIS NAME!!
-write.csv(wetland_extraOC, "inputs/FCR_wetland_inflow_2013_2019_20200713_allfractions_2DOCpools.csv", row.names = FALSE)

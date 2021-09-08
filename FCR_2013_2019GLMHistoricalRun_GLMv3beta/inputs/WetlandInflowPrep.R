@@ -1,15 +1,20 @@
-#*****************************************************************
-#*                                                               *
-#* TITLE:   Falling Creek Reservoir Inflow Calculations          *
+#*****************************************************************                                                           *
+#* TITLE:   Falling Creek Reservoir Precipitation-driven Inflow 
+#*          Calculations                                         *
 #* AUTHORS:  B. Steele, modified by N.K. Ward, W.M. Woelmer,     *
 #*              & C.C. Carey                                     *
-#* DATE:   Last modified 12 June 2019                            *
+#* DATE:   Last modified 8 Sept 2021                             *
 #* NOTES:  W.M. Woelmer modified B. Steele and N.K. Ward's code 
-#*         originally developed for Lake Sunapee for on September 2019 for CCC to estimate reservoir inflows for FCR
+#*         originally developed for Lake Sunapee 
+#*         for CCC to estimate reservoir inflows for FCR; 
+#*         CCC subsequently edited on 12 June 2020 and made tidy,
+#*         with subsequent tweaks to annotation in summer 2021
 #*****************************************************************
 
-#####Whitney Woelmer modified on September 2019 for CCC to estimate reservoir inflows for FCR
-###CCC subsequently edited on 12 June 2020 for FCR and made tidy
+#This script is used to calculate the precipitation-driven flow (runoff) that 
+# enters into Falling Creek Reservoir both through the weir inflow (Tunnel Branch)
+# and wetland inflow (Falling Creek).
+
 
 setwd("./inputs")
 
@@ -39,10 +44,10 @@ MetData <- read.csv('FCR_GLM_NLDAS_010113_123119_GMTadjusted.csv', header=T, na.
 #Ia = proportion of drainage area that is impervious (in decimal form)
 
 # FCR refers to the whole watershed
-# Inf refers to the inflow to FCR from BVR where the weir is
-# Wet refers to the wetland at the north side of the reservoir
+# Inf refers to the inflow to FCR from BVR where the weir is (Tunnel Branch)
+# Wet refers to the wetland inflow at the north side of the reservoir (Falling Creek)
 
-impFCR <- 0.0000437 #Ia # number calculated from StreamStats watershed delineation model
+impFCR <- 0.0000437 # Ia #number calculated from StreamStats watershed delineation model
 RvFCR = 0.05 + 0.9 * impFCR #multiply by assumed variable
 impInf <- 0  # number calculated from StreamStats watershed delineation model
 RvInf = 0.05 + 0.9 * impInf
@@ -182,7 +187,7 @@ for (i in 1:nrow(MetData_FCR)) {
   } 
 }
 
-#### Inf: FCR Weir (from BVR) Inflow Runoff ####
+#### Inf: FCR Weir (from BVR, Tunnel Branch) Inflow Runoff ####
 #calculate snowmelt and rainfall -> runoff
 for (i in 2:nrow(MetData_Inf)){                                        # for every row (except the first)
   if(MetData_Inf$AirTemp[i]<=0 ){                                  # If air temp is below 0...
@@ -214,7 +219,7 @@ for (i in 1:nrow(MetData_Inf)) {
   } 
 }
 
-#### Wet Runoff: the wetland at the north end of the reservoir ####
+#### Wet Runoff: the wetland inflow at the north end of the reservoir ####
 #calculate snowmelt and rainfall -> runoff
 for (i in 2:nrow(MetData_Wet)){                                        # for every row (except the first)
   if(MetData_Wet$AirTemp[i]<=0 ){                                  # If air temp is below 0...
@@ -303,9 +308,9 @@ MetData_FCR_daily_sub <- subset(MetData_FCR_daily, select=c('date', 'total_runof
 MetData_Inf_daily_sub <- subset(MetData_Inf_daily, select=c('date', 'total_runoff_model_imp_50_50_m3s'))
 MetData_Wet_daily_sub <- subset(MetData_Wet_daily, select=c('date', 'total_runoff_model_imp_50_50_m3s'))
 
-MetData_FCR_daily_sub$Site <- 'whole'
-MetData_Inf_daily_sub$Site <- 'weir'
-MetData_Wet_daily_sub$Site <- 'wetland'
+MetData_FCR_daily_sub$Site <- 'whole' 
+MetData_Inf_daily_sub$Site <- 'weir' #Tunnel Branch precipitation-driven flow
+MetData_Wet_daily_sub$Site <- 'wetland' #Falling Creek precipitation-driven flow
 
 wsrunoff <- merge(MetData_Inf_daily_sub, MetData_Wet_daily_sub, by="date") %>% 
   filter(date > "2013-05-14") %>% 
