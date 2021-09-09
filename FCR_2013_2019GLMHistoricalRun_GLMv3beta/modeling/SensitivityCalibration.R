@@ -1,11 +1,18 @@
-#Sensitivity & automated calibration script written by Robert Ladwig, June 2019
-#modified for FCR-specific applications by CCC
-#last updated 3 June 2020
+#*****************************************************************                                                           *
+#* TITLE:   Sensitivity and numerical optimization calibration script
+#*           for GLM-AED
+#* AUTHORS:  R. Ladwig and C.C. Carey                    
+#* DATE:   Originally developed by R. Ladwig in 2018 and given to CCC in 2019; 
+#*         Last modified by CCC in 9 Sept 2021                            
+#* NOTES:  CCC modified the original script in 2019 for FCR modeling, 
+#*        with subsequent tweaks to annotation in summer 2021. 
+#*****************************************************************
+
 
 rm(list = ls()) #let's clean up that workspace!
 
 setwd("./FCR_2013_2019GLMHistoricalRun_GLMv3beta") #if pulling from github, sets it to proper wd
-source('scripts/functions-glm.R') #source the helper functions
+source('modeling/functions-glm.R') #source the helper functions
 read.packages() 
 
 # RUN GLM AND READ RESULTS  ---------------------------
@@ -15,7 +22,7 @@ sim_vars(out)
 
 sim_folder<-getwd()
 
-run_glm('Compiled') #pulling from Cayelan's version
+run_glm('Compiled') #using Cayelan's GLM-AED dynamic libraries in this repo
 plot_temp(out, col_lim = c(0,30))
 plot_var(file=out,"OXY_oxy",reference="surface")
 
@@ -37,14 +44,15 @@ gases$DateTime <-as.POSIXct(strptime(gases$DateTime, "%Y-%m-%d", tz="EST"))
 
 #######################################################
 # RUN SENSITIVITY ANALYSIS  ---------------------------
-# 1) water temperature, following ISIMIP approach
+# 1) water temperature
 #first, copy & paste your glm3.nml and aed2.nml within their respective directories
 # and rename as glm4.nml and aed4.nml; these 4.nml versions are going to be rewritten
 file.copy('glm4.nml', 'glm3.nml', overwrite = TRUE)
 file.copy('aed2/aed4_20200701_2DOCpools.nml', 'aed2/aed2_20200701_2DOCpools.nml', overwrite = TRUE)
-#file.copy('aed2/aed4_1OGMpool_27Aug2019.nml', 'aed2/aed2_1OGMpool_27Aug2019.nml', overwrite = TRUE)
 var = 'temp'
-calib <- matrix(c('par', 'lb', 'ub', 'x0', #THIS LIST WILL BE EDITED BUT START WITH ALL VARS
+
+#build a matrix with all potential parameters for sensitivity analysis here
+calib <- matrix(c('par', 'lb', 'ub', 'x0', 
                   'wind_factor', 0.75, 1.25, 1,
                   'sw_factor', 0.75, 1.25, 1,
                   'lw_factor', 0.75, 1.25, 1,
@@ -57,18 +65,18 @@ calib <- matrix(c('par', 'lb', 'ub', 'x0', #THIS LIST WILL BE EDITED BUT START W
                   'ce', 0.0005, 0.002, 0.0013,
                   'ch', 0.0005, 0.002, 0.0013,
                   'cd', 0.0005, 0.002, 0.0013,
-                  #'zone_heights', 0.1,9.5,5,
-                  #'zone_heights', 0.1,9.5,9,
-                  #'rain_factor', 0.75, 1.25, 1,
-                  #'at_factor', 0.75, 1.25, 1,
-                  #'rh_factor', 0.75, 1.25, 1,
+                  'zone_heights', 0.1,9.5,5,
+                  'zone_heights', 0.1,9.5,9,
+                  'rain_factor', 0.75, 1.25, 1,
+                  'at_factor', 0.75, 1.25, 1,
+                  'rh_factor', 0.75, 1.25, 1,
                   'sed_temp_mean',3,20,11,
                   'sed_temp_mean',3,20,17,
                   'sed_temp_amplitude',2,12,6,
                   'sed_temp_amplitude',2,12,6,
                   'sed_temp_peak_doy',250,280,272,
-                  'sed_temp_peak_doy',250,280,272
-                  ), nrow = 19,ncol = 4, byrow = TRUE) #EDIT THE NROW TO REFLECT # OF ROWS IN ANALYSIS
+                  'sed_temp_peak_doy',250,280,272), nrow = 24,ncol = 4, byrow = TRUE) 
+#Be sure to edit the nrow value if you decrease the number of rows in matrix above
 write.table(calib, file = paste0('sensitivity/sample_sensitivity_config_',var,'.csv'), row.names = FALSE, 
             col.names = FALSE, sep = ',',
             quote = FALSE)
