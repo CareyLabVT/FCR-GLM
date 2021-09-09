@@ -58,7 +58,7 @@ mod_oxy_anoxic <- get_var(nc_anoxic, "OXY_oxy", reference="surface", z_out=1) %>
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST")))   %>%
   mutate(OXYcum = cumsum(OXY_oxy))
 
-sss_oxy<-read.csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/Calc_HOX_flow_DO_20190916.csv') %>%
+sss_oxy<-read.csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/inputs/HOx_Operations_20190916.csv') %>%
   rename(DateTime = time) %>%
   select(DateTime, mmol.O2.m3.day)%>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) 

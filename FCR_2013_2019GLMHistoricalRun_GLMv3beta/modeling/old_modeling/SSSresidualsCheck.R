@@ -27,7 +27,7 @@ system2(paste0(sim_folder, "/", "glm"), stdout = TRUE, stderr = TRUE, env = past
 nc_file <- file.path(sim_folder, 'output/output.nc') #defines the output.nc file 
 #########
 
-SSS <- read.csv("./inputs/Calc_HOX_flow_DO_20190916.csv") 
+SSS <- read.csv("./inputs/HOx_Operations_20190916.csv") 
 SSS$time<-as.POSIXct(strptime(SSS$time, "%Y-%m-%d", tz="EST"))
 
 oxygen <- resample_to_field(nc_file, field_file, precision="days", method='interp', 
