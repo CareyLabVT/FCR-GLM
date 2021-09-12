@@ -8,7 +8,7 @@ library(lubridate)
 library(gganimate)
 
 setwd("./FCR_2013_2019GLMHistoricalRun_GLMv3beta")
-setwd("../") #if pulling from github, sets it to proper wd, which should be "/FCR_2013_2019GLMHistoricalRun_GLMv3beta"
+#setwd("../") #if pulling from github, sets it to proper wd, which should be "/FCR_2013_2019GLMHistoricalRun_GLMv3beta"
 sim_folder <- getwd()
 
 #####baseline scenario####

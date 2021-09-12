@@ -28,51 +28,72 @@ observed <- read.csv("./field_data/field_chem_hypo.csv", header=T) %>%
 totals <- read.csv("./field_data/totalNP.csv", header=T) %>% 
   mutate(time = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST")))
 
-######calculating the summer anoxic vs oxic years
-data <- merge(observed, totals, by=c('time', "Depth"), all.x=T, all.y=T) %>% 
-  filter(Depth==9) %>% 
-  mutate(month_day = format(as.Date(time), "%m-%d")) %>%
-  mutate(year = year(time))%>%
-  dplyr::filter(month_day <= "10-01", month_day >= "07-15") %>%
-  mutate(DOC = OGM_doc + OGM_docr) %>% 
-  select(time, year, Depth, NIT_amm:PHS_frp,DOC, TOT_tn:TOT_tp) %>% 
-  group_by(year) %>% drop_na() %>% 
-  summarise(mean_NH4 = mean(NIT_amm),
-            mean_NIT = mean(NIT_nit),
-            mean_FRP = mean(PHS_frp),
-            mean_DOC = mean(DOC),
-            mean_TN = mean(TOT_tn),
-            mean_TP = mean(TOT_tp),
-            max_NH4 = max(NIT_amm),
-            max_NIT = max(NIT_nit),
-            max_FRP = max(PHS_frp),
-            max_DOC = max(DOC),
-            max_TN = max(TOT_tn),
-            max_TP = max(TOT_tp),
-            min_NIT = min(NIT_nit)) %>%
-  mutate(Status = case_when(
-    year == 2014 | year == 2018 | year == 2019 ~ "Anoxic",
-    year == 2015 | year == 2016 | year == 2017 ~ "Oxic")) %>% 
-  group_by(Status) %>% 
-  summarise(mean_annual_NH4 = mean(mean_NH4),
-            mean_annual_NIT = mean(mean_NIT),
-            mean_annual_FRP = mean(mean_FRP),
-            mean_annual_DOC = mean(mean_DOC),
-            mean_annual_TN = mean(mean_TN),
-            mean_annual_TP = mean(mean_TP),
-            max_annual_NH4 = mean(max_NH4),
-            max_annual_NIT = mean(max_NIT),
-            max_annual_FRP = mean(max_FRP),
-            max_annual_DOC = mean(max_DOC),
-            max_annual_TN = mean(max_TN),
-            max_annual_TP = mean(max_TP))
+####Abstract####
+#first run the "MakeFigure_OrganizeDataForFigure" script, then use this to calculate difference in 
+# TN export
+tn_export <- retention_stratified_period%>%
+  select(year, Fnet_A_TN, Fnet_O_TN)%>%
+  rename(Anoxic = Fnet_A_TN, Oxic = Fnet_O_TN) %>% 
+  mutate(AnoxicFactor = Anoxic/Oxic)
+mean(tn_export$AnoxicFactor)
+#for text in the abstract regarding the factor of anoxic vs oxic TN export
+###############
 
-(data$max_annual_NH4[1]-data$max_annual_NH4[2])/data$max_annual_NH4[2]
-(data$max_annual_FRP[1]-data$max_annual_FRP[2])/data$max_annual_FRP[2]
-(data$max_annual_DOC[1]-data$max_annual_DOC[2])/data$max_annual_DOC[2]
-(data$max_annual_NIT[1]-data$max_annual_NIT[2])/data$max_annual_NIT[2]
-(data$max_annual_TN[1]-data$max_annual_TN[2])/data$max_annual_TN[2]
-(data$max_annual_TP[1]-data$max_annual_TP[2])/data$max_annual_TP[2]
+####Methods####
+#calculate hydraulic residence time
+outflow <- read_csv("./inputs/FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv") %>% 
+  mutate(HRT = 308836/(FLOW*60*60*24)) #HRT = full pond volume in m3 divided by the rate of water leaving in m3/d
+mean(outflow$HRT) #281 days
+sd(outflow$HRT)/(length(outflow$FLOW)^0.5) #12 days for SE
+#for site description paragraph of FCR's hydraulic residence time
+###############
+
+####Results####
+##calculating the summer anoxic vs oxic observational differences
+# data <- merge(observed, totals, by=c('time', "Depth"), all.x=T, all.y=T) %>% 
+#   filter(Depth==9) %>% 
+#   mutate(month_day = format(as.Date(time), "%m-%d")) %>%
+#   mutate(year = year(time))%>%
+#   dplyr::filter(month_day <= "10-01", month_day >= "07-15") %>%
+#   mutate(DOC = OGM_doc + OGM_docr) %>% 
+#   select(time, year, Depth, NIT_amm:PHS_frp,DOC, TOT_tn:TOT_tp) %>% 
+#   group_by(year) %>% drop_na() %>% 
+#   summarise(mean_NH4 = mean(NIT_amm),
+#             mean_NIT = mean(NIT_nit),
+#             mean_FRP = mean(PHS_frp),
+#             mean_DOC = mean(DOC),
+#             mean_TN = mean(TOT_tn),
+#             mean_TP = mean(TOT_tp),
+#             max_NH4 = max(NIT_amm),
+#             max_NIT = max(NIT_nit),
+#             max_FRP = max(PHS_frp),
+#             max_DOC = max(DOC),
+#             max_TN = max(TOT_tn),
+#             max_TP = max(TOT_tp),
+#             min_NIT = min(NIT_nit)) %>%
+#   mutate(Status = case_when(
+#     year == 2014 | year == 2018 | year == 2019 ~ "Anoxic",
+#     year == 2015 | year == 2016 | year == 2017 ~ "Oxic")) %>% 
+#   group_by(Status) %>% 
+#   summarise(mean_annual_NH4 = mean(mean_NH4),
+#             mean_annual_NIT = mean(mean_NIT),
+#             mean_annual_FRP = mean(mean_FRP),
+#             mean_annual_DOC = mean(mean_DOC),
+#             mean_annual_TN = mean(mean_TN),
+#             mean_annual_TP = mean(mean_TP),
+#             max_annual_NH4 = mean(max_NH4),
+#             max_annual_NIT = mean(max_NIT),
+#             max_annual_FRP = mean(max_FRP),
+#             max_annual_DOC = mean(max_DOC),
+#             max_annual_TN = mean(max_TN),
+#             max_annual_TP = mean(max_TP))
+# 
+# (data$max_annual_NH4[1]-data$max_annual_NH4[2])/data$max_annual_NH4[2]
+# (data$max_annual_FRP[1]-data$max_annual_FRP[2])/data$max_annual_FRP[2]
+# (data$max_annual_DOC[1]-data$max_annual_DOC[2])/data$max_annual_DOC[2]
+# (data$max_annual_NIT[1]-data$max_annual_NIT[2])/data$max_annual_NIT[2]
+# (data$max_annual_TN[1]-data$max_annual_TN[2])/data$max_annual_TN[2]
+# (data$max_annual_TP[1]-data$max_annual_TP[2])/data$max_annual_TP[2]
 #for second results paragraph that needs numbers on % difference in observed data 
 # between oxygenated and non-oxygenated summers
 
@@ -132,100 +153,100 @@ data <- merge(observed, totals, by=c('time', "Depth"), all.x=T, all.y=T) %>%
 
 
 #####study the baseline simulation####
-#pull out deep-water chemistry from each output file
-B_oxy <- get_var(nc_file,'OXY_oxy',z_out=9,reference = 'surface') 
-B_DOCr <- get_var(nc_file, "OGM_docr",z_out=9,reference = 'surface')
-B_DOC <- get_var(nc_file, "OGM_doc",z_out=9,reference = 'surface')
-B_NO3 <- get_var(nc_file, "NIT_nit",z_out=9,reference = 'surface')
-B_NH4 <- get_var(nc_file, "NIT_amm",z_out=9,reference = 'surface')
-B_PO4 <- get_var(nc_file, "PHS_frp",z_out=9,reference = 'surface')
-B_TN <- get_var(nc_file, "TOT_tn",z_out=9,reference = 'surface')
-B_TP <- get_var(nc_file, "TOT_tp",z_out=9,reference = 'surface')
-B_TOC <- get_var(nc_file, "TOT_toc",z_out=9,reference = 'surface')
-
-B_cyano <- get_var(nc_file,var_name = 'PHY_cyano',z_out=9,reference = 'surface') %>% 
-  pivot_longer(cols=starts_with(paste0("PHY_cyano_")), names_to="Depth", names_prefix="PHY_cyano_",values_to = "CyanoConc") %>%
-  mutate(B_cyanoN = CyanoConc*0.12,
-         B_cyanoP = CyanoConc*0.0005,
-         B_cyanoC = CyanoConc) %>% 
-  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
-  select(DateTime,Depth,B_cyanoN, B_cyanoP, B_cyanoC)
-
-B_green <- get_var(nc_file,var_name = 'PHY_green',z_out=9,reference = 'surface') %>% 
-  pivot_longer(cols=starts_with(paste0("PHY_green_")), names_to="Depth", names_prefix="PHY_green_",values_to = "GreenConc") %>%
-  mutate(B_greenN = GreenConc*0.12,
-         B_greenP = GreenConc*0.0005,
-         B_greenC = GreenConc) %>% 
-  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
-  select(DateTime,Depth,B_greenN, B_greenP, B_greenC)
-
-B_diatom <- get_var(nc_file,var_name = 'PHY_diatom',z_out=9,reference = 'surface') %>% 
-  pivot_longer(cols=starts_with(paste0("PHY_diatom_")), names_to="Depth", names_prefix="PHY_diatom_",values_to = "DiatomConc") %>%
-  mutate(B_diatomN = DiatomConc*0.12,
-         B_diatomP = DiatomConc*0.0005,
-         B_diatomC = DiatomConc) %>% 
-  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
-  select(DateTime,Depth,B_diatomN, B_diatomP, B_diatomC)
-
-#bind the data together
-data<-as.data.frame(cbind(B_oxy,B_DOCr[,2],B_DOC[,2],B_NO3[,2],B_NH4[,2],B_PO4[,2],
-                          B_TN[,2],B_TP[,2],B_TOC[,2],
-                          B_diatom[,3:5],B_cyano[,3:5],B_green[,3:5]))
-colnames(data) = c("time", "B_oxy", "B_DOCr", "B_DOC", "B_NO3","B_NH4","B_PO4",
-                   "B_TN", "B_TP", "B_TOC", "B_diatomN", "B_diatomP", "B_diatomC",
-                   "B_cyanoN", "B_cyanoP", "B_cyanoC", "B_greenN", "B_greenP", "B_greenC") 
-data1 <- data %>% 
-  mutate(B_DOCall = B_DOCr + B_DOC,
-         B_totalN = B_TN + B_diatomN + B_cyanoN + B_greenN,
-         B_totalP = B_TP + B_diatomP + B_cyanoP + B_greenP,
-         B_totalC = B_TOC + B_diatomC + B_cyanoC + B_greenC) %>% 
-  select(time:B_TOC,B_oxy:B_TOC,B_DOCall:B_totalC) %>% 
-  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>% 
-  mutate(month_day = format(as.Date(time), "%m-%d")) %>%
-  mutate(year = year(time)) %>%
-  dplyr::filter(month_day <= "10-01", month_day >= "07-15") %>%
-  select(time, year, B_NO3:B_PO4,B_DOCall:B_totalC) %>% 
-  group_by(year) %>% drop_na() %>% 
-  summarise(mean_NH4 = mean(B_NH4),
-            mean_NIT = mean(B_NO3),
-            mean_FRP = mean(B_PO4),
-            mean_DOC = mean(B_DOCall),
-            mean_TN = mean(B_totalN),
-            mean_TP = mean(B_totalP),
-            max_NH4 = max(B_NH4),
-            max_NIT = max(B_NO3),
-            max_FRP = max(B_PO4),
-            max_DOC = max(B_DOCall),
-            max_TN = max(B_totalN),
-            max_TP = max(B_totalP)) %>%
-  mutate(Status = case_when(
-    year == 2014 | year == 2018 | year == 2019 ~ "Anoxic",
-    year == 2015 | year == 2016 | year == 2017 ~ "Oxic",
-    year == 2013 ~ "TheInBetween")) %>% 
-  group_by(Status) %>% 
-  summarise(mean_annual_NH4 = mean(mean_NH4),
-            mean_annual_NIT = mean(mean_NIT),
-            mean_annual_FRP = mean(mean_FRP),
-            mean_annual_DOC = mean(mean_DOC),
-            mean_annual_TN = mean(mean_TN),
-            mean_annual_TP = mean(mean_TP),
-            max_annual_NH4 = mean(max_NH4),
-            max_annual_NIT = mean(max_NIT),
-            max_annual_FRP = mean(max_FRP),
-            max_annual_DOC = mean(max_DOC),
-            max_annual_TN = mean(max_TN),
-            max_annual_TP = mean(max_TP))
-
-(data1$max_annual_NH4[1]-data1$max_annual_NH4[2])/data1$max_annual_NH4[2]
-(data1$max_annual_FRP[1]-data1$max_annual_FRP[2])/data1$max_annual_FRP[2]
-(data1$max_annual_DOC[1]-data1$max_annual_DOC[2])/data1$max_annual_DOC[2]
-(data1$max_annual_NIT[1]-data1$max_annual_NIT[2])/data1$max_annual_NIT[2]
-(data1$max_annual_TN[1]-data1$max_annual_TN[2])/data1$max_annual_TN[2]
-(data1$max_annual_TP[1]-data1$max_annual_TP[2])/data1$max_annual_TP[2]
+# #pull out deep-water chemistry from each output file
+# B_oxy <- get_var(nc_file,'OXY_oxy',z_out=9,reference = 'surface') 
+# B_DOCr <- get_var(nc_file, "OGM_docr",z_out=9,reference = 'surface')
+# B_DOC <- get_var(nc_file, "OGM_doc",z_out=9,reference = 'surface')
+# B_NO3 <- get_var(nc_file, "NIT_nit",z_out=9,reference = 'surface')
+# B_NH4 <- get_var(nc_file, "NIT_amm",z_out=9,reference = 'surface')
+# B_PO4 <- get_var(nc_file, "PHS_frp",z_out=9,reference = 'surface')
+# B_TN <- get_var(nc_file, "TOT_tn",z_out=9,reference = 'surface')
+# B_TP <- get_var(nc_file, "TOT_tp",z_out=9,reference = 'surface')
+# B_TOC <- get_var(nc_file, "TOT_toc",z_out=9,reference = 'surface')
+# 
+# B_cyano <- get_var(nc_file,var_name = 'PHY_cyano',z_out=9,reference = 'surface') %>% 
+#   pivot_longer(cols=starts_with(paste0("PHY_cyano_")), names_to="Depth", names_prefix="PHY_cyano_",values_to = "CyanoConc") %>%
+#   mutate(B_cyanoN = CyanoConc*0.12,
+#          B_cyanoP = CyanoConc*0.0005,
+#          B_cyanoC = CyanoConc) %>% 
+#   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
+#   select(DateTime,Depth,B_cyanoN, B_cyanoP, B_cyanoC)
+# 
+# B_green <- get_var(nc_file,var_name = 'PHY_green',z_out=9,reference = 'surface') %>% 
+#   pivot_longer(cols=starts_with(paste0("PHY_green_")), names_to="Depth", names_prefix="PHY_green_",values_to = "GreenConc") %>%
+#   mutate(B_greenN = GreenConc*0.12,
+#          B_greenP = GreenConc*0.0005,
+#          B_greenC = GreenConc) %>% 
+#   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
+#   select(DateTime,Depth,B_greenN, B_greenP, B_greenC)
+# 
+# B_diatom <- get_var(nc_file,var_name = 'PHY_diatom',z_out=9,reference = 'surface') %>% 
+#   pivot_longer(cols=starts_with(paste0("PHY_diatom_")), names_to="Depth", names_prefix="PHY_diatom_",values_to = "DiatomConc") %>%
+#   mutate(B_diatomN = DiatomConc*0.12,
+#          B_diatomP = DiatomConc*0.0005,
+#          B_diatomC = DiatomConc) %>% 
+#   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
+#   select(DateTime,Depth,B_diatomN, B_diatomP, B_diatomC)
+# 
+# #bind the data together
+# data<-as.data.frame(cbind(B_oxy,B_DOCr[,2],B_DOC[,2],B_NO3[,2],B_NH4[,2],B_PO4[,2],
+#                           B_TN[,2],B_TP[,2],B_TOC[,2],
+#                           B_diatom[,3:5],B_cyano[,3:5],B_green[,3:5]))
+# colnames(data) = c("time", "B_oxy", "B_DOCr", "B_DOC", "B_NO3","B_NH4","B_PO4",
+#                    "B_TN", "B_TP", "B_TOC", "B_diatomN", "B_diatomP", "B_diatomC",
+#                    "B_cyanoN", "B_cyanoP", "B_cyanoC", "B_greenN", "B_greenP", "B_greenC") 
+# data1 <- data %>% 
+#   mutate(B_DOCall = B_DOCr + B_DOC,
+#          B_totalN = B_TN + B_diatomN + B_cyanoN + B_greenN,
+#          B_totalP = B_TP + B_diatomP + B_cyanoP + B_greenP,
+#          B_totalC = B_TOC + B_diatomC + B_cyanoC + B_greenC) %>% 
+#   select(time:B_TOC,B_oxy:B_TOC,B_DOCall:B_totalC) %>% 
+#   mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>% 
+#   mutate(month_day = format(as.Date(time), "%m-%d")) %>%
+#   mutate(year = year(time)) %>%
+#   dplyr::filter(month_day <= "10-01", month_day >= "07-15") %>%
+#   select(time, year, B_NO3:B_PO4,B_DOCall:B_totalC) %>% 
+#   group_by(year) %>% drop_na() %>% 
+#   summarise(mean_NH4 = mean(B_NH4),
+#             mean_NIT = mean(B_NO3),
+#             mean_FRP = mean(B_PO4),
+#             mean_DOC = mean(B_DOCall),
+#             mean_TN = mean(B_totalN),
+#             mean_TP = mean(B_totalP),
+#             max_NH4 = max(B_NH4),
+#             max_NIT = max(B_NO3),
+#             max_FRP = max(B_PO4),
+#             max_DOC = max(B_DOCall),
+#             max_TN = max(B_totalN),
+#             max_TP = max(B_totalP)) %>%
+#   mutate(Status = case_when(
+#     year == 2014 | year == 2018 | year == 2019 ~ "Anoxic",
+#     year == 2015 | year == 2016 | year == 2017 ~ "Oxic",
+#     year == 2013 ~ "TheInBetween")) %>% 
+#   group_by(Status) %>% 
+#   summarise(mean_annual_NH4 = mean(mean_NH4),
+#             mean_annual_NIT = mean(mean_NIT),
+#             mean_annual_FRP = mean(mean_FRP),
+#             mean_annual_DOC = mean(mean_DOC),
+#             mean_annual_TN = mean(mean_TN),
+#             mean_annual_TP = mean(mean_TP),
+#             max_annual_NH4 = mean(max_NH4),
+#             max_annual_NIT = mean(max_NIT),
+#             max_annual_FRP = mean(max_FRP),
+#             max_annual_DOC = mean(max_DOC),
+#             max_annual_TN = mean(max_TN),
+#             max_annual_TP = mean(max_TP))
+# 
+# (data1$max_annual_NH4[1]-data1$max_annual_NH4[2])/data1$max_annual_NH4[2]
+# (data1$max_annual_FRP[1]-data1$max_annual_FRP[2])/data1$max_annual_FRP[2]
+# (data1$max_annual_DOC[1]-data1$max_annual_DOC[2])/data1$max_annual_DOC[2]
+# (data1$max_annual_NIT[1]-data1$max_annual_NIT[2])/data1$max_annual_NIT[2]
+# (data1$max_annual_TN[1]-data1$max_annual_TN[2])/data1$max_annual_TN[2]
+# (data1$max_annual_TP[1]-data1$max_annual_TP[2])/data1$max_annual_TP[2]
 ##for third paragraph looking at the summers with continuous vs limited oxygenation in baseline sim
 
 
-#####make the anoxic vs oxic dataset####
+#####make the anoxic vs oxic modeled dataset####
 #pull out deep-water chemistry from each output file
 A_oxy <- get_var(anoxic,'OXY_oxy',z_out=9,reference = 'surface') 
 O_oxy <- get_var(oxic,'OXY_oxy',z_out=9,reference = 'surface') 
@@ -328,6 +349,52 @@ data2 <- data %>%
          O_NO3:O_PO4, O_DOCall, O_totalN, O_totalP,O_totalC) %>% 
   mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST")))
 
+#to calculate t-tests of the median hypolimnetic concentrations for SI File 1
+median_yr_concs <- data2 %>% 
+  mutate(month_day = format(as.Date(time), "%m-%d")) %>%
+  mutate(year = year(time))%>%
+  dplyr::filter(month_day <= "10-01", month_day >= "07-15") %>%
+  group_by(year) %>% 
+  summarise(median_A_TOC = median(A_totalC),
+            median_O_TOC = median(O_totalC),
+            median_A_DOC = median(A_DOCall),
+            median_O_DOC = median(O_DOCall),
+            median_A_TN = median(A_totalN),
+            median_O_TN = median(O_totalN),
+            median_A_NH4 = median(A_NH4),
+            median_O_NH4 = median(O_NH4),
+            median_A_NO3 = median(A_NO3),
+            median_O_NO3 = median(O_NO3),
+            median_A_TP = median(A_totalP),
+            median_O_TP = median(O_totalP),
+            median_A_DRP = median(A_PO4),
+            median_O_DRP = median(O_PO4))
+
+#develop a matrix to fill with t-test statistics
+
+variables <-c("TOC", "DOC", "TN", "NH4", "NO3", "TP", "DRP")
+conc_stats <- matrix(-99,length(variables), 4) 
+
+for(i in 1:length(variables)){
+  temp<-as.data.frame(median_yr_concs[grep(variables[i],colnames(median_yr_concs))])
+  test<-t.test(temp[,1],temp[,2], paired=T)
+  conc_stats[i,1]=variables[i]
+  conc_stats[i,2]=round(as.numeric(test[1]), digits=2)
+  conc_stats[i,3]=as.numeric(test[2])
+  conc_stats[i,4]=as.numeric(test[3])
+}
+
+conc_stats1<-noquote(as.data.frame(conc_stats))
+colnames(conc_stats1)<-c("Variable", "t-value", "df", "p-value")
+write.csv(conc_stats1, "output/Hypo_Concs_TtestStats.csv", row.names = F)
+
+
+
+
+
+
+
+
 data3 <- data2 %>% 
   mutate(month_day = format(as.Date(time), "%m-%d")) %>%
   mutate(year = year(time))%>%
@@ -347,7 +414,7 @@ data3 <- data2 %>%
             mean_A_O_PO4 = mean(A_O_PO4),
             mean_O_A_NO3 = mean(O_A_NO3))
 ###paragraph 4 in results, comparison of anoxic vs oxic concentrations in model output
-         
+
 
 #####make ratios####
 data4 <- data2 %>% 
@@ -504,5 +571,170 @@ data1 <- data %>%
 
 
 
+
+# ###############Calculating Sediment burial rates
+# #####particulate organic carbon first
+A_POC <- get_var(anoxic, "OGM_Psed_poc",z_out=9.2,reference = 'surface')
+O_POC <- get_var(oxic, "OGM_Psed_poc",z_out=9.2,reference = 'surface')
+B_POC<- get_var(nc_file, "OGM_Psed_poc",z_out=9.2,reference = 'surface')
+
+plot(A_POC$DateTime, A_POC$OGM_Psed_poc_9, col="red", type="l")
+lines(O_POC$DateTime, O_POC$OGM_Psed_poc_9, col="blue")
+plot(B_POC$DateTime, B_POC$OGM_Psed_poc_9, col="green")
+
+data<-cbind(A_POC, O_POC, B_POC)
+colnames(data)<-c("time", "Anoxic", "time2", "Oxic", "time3", "Baseline")
+
+# data<-B_POC %>%
+#   mutate(time = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
+#   mutate(year=year(time)) %>%
+#   group_by(year) %>%
+#   summarise(total = sum(OGM_Psed_poc_9.2))
+
+# data1<-data %>%
+#   mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
+#   mutate(year=year(time),
+#          DOY = yday(time)) %>%
+#   dplyr::filter(DOY < 275, DOY > 195) %>% #July 15-Oct 1
+#   group_by(year) %>%
+#   summarise(total_anoxic = sum(Anoxic), total_oxic=sum(Oxic))
+# t.test(data1$total_anoxic, data1$total_oxic, paired=T)
+
+data1 <- data %>%
+  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
+  mutate(year=year(time)) %>%
+  group_by(year) %>%
+  summarise(mean_anoxic = mean(Anoxic), mean_oxic=mean(Oxic), mean_baseline = mean(Baseline))
+t.test(data1$mean_anoxic, data1$mean_oxic, paired=T)
+
+data2 <- data1 %>% drop_na() %>%
+  mutate(total_anoxic = mean_anoxic*12*365*24*60*60/1000,
+         total_oxic = mean_oxic*12*365*24*60*60/1000,
+         total_baseline= mean_baseline*12*365*24*60*60/1000) %>%
+  summarise(mean_yearly_anoxic_C_burial = mean(total_anoxic), sd_anoxic = std_err(total_anoxic),
+            mean_yearly_oxic_C_burial = mean(total_oxic), sd_oxic = std_err(total_oxic),
+            mean_yearly_baseline_C_burial = mean(total_baseline), sd_base = std_err(total_baseline))
+#rates are in mmol/m2/second and need to be converted to g/m2/yr by multiplying by
+#12*365*24*60*60/1000
+
+
+
+# ##for CCC's SIL talk
+# A_POC <- get_var(anoxic, "OGM_Psed_poc",z_out=9.2,reference = 'surface')
+# O_POC <- get_var(oxic, "OGM_Psed_poc",z_out=9.2,reference = 'surface')
+# A_DOC <- get_var(anoxic, "OGM_sed_doc",z_out=9.2,reference = 'surface')
+# O_DOC <- get_var(oxic, "OGM_sed_doc",z_out=9.2,reference = 'surface')
+# 
+# plot(A_DOC$DateTime, A_DOC$OGM_sed_doc, col="red", type="l")
+# lines(O_DOC$DateTime, O_DOC$OGM_sed_doc, col="blue")
+# 
+# data<-cbind(A_POC, O_POC, A_DOC, O_DOC)
+# colnames(data)<-c("time", "Anoxic_POC", "time2", "Oxic_POC", "time3", "Anoxic_DOC", "time4", "Oxic_DOC")
+# 
+# data1 <- data %>%
+#   mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
+#   mutate(month_day = format(as.Date(time), "%m-%d")) %>%
+#   mutate(year = year(time)) %>%
+#   dplyr::filter(month_day <= "10-01", month_day >= "07-15") %>% 
+#   group_by(year) %>%
+#   summarise(A_POC = mean(Anoxic_POC)*24*60*60*12*365/1000, O_POC=mean(Oxic_POC)*24*60*60*12*365/1000, 
+#             A_DOC = mean(Anoxic_DOC)*12*365*2/1000, O_DOC = mean(Oxic_DOC)*12*365*2/1000) %>% 
+#   mutate(A_TOC = A_DOC + A_POC, O_TOC = O_DOC + O_POC) %>% 
+#   filter(year < 2018)
+# 
+# docdata <- data1 %>% 
+#   select(A_TOC, A_DOC, A_POC, O_TOC, O_DOC, O_POC) %>% 
+#   #summarise_all(list(median)) %>%
+#   pivot_longer(cols = A_TOC:O_POC, names_to = c("Scenario", "Process"), names_sep ="_") %>% 
+#   mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic"))
+# 
+# docdata$Process <- factor(docdata$Process)
+# docdata$Process <- factor(docdata$Process, levels = c("POC", "DOC", "TOC"))
+# 
+# p3 <- docdata %>% 
+#   ggplot(aes(x = Process, y = value, fill=Scenario)) +
+#   geom_boxplot() +
+#  # scale_fill_manual(values = cols_c, name = "") +
+#   labs(x = "", y = expression(g~Organic~Carbon~m^{-2}~yr^{-1})) +
+#   ylim(-12, 12) + 
+#   #axis(1, cex.axis=2) +
+#   geom_hline(yintercept = 0, lty = "dashed") +
+#   theme_bw() +
+#   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), text = element_text(size = 16))
+
+
+# #######nitrogen second
+# 
+# A_PON <- get_var(anoxic, "OGM_Psed_pon",z_out=9.2,reference = 'surface')
+# O_PON <- get_var(oxic, "OGM_Psed_pon",z_out=9.2,reference = 'surface')
+# B_PON<- get_var(nc_file, "OGM_Psed_pon",z_out=9.2,reference = 'surface')
+# 
+# plot(A_PON$DateTime, A_PON$OGM_Psed_pon_9.2, col="red", type="l")
+# lines(O_PON$DateTime, O_PON$OGM_Psed_pon_9.2, col="blue")
+# plot(B_PON$DateTime, B_PON$OGM_Psed_pon_9.2, col="green")
+# 
+# data<-cbind(A_PON, O_PON, B_PON)
+# colnames(data)<-c("time", "Anoxic", "time2", "Oxic", "time3", "Baseline")
+# 
+# data1 <- data %>% 
+#   mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>% 
+#   mutate(year=year(time)) %>% 
+#   group_by(year) %>% 
+#   summarise(mean_anoxic = mean(Anoxic), mean_oxic=mean(Oxic), mean_baseline = mean(Baseline))
+# t.test(data1$mean_anoxic, data1$mean_oxic, paired=T)
+# 
+# data2 <- data1 %>% drop_na() %>% 
+#   mutate(total_anoxic = mean_anoxic*14*365*24*60*60/1000,
+#          total_oxic = mean_oxic*14*365*24*60*60/1000,
+#          total_baseline= mean_baseline*14*365*24*60*60/1000) %>% 
+#   summarise(mean_yearly_anoxic_N_burial = mean(total_anoxic), sd_anoxic = std_err(total_anoxic),
+#             mean_yearly_oxic_N_burial = mean(total_oxic), sd_oxic = std_err(total_oxic),
+#             mean_yearly_baseline_N_burial = mean(total_baseline), sd_base = std_err(total_baseline)) 
+# #rates are in mmol/m2/second and need to be converted to g/m2/yr by multiplying by
+# #12*365*24*60*60/1000
+# 
+# #######phosphorus third
+# A_POP <- get_var(anoxic, "OGM_Psed_pop",z_out=9.2,reference = 'surface')
+# O_POP <- get_var(oxic, "OGM_Psed_pop",z_out=9.2,reference = 'surface')
+# B_POP<- get_var(nc_file, "OGM_Psed_pop",z_out=9.2,reference = 'surface')
+# 
+# plot(A_POP$DateTime, A_POP$OGM_Psed_pop_9.2, col="red", type="l")
+# lines(O_POP$DateTime, O_POP$OGM_Psed_pop_9.2, col="blue")
+# plot(B_POP$DateTime, B_POP$OGM_Psed_pop_9.2, col="green")
+# 
+# data<-cbind(A_POP, O_POP, B_POP)
+# colnames(data)<-c("time", "Anoxic", "time2", "Oxic", "time3", "Baseline")
+# 
+# # data<-B_POC %>% 
+# #   mutate(time = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
+# #   mutate(year=year(time)) %>% 
+# #   group_by(year) %>% 
+# #   summarise(total = sum(OGM_Psed_poc_9.2))
+# 
+# # data1<-data %>%
+# #   mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
+# #   mutate(year=year(time),
+# #          DOY = yday(time)) %>%
+# #   dplyr::filter(DOY < 275, DOY > 195) %>% #July 15-Oct 1
+# #   group_by(year) %>% 
+# #   summarise(total_anoxic = sum(Anoxic), total_oxic=sum(Oxic))
+# # t.test(data1$total_anoxic, data1$total_oxic, paired=T)
+# 
+# data1 <- data %>% 
+#   mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>% 
+#   mutate(year=year(time)) %>% 
+#   group_by(year) %>% 
+#   summarise(mean_anoxic = mean(Anoxic), mean_oxic=mean(Oxic), mean_baseline = mean(Baseline))
+# t.test(data1$mean_anoxic, data1$mean_oxic, paired=T)
+# 
+# data2 <- data1 %>% drop_na() %>% 
+#   mutate(total_anoxic = mean_anoxic*31*365*24*60*60/1000,
+#          total_oxic = mean_oxic*31*365*24*60*60/1000,
+#          total_baseline= mean_baseline*31*365*24*60*60/1000) %>% 
+#   summarise(mean_yearly_anoxic_P_burial = mean(total_anoxic), sd_anoxic = std_err(total_anoxic),
+#             mean_yearly_oxic_P_burial = mean(total_oxic), sd_oxic = std_err(total_oxic),
+#             mean_yearly_baseline_P_burial = mean(total_baseline), sd_base = std_err(total_baseline)) 
+# 
+# 
 
 
