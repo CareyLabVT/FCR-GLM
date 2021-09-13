@@ -433,7 +433,7 @@ lb <- cal_pars$lb
 #init.val <- rep(5, nrow(cal_pars))
 init.val <- (c(4.1,-25,-8) - lb) *10 /(ub-lb) # Paul's values
 #obs <- read_field_obs('field_data/field_FCR.csv', var)
-obs <- read_field_obs('field_data/CleanedObsOxy_9m.csv',var)
+obs <- read_field_obs('field_data/CleanedObsOxy.csv',var)
 method = 'cmaes'
 calib.metric = 'RMSE'
 os = "Compiled" 

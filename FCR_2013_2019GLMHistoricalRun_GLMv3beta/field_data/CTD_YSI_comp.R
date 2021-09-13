@@ -1,3 +1,14 @@
+#*****************************************************************
+#* TITLE:   FCR GLM-AED script to compare CTD and YSI data for FCR GLM
+#*          manuscript           
+#* AUTHORS: H.L. Wander                                    
+#* DATE:   Originally developed by HLW on 21 Dec 2020; some editing 
+#*         by CCC on 13 Sep 2021                           
+#* NOTES:  This script compares the CTD vs YSI dataset of temperature
+#*         and oxygen for making sure that there is a continuous
+#*         dataset of temp and oxygen measurements during 2013-2019
+#*****************************************************************
+
 #CTD vs YSI comparison for FCR GLM manuscript
 #21 Dec 2020 - HLW
 

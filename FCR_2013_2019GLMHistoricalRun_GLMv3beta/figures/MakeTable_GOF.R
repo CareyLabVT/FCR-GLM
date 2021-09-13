@@ -1,7 +1,10 @@
-# Script to make GOF tables for main MS and supplementary
-# Written by: Alexandria (Alex) Hounshell
-# Originally created: 12 Jan 2021
-# Updated w/ new output file: 04 Mar 2021 - focus on FULL YEAR ONLY!
+#*****************************************************************
+#* TITLE:   FCR GLM-AED script to create goodness-of-fit tables            
+#* AUTHORS:  A.G. Hounshell                                      
+#* DATE:   Originally developed by AGH 12 Jan 2021; updated by CCC for annotation
+#* NOTES:  This script creates output tables needed for both the main 
+#*         manuscript and SI 
+#*****************************************************************
 
 # Load in libraries
 # pacman::p_load(devtools)
@@ -25,19 +28,6 @@ baseline <- file.path(sim_folder, 'FCR_2013_2019GLMHistoricalRun_GLMv3beta/outpu
 # Then use various field observations from the observed/field files for the various parameters
 
 ############################# START WITH MAIN MS TABLE ####################################
-# Notes from C. Carey: For the main text, I was looking for a 9m-only comparison of water temp, DO, DOC, etc 
-# (all the variables in Fig 2) for the calibration period (2013-2018), validation period (2019 only) and then 
-# complete simulation period (2013-2019). When I talked to Nicole about it for her recommendations, she suggested 
-# focusing on summer only conditions, which is also what we did in Kait’s Ecol Modeling paper (May 15-Oct 15 is 
-# what I think I used as the definition of summer for export calculations in the script, but please check this!). 
-# If it would be possible to run this table both ways (full year vs summer only) that would be great.
-
-# Variables to include: temp, oxy, NIT_amm, NIT_nit, SRP, DOC, TN, TP for 9 m ONLY
-# Include: Calibration period (2013-2018); Validation period (2019); and All (2013-2019)
-
-# Summer calculations defined as July 15 to Oct 1 - Following summer stratified period as defined in 
-# MakeFigure_Boxplots.R
-
 # Create empty dataframe for GOF results
 # Using all GOF parameters for now - will cull eventually
 # Summer, 9m, full period (2013-2019)
