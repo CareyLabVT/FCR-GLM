@@ -1,4 +1,12 @@
-####boxplots of seasonal fluxes####
+#*****************************************************************
+#* TITLE:   FCR GLM-AED script to create figure 7            
+#* AUTHORS:  R.P. McClure and C.C. Carey                                          
+#* DATE:   Originally developed by CCC in summer 2020; updated by RPM
+#*         to convert to ggplot in January 2021; Last modified 13 Sept 2021                            
+#* NOTES:  This script uses the data objects created by the 
+#*         "MakeFigure_OrganizeDataForFigures.R" 
+#*****************************************************************
+
 #devtools::install_github("kassambara/ggpubr")
 library(ggpubr)
 
@@ -190,7 +198,7 @@ drp_export <- retention_stratified_period%>%
         plot.title = element_text(face = "bold"))
 
 
-jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure6_StratifiedPeriodExportScenarios.jpg", width = 20, height = 25, units = 'in', res = 1000)
+jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure7_StratifiedPeriodExportScenarios.jpg", width = 20, height = 25, units = 'in', res = 1000)
 figure6x <- (toc_export|doc_export)/(tn_export|din_export)/(nh4_export|no3_export)/(tp_export|drp_export)
 figure6x
 dev.off()

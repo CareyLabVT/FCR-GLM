@@ -1,3 +1,12 @@
+#*****************************************************************
+#* TITLE:   FCR GLM-AED script to create figure 4            
+#* AUTHORS:  R.P. McClure and C.C. Carey                                          
+#* DATE:   Originally developed by CCC in summer 2020; updated by RPM
+#*         to convert to ggplot in January 2021; Last modified 13 Sept 2021                            
+#* NOTES:  This script uses the data objects created by the 
+#*         "MakeFigure_OrganizeDataForFigures.R" 
+#*****************************************************************
+
 library(tidyverse)
 library(ggpubr)
 

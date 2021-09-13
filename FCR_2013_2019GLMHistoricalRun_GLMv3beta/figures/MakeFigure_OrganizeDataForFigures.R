@@ -1,9 +1,12 @@
-### Develop plots for FCR-GLM MS ###
-### Original plots from CCC --> Figure development by AGH, ASL, RPM, & WMW
-### Last update 7 Sept 2021 by CCC
+#*****************************************************************     
+#* TITLE:   FCR GLM-AED figure preparation: organize input data         
+#* AUTHORS:  R.P. McClure, C.C. Carey                                         
+#* DATE:   Originally developed 28 May 2021; Last modified 13 Sept 2021                            
+#* NOTES:  Goal of this script is to organize the data to generate the 
+#*         data figures (which are in subsequent scripts) for the FCR-GLM-AED
+#*         manuscript
+#*****************************************************************
 
-#This script is a workflow that organizes the baseline GLM output and the oxic
-#and anoxic scenarios for the MS figure generation. 
 
 # get the packages we will need for the plotting exercises
 # install.packages('remotes')
@@ -333,7 +336,6 @@ obs_total_pools <-read_csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/t
 
 
 #####make the anoxic vs oxic dataset for the boxplot figures####
-
 #pull out deep-water chemistry from each output file
 A_oxy <- get_var(nc_anoxic,'OXY_oxy',z_out=9,reference = 'surface') 
 O_oxy <- get_var(nc_oxic,'OXY_oxy',z_out=9,reference = 'surface') 
