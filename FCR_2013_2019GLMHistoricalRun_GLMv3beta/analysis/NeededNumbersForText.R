@@ -1,4 +1,12 @@
-#to get all of the numbers needed in the manuscript text itself!
+#*****************************************************************
+#* TITLE:   FCR GLM-AED script to calculate numbers needed within
+#*          the manuscript                     
+#* AUTHORS:  C.C. Carey                                          
+#* DATE:   Originally developed 16 July 2020; Last modified 13 Sept 2021                            
+#* NOTES:  Goal of this script is to provide the ancillary data needed
+#*         to write the manuscript. Comments below refer to the section
+#*         where different results are reported.
+#*****************************************************************
 
 #load packages
 library(zoo)
@@ -582,9 +590,8 @@ write.csv(conc_stats1, "output/Retention_TtestStats.csv", row.names = F)
 ###################################################################
 
 
-
-
-
+###################################################################
+#comparison of anoxic vs oxic concentrations in model output
 data3 <- data2 %>% 
   mutate(month_day = format(as.Date(time), "%m-%d")) %>%
   mutate(year = year(time))%>%
@@ -604,9 +611,11 @@ data3 <- data2 %>%
             mean_A_O_PO4 = mean(A_O_PO4),
             mean_O_A_NO3 = mean(O_A_NO3))
 ###paragraph 4 in results, comparison of anoxic vs oxic concentrations in model output
+###################################################################
 
-
-#####make ratios####
+###################################################################
+#comparison of anoxic vs oxic ratios in results
+#  make ratios
 data4 <- data2 %>% 
   mutate(month_day = format(as.Date(time), "%m-%d")) %>%
   mutate(year = year(time))%>%
@@ -654,8 +663,11 @@ data4 <- data2 %>%
             mean_O_A_DOC_NH4 = mean(O_A_DOC_NH4),
             mean_A_O_TOC_TP = mean(A_O_TOC_TP),
             mean_O_A_DOC_PO4 = mean(O_A_DOC_PO4))
-#paragraph 5 in results, comparing anoxic vs oxic ratios
+#paragraph 5 in Results, comparing anoxic vs oxic ratios + Discussion paragraph 1
+###################################################################
 
+###################################################################
+#compare biogoechemical rates between anoxic vs. oxic scenarios
 #calculate biogeochemical rates from each output file
 #nitrogen fractions first
 A_anammox <- get_var(anoxic,'NIT_anammox',z_out=9,reference = 'surface') 
@@ -751,14 +763,48 @@ colnames(data) = c("time", "A_anammox", "A_denit", "A_dnra", "A_nitrif","A_sed_n
                    "O_dop_miner", "O_dopr_miner", "O_sed_frp","O_phyto_pup",
                    "O_anaerobic","O_sed_oxy") 
 
-data1 <- data %>% 
+biogeo_rates <- data %>% 
   mutate(month_day = format(as.Date(time), "%m-%d")) %>%
   mutate(year = year(time))%>%
   dplyr::filter(month_day <= "10-01", month_day >= "07-15") %>%
-  mutate(A_O_sed_amm = A_sed_amm/O_sed_amm,
-         A_O_sed_frp = A_sed_frp/O_sed_frp,
-         )
-
+  group_by(year) %>% 
+  summarise(median_A_sed_amm = median(A_sed_amm),
+            median_O_sed_amm = median(O_sed_amm),
+            median_A_sed_frp = median(A_sed_frp),
+            median_O_sed_frp = median(O_sed_frp),
+            median_A_sed_doc = median(A_sed_doc),
+            median_O_sed_doc = median(O_sed_doc),
+            median_A_don_miner = median(A_don_miner),
+            median_A_donr_miner = median(A_donr_miner),
+            median_O_don_miner = median(O_don_miner),
+            median_O_donr_miner = median(O_donr_miner),
+            median_A_dop_miner = median(A_dop_miner),
+            median_A_dopr_miner = median(A_dopr_miner),
+            median_O_dop_miner = median(O_dop_miner),
+            median_O_dopr_miner = median(O_dopr_miner),
+            median_A_doc_miner = median(A_doc_miner),
+            median_A_docr_miner = median(A_docr_miner),
+            median_O_doc_miner = median(O_doc_miner),
+            median_O_docr_miner = median(O_docr_miner),
+            median_A_nitrif = median(A_nitrif),
+            median_O_nitrif = median(O_nitrif)) %>% 
+  summarise(A_O_sed_amm = median(median_A_sed_amm/median_O_sed_amm),
+         A_O_sed_frp = median(median_A_sed_frp/median_O_sed_frp),
+         A_O_sed_doc = median(median_A_sed_doc/median_O_sed_doc),
+         O_A_don_miner = median(median_O_don_miner/median_A_don_miner),
+         O_A_donr_miner = median(median_O_donr_miner/median_A_donr_miner),
+         O_A_dop_miner = median(median_O_dop_miner/median_A_dop_miner),
+         O_A_dopr_miner = median(median_O_dopr_miner/median_A_dopr_miner),
+         O_A_doc_miner = median(median_O_doc_miner/median_A_doc_miner),
+         O_A_docr_miner = median(median_O_docr_miner/median_A_docr_miner),
+         O_nitrif = median(median_O_nitrif),
+         A_sed_amm = median(median_A_sed_amm),
+         A_sed_doc = median(median_A_sed_doc),
+         A_doc_miner = median(median_A_doc_miner)) 
+#needed for results paragraph comparing rates in anoxic vs oxic scenarios
+biogeo_rates$A_sed_amm/biogeo_rates$O_nitrif
+biogeo_rates$A_sed_doc/biogeo_rates$A_doc_miner
+###################################################################         
 
 ###################################################################
 # Calculating Sediment burial rates
@@ -853,9 +899,18 @@ POP_burial <- POP_burial_by_yr %>% drop_na() %>%
 ###################################################################
 
 
+###################################################################
+#####Discussion#####
+#getting numbers interspersed in the text
 
+retention_stratified_period
+#provides stats for Discussion paragraph on range of boxplot values in Fig. 7
 
+median(retention_stratified_period$Fnet_A_NH4/retention_stratified_period$Fnet_O_NH4)
+#provides stats for Discussion paragraph on NH4 retention changes in anoxic vs oxic conditions
 
-
-
-
+#Conclusions paragraph
+109-95#difference in C fluxes
+602-195#difference in N fluxes
+12-10#difference in P fluxes
+###################################################################
