@@ -1,8 +1,11 @@
-
-# Let us run up a couple of fun facts about dams in the CONUS
-# This script is a guide that can be used for future papers 
-# that describe why Falling Creek is important in the context 
-# of why research here is representative of other systems
+#*****************************************************************
+#* TITLE:   National Inventory of Dam analysis for FCR GLM-AED manuscript             
+#* AUTHORS:  R.P. McClure                                         
+#* DATE:   Originally developed summer 2020; Last modified 13 Sept 2021                            
+#* NOTES:  Goal of this script is to calculate some summary statistics
+#*         about the NID as well as describe how Falling Creek 
+#*         is important (and representative) in the context of other systems
+#*****************************************************************
 
 library(tidyverse)
 library(reshape2)
