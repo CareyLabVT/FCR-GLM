@@ -6,12 +6,12 @@
 #*         manuscript and SI 
 #*****************************************************************
 
+# devtools::install_github("CareyLabVT/GLMr", force = TRUE) 
+# devtools::install_github("CareyLabVT/glmtools", force = TRUE)
+
 # Load in libraries
 # pacman::p_load(devtools)
 pacman::p_load(zoo,tidyverse,lubridate,hydroGOF,GLMr,glmtools,ggplot2)
-
-# devtools::install_github("CareyLabVT/GLMr", force = TRUE) 
-# devtools::install_github("CareyLabVT/glmtools", force = TRUE)
 
 # Set working directory
 setwd("./FCR_2013_2019GLMHistoricalRun_GLMv3beta")
@@ -24,6 +24,11 @@ sim_folder <- getwd()
 
 # Load in nc_file
 baseline <- file.path(sim_folder, 'FCR_2013_2019GLMHistoricalRun_GLMv3beta/output/output_2013_2019.nc')
+field <- file.path(sim_folder, 'FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/CleanedObsTemp.csv')
+thermo_field <- file.path(sim_folder,'FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/CleanedObsTemp_thermo.txt')
+
+# Find necessary parameters
+print(sim_vars(baseline))
 
 # Then use various field observations from the observed/field files for the various parameters
 
@@ -498,7 +503,7 @@ diatom_9m <- get_var(baseline,var_name = 'PHY_diatom',z_out=9,reference = 'surfa
 mod_totals_9m<-as.data.frame(cbind(diatom_9m[1:5],cyano_9m[,3:5],green_9m[,3:5],TN_9m[,2],TP_9m[,2],TOC_9m[,2])) 
 colnames(mod_totals_9m) = c("DateTime", "Depth", "diatomN", "diatomP", "diatomC",
                       "cyanoN", "cyanoP", "cyanoC", "greenN", "greenP", "greenC",
-                      "TN", "TP", "TOC") 
+                      "TN", "TP", "TOC")
 
 mod_totals2_9m <- mod_totals_9m %>% 
   mutate(TN_mod = TN + diatomN + cyanoN + greenN,
@@ -524,7 +529,8 @@ mod_totals2_9m_summer_val <- mod_totals2_9m_val %>%
 # Observed data
 obs_Totals <- read.csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/totalNP.csv',header=TRUE) %>% 
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz='EST'))) %>% 
-  rename(TN_obs = TOT_tn, TP_obs = TOT_tp)
+  rename(TN_obs = TOT_tn, TP_obs = TOT_tp) %>% 
+  filter(Depth %in% c(0.1,1.6,3.8,5.0,6.2,8.0,9.0))
 obs_Totals_9m <- obs_Totals %>% 
   filter(Depth == 9)
 obs_Totals_9m_cal <- obs_Totals_9m %>% 
@@ -678,17 +684,17 @@ write_csv(full_9m_gof_table,'FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/tab
 # Using all GOF parameters for now - will cull eventually
 
 # Full year, full water column, full period (2013-2019)
-all_gof <- setNames(data.frame(matrix(ncol=9,nrow=21)),c("Parameter","Temp","Oxy","NIT_amm","NIT_nit","SRP","DOC","TN","TP"))
+all_gof <- setNames(data.frame(matrix(ncol=10,nrow=21)),c("Parameter","Temp","Thermo","Oxy","NIT_amm","NIT_nit","SRP","DOC","TN","TP"))
 all_gof$Parameter <- c("ME_all","MAE_all","MSE_all","RMSE_all","NRMSE%_all","PBIAS%_all","RSR_all","rSD_all","NSE_all","mNSE_all","rNSE_all","d_all","md_all","rd_all","cp_all","r_all",
                           "R2_all","bR2_all","KGE_all","VE_all","r.Spearman")
 
 # Full year, full water column, calibration period (2013-2018)
-all_gof_cal <- setNames(data.frame(matrix(ncol=9,nrow=21)),c("Parameter","Temp","Oxy","NIT_amm","NIT_nit","SRP","DOC","TN","TP"))
+all_gof_cal <- setNames(data.frame(matrix(ncol=10,nrow=21)),c("Parameter","Temp","Thermo","Oxy","NIT_amm","NIT_nit","SRP","DOC","TN","TP"))
 all_gof_cal$Parameter <- c("ME_cal","MAE_cal","MSE_cal","RMSE_cal","NRMSE%_cal","PBIAS%_cal","RSR_cal","rSD_cal","NSE_cal","mNSE_cal","rNSE_cal","d_cal","md_cal","rd_cal","cp_cal","r_cal",
                               "R2_cal","bR2_cal","KGE_cal","VE_cal","r.Spearman")
 
 # Full year, full water column, validation period (2019)
-all_gof_val <- setNames(data.frame(matrix(ncol=9,nrow=21)),c("Parameter","Temp","Oxy","NIT_amm","NIT_nit","SRP","DOC","TN","TP"))
+all_gof_val <- setNames(data.frame(matrix(ncol=10,nrow=21)),c("Parameter","Temp","Thermo","Oxy","NIT_amm","NIT_nit","SRP","DOC","TN","TP"))
 all_gof_val$Parameter <- c("ME_val","MAE_val","MSE_val","RMSE_val","NRMSE%_val","PBIAS%_val","RSR_val","rSD_val","NSE_val","mNSE_val","rNSE_val","d_val","md_val","rd_val","cp_val","r_val",
                               "R2_val","bR2_val","KGE_val","VE_val","r.Spearman")
 
@@ -722,6 +728,49 @@ all_gof_cal$Temp <- gof(comb_temp_cal$temp_mod,comb_temp_cal$temp_obs,do.spearma
 
 comb_temp_val <- left_join(obs_temp_val,mod_temp_val,by=c("DateTime","Depth"))
 all_gof_val$Temp <- gof(comb_temp_val$temp_mod,comb_temp_val$temp_obs,do.spearman = TRUE)
+
+### Thermocline ###
+# obs thermo - calculated using LakeAnalyzer
+field_thermo <- load.ts(thermo_field, tz = "EST")
+field_thermo <- field_thermo %>% 
+  pivot_wider(names_from = depth,names_prefix = "temp_",values_from = temp)
+
+field_thermo_m <- ts.thermo.depth(field_thermo,na.rm=TRUE)
+
+field_thermo_m <- field_thermo_m %>% 
+  rename(field_thermo_m = thermo.depth)
+
+field_thermo_m_cal <- field_thermo_m %>% 
+  filter(datetime < "2019-01-01")
+
+field_thermo_m_val <- field_thermo_m %>% 
+  filter(datetime >= "2019-01-01")
+
+# model thermo - also calculated using LakeAnalyzer
+depths<- c(0.1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9.2) 
+mod_thermo <- get_temp(baseline, reference="surface", z_out=depths) %>% 
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST")))
+
+mod_thermo_m <- ts.thermo.depth(mod_thermo,na.rm=TRUE)
+
+mod_thermo_m <- mod_thermo_m %>% 
+  rename(mod_thermo_m = thermo.depth)
+
+mod_thermo_m_cal <- mod_thermo_m %>% 
+  filter(datetime < "2019-01-01")
+
+mod_thermo_m_val <- mod_thermo_m %>% 
+  filter(datetime >= "2019-01-01")
+
+# Select dates where we have observations and calculate ALL GOF parameters
+comb_thermo <- left_join(field_thermo_m,mod_thermo_m,by="datetime")
+all_gof$Thermo <- gof(comb_thermo$mod_thermo_m,comb_thermo$field_thermo_m,do.spearman=TRUE)
+
+comb_thermo_cal <- left_join(field_thermo_m_cal,mod_thermo_m_cal,by="datetime")
+all_gof_cal$Thermo <- gof(comb_thermo_cal$mod_thermo_m,comb_thermo_cal$field_thermo_m,do.spearman=TRUE)
+
+comb_thermo_val <- left_join(field_thermo_m_val,mod_thermo_m_val,by="datetime")
+all_gof_val$Thermo <- gof(comb_thermo_val$mod_thermo_m,comb_thermo_val$field_thermo_m,do.spearman=TRUE)
 
 ### OXY ###
 # obs oxy
@@ -933,7 +982,7 @@ diatom <- get_var(baseline,var_name = 'PHY_diatom',z_out=depths,reference = 'sur
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>% 
   select(DateTime,Depth, diatomN, diatomP, diatomC)
 
-mod_totals<-as.data.frame(cbind(diatom[1:5],cyano[,3:5],green[,3:5],TN[,2],TP[,2],TOC[,2])) 
+mod_totals<-as.data.frame(cbind(diatom[1:5],cyano[,3:5],green[,3:5],TN[,3],TP[,3],TOC[,3])) 
 colnames(mod_totals) = c("DateTime", "Depth", "diatomN", "diatomP", "diatomC",
                             "cyanoN", "cyanoP", "cyanoC", "greenN", "greenP", "greenC",
                             "TN", "TP", "TOC") 
@@ -970,6 +1019,7 @@ all_gof[nrow(all_gof)+1,] <- NA
 all_gof[22,1] <- "NMAE_all"
 all_gof$Parameter[21] <- "r.Spearman_all"
 all_gof$Temp[22] <- round(all_gof$Temp[2]/mean(comb_temp$temp_obs),digits = 2)
+all_gof$Thermo[22] <- round(all_gof$Thermo[2]/mean(comb_thermo$field_thermo_m,na.rm=TRUE),digits = 2)
 all_gof$Oxy[22] <- round(all_gof$Oxy[2]/mean(comb_oxy$oxy_obs),digits = 2)
 all_gof$NIT_amm[22] <- round(all_gof$NIT_amm[2]/mean(comb_NIT_amm$NIT_amm_obs),digits = 2)
 all_gof$NIT_nit[22] <- round(all_gof$NIT_nit[2]/mean(comb_NIT_nit$NIT_nit_obs,na.rm=TRUE),digits = 2)
@@ -983,6 +1033,7 @@ all_gof_cal[nrow(all_gof_cal)+1,] <- NA
 all_gof_cal[22,1] <- "NMAE_cal"
 all_gof_cal$Parameter[21] <- "r.Spearman_cal"
 all_gof_cal$Temp[22] <- round(all_gof_cal$Temp[2]/mean(comb_temp_cal$temp_obs),digits = 2)
+all_gof_cal$Thermo[22] <- round(all_gof_cal$Thermo[2]/mean(comb_thermo_cal$field_thermo_m,na.rm=TRUE),digits = 2)
 all_gof_cal$Oxy[22] <- round(all_gof_cal$Oxy[2]/mean(comb_oxy_cal$oxy_obs),digits = 2)
 all_gof_cal$NIT_amm[22] <- round(all_gof_cal$NIT_amm[2]/mean(comb_NIT_amm_cal$NIT_amm_obs),digits = 2)
 all_gof_cal$NIT_nit[22] <- round(all_gof_cal$NIT_nit[2]/mean(comb_NIT_nit_cal$NIT_nit_obs,na.rm=TRUE),digits = 2)
@@ -996,6 +1047,7 @@ all_gof_val[nrow(all_gof_val)+1,] <- NA
 all_gof_val[22,1] <- "NMAE_val"
 all_gof_val$Parameter[21] <- "r.Spearman_val"
 all_gof_val$Temp[22] <- round(all_gof_val$Temp[2]/mean(comb_temp_val$temp_obs),digits = 2)
+all_gof_val$Thermo[22] <- round(all_gof_val$Thermo[2]/mean(comb_thermo_val$field_thermo_m,na.rm=TRUE),digits = 2)
 all_gof_val$Oxy[22] <- round(all_gof_val$Oxy[2]/mean(comb_oxy_val$oxy_obs),digits = 2)
 all_gof_val$NIT_amm[22] <- round(all_gof_val$NIT_amm[2]/mean(comb_NIT_amm_val$NIT_amm_obs),digits = 2)
 all_gof_val$NIT_nit[22] <- round(all_gof_val$NIT_nit[2]/mean(comb_NIT_nit_val$NIT_nit_obs,na.rm=TRUE),digits = 2)
@@ -1006,6 +1058,7 @@ all_gof_val$TP[22] <- round(all_gof_val$TP[2]/mean(comb_Totals_val$TP_obs,na.rm=
 
 # Select GOF variables for the full year
 full_n_all <- c("n_all",length(comb_temp$DateTime),
+                length(comb_thermo$field_thermo_m),
                 length(comb_oxy$DateTime),
                 length(comb_NIT_amm$DateTime),
                 length(comb_NIT_nit$NIT_nit_obs[!is.na(comb_NIT_nit$NIT_nit_obs)]),
@@ -1018,6 +1071,7 @@ full_gof_all_table <- all_gof %>%
   filter(Parameter == "r.Spearman_all" | Parameter == "RMSE_all" | Parameter == "PBIAS%_all" | Parameter == "NSE_all" | Parameter == "NMAE_all")
 
 full_n_cal <- c("n_cal",length(comb_temp_cal$DateTime),
+                length(comb_thermo_cal$field_thermo_m),
                 length(comb_oxy_cal$DateTime),
                 length(comb_NIT_amm_cal$DateTime),
                 length(comb_NIT_nit_cal$NIT_nit_obs[!is.na(comb_NIT_nit_cal$NIT_nit_obs)]),
@@ -1030,6 +1084,7 @@ full_gof_cal_table <- all_gof_cal %>%
   filter(Parameter == "r.Spearman_cal" | Parameter == "RMSE_cal" | Parameter == "PBIAS%_cal" | Parameter == "NSE_cal" | Parameter == "NMAE_cal")
 
 full_n_val <- c("n_val",length(comb_temp_val$DateTime),
+                length(comb_thermo_val$field_thermo_m),
                 length(comb_oxy_val$DateTime),
                 length(comb_NIT_amm_val$DateTime),
                 length(comb_NIT_nit_val$NIT_nit_obs[!is.na(comb_NIT_nit_val$NIT_nit_obs)]),
