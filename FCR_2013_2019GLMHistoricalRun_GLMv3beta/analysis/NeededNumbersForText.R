@@ -909,6 +909,15 @@ retention_stratified_period
 median(retention_stratified_period$Fnet_A_NH4/retention_stratified_period$Fnet_O_NH4)
 #provides stats for Discussion paragraph on NH4 retention changes in anoxic vs oxic conditions
 
+#provides data on proportion of DRP/TP for discussion
+vals <- merge(observed, totals, by=c("DateTime", "Depth")) %>% 
+  filter(Depth ==9) %>% 
+  select(DateTime, PHS_frp, TOT_tp) %>% drop_na() %>% 
+  mutate(DRP_TP = PHS_frp/TOT_tp)
+hist(vals$DRP_TP)
+median(vals$DRP_TP)
+std_err(vals$DRP_TP)
+
 #Conclusions paragraph
 109-95#difference in C fluxes
 602-195#difference in N fluxes
