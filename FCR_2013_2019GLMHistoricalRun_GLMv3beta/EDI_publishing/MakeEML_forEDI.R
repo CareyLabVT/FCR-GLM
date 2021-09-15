@@ -79,7 +79,7 @@ view_unit_dictionary()
 #see the LabKeywords.txt file for keywords that are mandatory for all Carey Lab data products
 
 #Step 11: Personnel
-#copy-paste this information in from your metadata document
+#copy-paste this information in from your metadata document, Excel is easiest
 #Cayelan needs to be listed several times; she has to be listed separately for her roles as
 #PI, creator, and contact, and also separately for each separate funding source (!!)
 
@@ -99,8 +99,7 @@ view_unit_dictionary()
 #?define_catvars
 
 # Run this function for your dataset
-define_catvars(path = "/Users/cayelan/Dropbox/ComputerFiles/Virginia_Tech/FallingCreek/Github/Reservoirs/Data/DataAlreadyUploadedToEDI/EDIProductionFiles/MakeEMLIce")
-
+#define_catvars(path = "/Users/cayelan/Dropbox/ComputerFiles/SCC/FCR-GLM/FCR_2013_2019GLMHistoricalRun_GLMv3beta/EDI_publishing")
 #open the created value IN A SPREADSHEET EDITOR and add a definition for each category
 
 #Step 15: Geographic coverage
@@ -117,35 +116,42 @@ define_catvars(path = "/Users/cayelan/Dropbox/ComputerFiles/Virginia_Tech/Fallin
 # Select Tools --> Data Package Identifier Reservations and click 
 # "Reserve Next Available Identifier"
 # A new value will appear in the "Current data package identifier reservations" 
-# table (e.g., edi.123)
+# table (e.g., edi.123.1)
 # Make note of this value, as it will be your package.id below
+
+#for this FCR-GLM-AED data package, identifier is 'edi.471.1'
 
 ## Step XXX: Make EML metadata file using the EMLassemblyline::make_eml() command ####
 # For modules that contain only zip folders, modify and run the following 
 # ** double-check that all files are closed before running this command! **
 
 # You will need to modify the following lines to match your current module: 
-# path: set to your computer's FULL file path!
-# dataset.title: Update to current module
+# path: set to your computer's FULL file path, not github directory!
+# dataset.title: Update
 # zip.dir: Change the name of the module files zip folder
 # temporal.coverage: Update the dates
 # package.id: enter the ID you obtained in Step 6
-make_eml(path = "/Users/cayelan/Dropbox/ComputerFiles/Virginia_Tech/FallingCreek/Github/Reservoirs/Data/DataAlreadyUploadedToEDI/EDIProductionFiles/MakeEMLIce",
-         dataset.title = "Ice cover data for Falling Creek Reservoir, Vinton, Virginia, USA for 2013-2021",
-         data.files = c('Ice_Data.csv'),
-         data.files.description = c('All ice-on and ice-off data recorded for Falling Creek Reservoir during 2013-2021'),
-         temporal.coverage = c("2014-01-06", "2021-02-23"),
+make_eml(path = "/Users/cayelan/Dropbox/ComputerFiles/SCC/FCR-GLM/FCR_2013_2019GLMHistoricalRun_GLMv3beta/EDI_publishing",
+         dataset.title = "General Lake Model-Aquatic EcoDynamics model parameter set for Falling Creek Reservoir, Vinton, Virginia, USA 2013-2019",
+         data.files = c("FCR_GLM_NLDAS_010113_123119_GMTadjusted.csv", 
+                        "FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv",
+                        "FCR_SSS_inflow_2013_2019_20200701_allfractions_2DOCpools.csv",
+                        "FCR_weir_inflow_2013_2019_20200828_allfractions_2poolsDOC.csv",
+                        "FCR_wetland_inflow_2013_2019_20200828_allfractions_2DOCpools.csv"),
+         data.files.description = c('Meteorological driver data',
+                                    'Outflow driver data',
+                                    'Oxygenation system submerged inflow driver data',
+                                    'Tunnel Branch stream inflow driver data',
+                                    'Falling Creek stream inflow driver data'),
+         zip.dir=c("model_configuration_nml_files.zip"),
+         zip.dir.description=c("GLM-AED nml configuration files"),
+         temporal.coverage = c("2013-05-13", "2019-12-31"),
          #geographic.description = c("Falling Creek Reservoir, Vinton, Virginia, USA"),
          #geographic.coordinates = c('37.309589', '-79.836009', '37.302660', '-79.839249'), #N, E, S, W
-         maintenance.description = "ongoing", 
+         maintenance.description = "completed", 
          user.id = "ccarey",
          affiliation = 'EDI',
-         package.id = "edi.456.3") # Put your package.id here, followed by .1 (for 1st version)
-
-#PROBLEMS WITH MAKING METATDATA! SO, COLIN SUGGESTED THAT THE FALLING CREEK SPACE IN THE PATH NAME WAS
-#  PROBLEMATIC, SO I COPIED AND PASTED THE ENTIRE DIRECTORY TO MY DESKTOP AND RAN THE MAKE_EML PATH THERE. THAT SEEMED TO WORK
-# ??!!! SO AM COPYING & PASTING THE .XML FILE BACK INTO THE GITHUB DIRECTORY. WORTH A TRY TO RUN IT OUT OF THERE
-# NEXT TIME WE UPDATE THE MET DATA IN THE FUTURE. I ALSO DELETED THE ZIP FILES 
+         package.id = "edi.471.1") # Put your package.id here, followed by .1 (for 1st version)
 
 
 # Once your xml file with your PUBLISHED package.id is Done, return to the 
