@@ -1,0 +1,8 @@
+attributeName	attributeDefinition	class	unit	dateTimeFormatString	missingValueCode	missingValueCodeExplanation
+time		Date		!Add datetime specifier here!		
+ShortWave		numeric	!Add units here!			
+LongWave		numeric	!Add units here!			
+AirTemp		numeric	!Add units here!			
+RelHum		numeric	!Add units here!			
+WindSpeed		numeric	!Add units here!			
+Rain		numeric	!Add units here!			
