@@ -14,7 +14,7 @@
 # # Install & load devtools before installing updated version of EDI's EMLassemblyline package
 # install.packages("devtools")
 # library(devtools)
-# devtools::install_github("EDIorg/EMLassemblyline")
+#devtools::install_github("EDIorg/EMLassemblyline")
 library(EMLassemblyline)
 
 #Step 1: Create a directory for your dataset, here "EDI_publishing" within the main repo
@@ -143,8 +143,8 @@ make_eml(path = "/Users/cayelan/Dropbox/ComputerFiles/SCC/FCR-GLM/FCR_2013_2019G
                                     'Oxygenation system submerged inflow driver data',
                                     'Tunnel Branch stream inflow driver data',
                                     'Falling Creek stream inflow driver data'),
-         zip.dir=c("model_configuration_nml_files.zip"),
-         zip.dir.description=c("GLM-AED nml configuration files"),
+         zip.dir = c("model_configuration_nml_files.zip"),
+         zip.dir.description =c("GLM-AED nml configuration files"),
          temporal.coverage = c("2013-05-13", "2019-12-31"),
          #geographic.description = c("Falling Creek Reservoir, Vinton, Virginia, USA"),
          #geographic.coordinates = c('37.309589', '-79.836009', '37.302660', '-79.839249'), #N, E, S, W
