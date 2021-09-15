@@ -31,6 +31,7 @@ file.copy('inputs/FCR_weir_inflow_2013_2019_20200828_allfractions_2poolsDOC.csv'
 file.copy('inputs/FCR_wetland_inflow_2013_2019_20200828_allfractions_2DOCpools.csv', 'EDI_publishing/FCR_wetland_inflow_2013_2019_20200828_allfractions_2DOCpools.csv')
 #once the nml files are copied over, I put them in a sub-directory called "model_configuration_nml_files"
 
+setwd("./EDI_publishing")
 #Step 3: Create an intellectual rights license
 #ours is CCBY
 

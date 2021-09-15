@@ -1958,8 +1958,8 @@
       <entityDescription>GLM-AED nml configuration files</entityDescription>
       <physical>
         <objectName>model_configuration_nml_files.zip</objectName>
-        <size unit="bytes">160</size>
-        <authentication method="MD5"/>
+        <size unit="bytes">9951</size>
+        <authentication method="MD5">58d4e7acc7a758ca4cc332c8b294d963</authentication>
         <dataFormat>
           <externallyDefinedFormat>
             <formatName>zip directory</formatName>
