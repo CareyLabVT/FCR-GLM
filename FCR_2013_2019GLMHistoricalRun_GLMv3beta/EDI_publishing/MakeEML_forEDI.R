@@ -154,6 +154,8 @@ make_eml(path = "/Users/cayelan/Dropbox/ComputerFiles/SCC/FCR-GLM/FCR_2013_2019G
          affiliation = 'EDI',
          package.id = "edi.471.1") # Put your package.id here, followed by .1 (for 1st version)
 
+#note: once the EML is validated, THEN need to edit to add in abstract, keywords, and methods.
+#see edi.456.3.xml (Ice at FCR- as an example!)
 
 # Once your xml file with your PUBLISHED package.id is Done, return to the 
 # EDI Production environment (https://portal.edirepository.org/nis/home.jsp)
