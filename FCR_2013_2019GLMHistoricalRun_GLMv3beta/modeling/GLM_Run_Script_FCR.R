@@ -1,7 +1,13 @@
-# Basic script to run GLM for FCR during 2013-2019
-# Written by Cayelan Carey 
-# written originally 16 July 2018
-# last updated 28 May 2021
+#*****************************************************************                                                           *
+#* TITLE:   Run GLM-AED for FCR
+#* AUTHORS:  C.C. Carey                    
+#* DATE:   Originally developed by CCC on 16 July 2018; 
+#*         Last modified by CCC in 9 Sept 2021                            
+#* NOTES:  CCC modified the original script in 2019 for FCR modeling, 
+#*        with subsequent tweaks to annotation in summer 2021. 
+#*        Code compares modeled output vs. observations for all focal
+#*        variables, and calculates RMSE for each depth.
+#*****************************************************************
 
 remotes::install_github("CareyLabVT/GLMr", force = T)
 remotes::install_github("CareyLabVT/glmtools", force = T)
@@ -50,8 +56,8 @@ plot(evap$time, evap$evap)
 plot(precip$time, precip$precip)
 
 outflow<-read.csv("inputs/FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv", header=T)
-inflow_weir<-read.csv("inputs/FCR_weir_inflow_2013_2019_20200624_allfractions_2poolsDOC.csv", header=T)
-inflow_wetland<-read.csv("inputs/FCR_wetland_inflow_2013_2019_20200624_allfractions_2DOCpools.csv", header=T)
+inflow_weir<-read.csv("inputs/FCR_weir_inflow_2013_2019_20200828_allfractions_2poolsDOC.csv", header=T)
+inflow_wetland<-read.csv("inputs/FCR_wetland_inflow_2013_2019_20200828_allfractions_2DOCpools.csv", header=T)
 outflow$time<-as.POSIXct(strptime(outflow$time, "%Y-%m-%d", tz="EST"))
 inflow_weir$time<-as.POSIXct(strptime(inflow_weir$time, "%Y-%m-%d", tz="EST"))
 inflow_wetland$time<-as.POSIXct(strptime(inflow_wetland$time, "%Y-%m-%d", tz="EST"))
@@ -208,7 +214,8 @@ plot(mod_oxy9$DateTime, mod_oxy9$OXY_oxy_9.2, type="l")
 #### dissolved inorganic carbon (DIC) data ###########
 var="CAR_dic"
 field_file <- file.path(sim_folder,'/field_data/field_chem.csv') 
-#note: DIC is tricky because there are no observational data between 2013-2017, so doesn't work for normal calibration period
+#note: DIC is tricky because there are no observational data between 2013-2017, so 
+# this script has only one year of data during the model calibration period
 
 obs<-read.csv('field_data/field_chem.csv', header=TRUE) %>% #read in observed chemistry data
   dplyr::mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
@@ -322,65 +329,7 @@ RMSE(mod,obs)
 
 
 
-#### dissolved pCO2  data #######
-#SKIPPING THIS FOR NOW!!
-#read in observed CO2 file to create field file, but first need to remove duplicate date values
-# plot_var(file=nc_file,"CAR_pCO2",reference="surface")#, col_lim = c(0,0.000001))#figure of CO2 modeled
-# plot_var(file=nc_file,"CAR_pH",reference="surface") 
-# plot_var(file=nc_file,"PHY_TCHLA",reference="surface")
-# co2<-read.csv('FCR_pCO2_DIC_2015_2017_20181007.csv', header=TRUE)#read in observed CTD data, which has multiple casts on the same day (problematic for comparison)
-# co2$DateTime<-as.POSIXct(strptime(co2$DateTime, "%Y-%m-%d", tz="EST")) 
-# co2$day <- day(co2$DateTime)
-# co2$year <- year(co2$DateTime)
-# co2$month <- month(co2$DateTime)
-# co2$corrected <-(co2$co2_umol_L*0.0018/1000000)/0.0005667516
-# deduped.data <- duplicated(co2[ , c(2,4,5,6) ] )
-# obs_co2 <- co2[which(deduped.data == FALSE),c(1,2,7)]
-# colnames(obs_co2)<-c("DateTime", "Depth", "CAR_pCO2")
-# write.csv(obs_co2, "CleanedObsCO2.csv", row.names = F)
-# field_file <- file.path(sim_folder,'CleanedObsCO2.csv') 
-# plot_var_compare(nc_file,field_file,var_name = "CAR_pCO2", precision="mins", col_lim=c(0,0.005)) #compare obs vs modeled
-# 
-# #get modeled oxygen concentrations for focal depths
-# depths<- c(0.1, 1.6, 3.8, 5.0, 6.2, 8.0, 9.0)  
-# mod_co2 <- get_var(nc_file, "CAR_pCO2", reference="surface", z_out=depths)
-# colnames(mod_co2) <- c("time", "0.1", "1.6", "3.8", "5", "6.2", "8", "9")
-# long_mod_co2 <- gather(mod_co2, key = "depth", value="obsCAR_pCO2", "0.1":"9", factor_key = TRUE) #go from wide to long
-# long_mod_co2$depth <- as.numeric(levels(long_mod_co2$depth))[long_mod_co2$depth] 
-# colnames(long_mod_co2)=c("DateTime", "Depth", "modeledCAR_pCO2")
-# 
-# #lets do depth by depth comparisons of the sims
-# co2_compare<-merge(long_mod_co2, obs_co2, by=c("DateTime","Depth"))
-# co2_compare <- co2_compare[complete.cases(co2_compare), ]
-# for(i in 1:length(unique(co2_compare$Depth))){
-#   tempdf<-subset(co2_compare, co2_compare$Depth==depths[i])
-#   plot(tempdf$DateTime,tempdf$CAR_pCO2, type='l', col='red',
-#        ylab='pCO2 atm', xlab='time',
-#        main = paste0("Obs=Red,Mod=Black,Depth=",depths[i]),ylim=c(-0.00001,0.0005))
-#   points(tempdf$DateTime, tempdf$modeledCAR_pCO2, type="l",col='black')
-# }
-# 
-# #calculate RMSE for pCO2
-# field_file <- file.path(sim_folder,'CleanedObsCO2.csv') 
-# DIC <- resample_to_field(nc_file, field_file, precision="mins", method='interp', 
-#                          var_name="CAR_pCO2")
-# DIC <-DIC[complete.cases(DIC),]
-# 
-# m_DIC <- DIC$Modeled_CAR_pCO2[DIC$Depth>=0.1 & DIC$Depth<=0.1] #depths from 6-9m
-# o_DIC <- DIC$Observed_CAR_pCO2[DIC$Depth>=0.1 & DIC$Depth<=0.1] #depths from 6-9m
-# RMSE(m_DIC,o_DIC)
-# 
-# m_DIC <- DIC$Modeled_CAR_pCO2[DIC$Depth>=9 & DIC$Depth<=9] #depths from 6-9m
-# o_DIC <- DIC$Observed_CAR_pCO2[DIC$Depth>=9 & DIC$Depth<=9] #depths from 6-9m
-# RMSE(m_DIC,o_DIC)
-# 
-# m_DIC <- DIC$Modeled_CAR_pCO2[DIC$Depth>=5 & DIC$Depth<=5] #depths from 6-9m
-# o_DIC <- DIC$Observed_CAR_pCO2[DIC$Depth>=5 & DIC$Depth<=5] #depths from 6-9m
-# RMSE(m_DIC,o_DIC)
-
-
-
-#### silica #######
+##### silica #######
 
 var="SIL_rsi"
 field_file <- file.path(sim_folder,'/field_data/field_silica.csv') 
@@ -912,6 +861,8 @@ mod <- eval(parse(text=paste0("newdata$Modeled_",var)))[newdata$Depth>=0.1 & new
 obs <- eval(parse(text=paste0("newdata$Observed_",var)))[newdata$Depth>=0.1 & newdata$Depth<=9.3] 
 RMSE(mod,obs)
 
+
+
 #### total organic carbon ###########
 
 var="TOT_toc"
@@ -1093,38 +1044,6 @@ phytos <- get_var(file=nc_file,var_name = 'PHY_AGGREGATE',z_out=0.1,reference = 
 plot(phytos$DateTime, phytos$PHY_AGGREGATE_0.1, col="cyan", type="l", ylab="Phyto C mmol/m3", ylim=c(0,30))
 
 
-# ############
-# #calculate RMSE for CHLA Just May-Oct
-# 
-# field_file <- file.path(sim_folder,'ARIMA_chla_2013_2016.csv') 
-# CHLA <- resample_to_field(nc_file, field_file, precision="days", method='interp', var_name="PHY_TCHLA")
-# CHLA <-CHLA[complete.cases(CHLA),]
-# 
-# m_CHLA <- CHLA$Modeled_PHY_TCHLA[CHLA$Depth>=1 & CHLA$Depth<=1] #depths from 6-9m
-# o_CHLA <- CHLA$Observed_PHY_TCHLA[CHLA$Depth>=1 & CHLA$Depth<=1] #depths from 6-9m
-# RMSE(m_CHLA,o_CHLA)
-# r2 <-lm(m_CHLA ~ o_CHLA)
-# 
-# obs_chla <- read.csv("ARIMA_chla_2013_2016.csv", header=T)
-# obs_chla$DateTime<-as.POSIXct(strptime(obs_chla$DateTime, "%Y-%m-%d", tz="EST")) 
-# depths<- c(1.0)  
-# mod_chla <- get_var(nc_file, "PHY_TCHLA", reference="surface", z_out=depths)
-# colnames(mod_chla) <- c("time", "1.0")
-# long_mod_chla <- gather(mod_chla, key = "depth", value="obsPHY_TCHLA", "1.0", factor_key = TRUE) #go from wide to long
-# long_mod_chla$depth <- as.numeric(levels(long_mod_chla$depth))[long_mod_chla$depth] 
-# colnames(long_mod_chla)=c("DateTime", "Depth", "modeledPHY_TCHLA")
-# #lets do depth by depth comparisons of the sims
-# chla_compare<-merge(long_mod_chla, obs_chla, by=c("DateTime","Depth"))
-# chla_compare <- chla_compare[complete.cases(chla_compare), ]
-# for(i in 1:length(unique(chla_compare$Depth))){
-#   tempdf<-subset(chla_compare, chla_compare$Depth==depths[i])
-#   plot(tempdf$DateTime,tempdf$PHY_TCHLA, type='l', col='red',
-#        ylab='Chla ug/L', xlab='time',
-#        main = paste0("Obs=Red,Mod=Black,Depth=",depths[i]) ,ylim=c(-0.00001,15))
-#   points(tempdf$DateTime, tempdf$modeledPHY_TCHLA, type="l",col='black')
-# }
-#write.csv(mod_chla, "Chla1mForWhitney_28June2019.csv")
-
 #######################################################
 #### ancillary code #######
 
@@ -1139,9 +1058,6 @@ sim_metrics(with_nml = TRUE)
 #plot pH
 pH <- get_var(file=nc_file,var_name = 'CAR_pH',z_out=0.1,reference = 'surface') 
 plot(pH$DateTime, pH$CAR_pH_0.1)
-
-DICish <- get_var(file=nc_file,var_name = 'CAR_dic',z_out=0.1,reference = 'surface') 
-plot(DICish$DateTime, DICish$CAR_dic_0.1)
 
 #plot to make SSS oxygen addition 
 inflow<-read.csv("FCR_SSS_inflow_2013_2017_20181001.csv", header=TRUE)
@@ -1158,8 +1074,8 @@ mtext(side = 4, line = 3, 'RED: Flow rate of SSS (m3/day)')
 pop9 <- get_var(file=nc_file,var_name = 'OGM_pop',z_out=9,reference = 'surface') 
 plot(pop9$DateTime, pop9$OGM_pop_9, ylim=c(0,0.5))
 
+#get CH4 atmospheric flux
 get_var(file=nc_file,var_name = 'CAR_atm_ch4_flux',reference = "bottom",z_out = 1) #, z_out=1, reference='surface')
-
 nc<-nc_open("output/output.nc")
 names(nc$var)#get list of variables in data
 names(nc$dim)#get list of variables in data
@@ -1171,11 +1087,4 @@ data$time_1<-as.POSIXct(strptime(data$time_1, "%Y-%m-%d", tz="EST"))
 plot(time_1,ch4flux[,1], ylim=c(0,2.5), ylab="CH4 flux, mmol/m2/d", xlab="Date")
 points(time_1,(ch4flux[,1]+sample(rnorm(1,mean=0.3,sd=0.3))), col="red")
 legend("topleft", c("Baseline","+2 degrees"), fill=c("black","red"))
-
-
-nh4flux<-t(as.data.frame(ncvar_get(nc,varid="NIT_anammox")))
-
 nc_close(nc)
-
-ads <- get_var(file=nc_file,var_name = 'PHS_frp_ads',z_out=c(1,5,9),reference = 'surface') 
-plot(ads$DateTime, ads$PHS_frp_ads_9)

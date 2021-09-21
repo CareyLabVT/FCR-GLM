@@ -1,0 +1,22 @@
+givenName	middleInitial	surName	organizationName	electronicMailAddress	userId	role	projectTitle	fundingAgency	fundingNumber
+Cayelan	C.	Carey	Virginia Tech	Cayelan@vt.edu	0000-0001-8835-4476	creator			
+Robert	Q.	Thomas	Virginia Tech	rqthomas@vt.edu	0000-0003-1282-7825	creator			
+Paul	C.	Hanson	University of Wisconsin	pchanson@wisc.edu	0000-0001-8533-6061	creator			
+Cayelan	C.	Carey	Virginia Tech	Cayelan@vt.edu	0000-0001-8835-4476	contact			
+Cayelan	C.	Carey	Virginia Tech	Cayelan@vt.edu	0000-0001-8835-4476	PI	Dynamics of coupled P-Fe-Mn cycling in drinking water reservoirs and implications for water quality	Institute of Critical Technology and Applied Science	
+Cayelan	C.	Carey	Virginia Tech	Cayelan@vt.edu	0000-0001-8835-4476	PI		Virginia Tech Global Change Center	
+Cayelan	C.	Carey	Virginia Tech	Cayelan@vt.edu	0000-0001-8835-4476	PI		Fralin Life Sciences Institute	
+Cayelan	C.	Carey	Virginia Tech	Cayelan@vt.edu	0000-0001-8835-4476	PI	SCC-IRG Track 2: Resilient Water Systems: Integrating Environmental Sensor Networks and Real-Time Forecasting to Adaptively Manage Drinking Water Quality and Build Social Trust	National Science Foundation	1737424
+Paul	C.	Hanson	University of Wisconsin	pchanson@wisc.edu	0000-0001-8533-6061	PI	Collaborative Research: Consequences of changing oxygen availability for carbon cycling in freshwater ecosystems	National Science Foundation	1753657
+Cayelan	C.	Carey	Virginia Tech	Cayelan@vt.edu	0000-0001-8835-4476	PI	Collaborative Research: Consequences of changing oxygen availability for carbon cycling in freshwater ecosystems	National Science Foundation	1753639
+Cayelan	C.	Carey	Virginia Tech	Cayelan@vt.edu	0000-0001-8835-4476	PI	Collaborative Research: CIBR: Cyberinfrastructure Enabling End-to-End Workflows for Aquatic Ecosystem Forecasting	National Science Foundation	1933016
+Renato	J.	Figueiredo	University of Florida	renato@ece.ufl.edu	0000-0001-9841-6060	PI	Collaborative Research: CIBR: Cyberinfrastructure Enabling End-to-End Workflows for Aquatic Ecosystem Forecasting	National Science Foundation	1933102
+Alexandra	B.	Gerling	Virginia Tech	alexg13@vt.edu		contributor			
+Alexandria	G.	Hounshell	Virginia Tech	alexgh@vt.edu	0000-0003-1616-9399	contributor			
+Abigail	S.L.	Lewis	Virginia Tech	aslewis@vt.edu	0000-0001-9933-4542	contributor			
+Mary	E.	Lofton	Virginia Tech	melofton@vt.edu	0000-0003-3270-1330	contributor			
+Ryan	P.	McClure	Virginia Tech	ryan333@vt.edu	0000-0001-6370-3852	contributor			
+Heather	L.	Wander	Virginia Tech	hwander@vt.edu	0000-0002-3762-6045	contributor			
+Whitney	M.	Woelmer	Virginia Tech	wwoelmer@vt.edu	0000-0001-5147-3877	contributor			
+Barbara	R.	Niederlehner	Virginia Tech	bniederl@vt.edu		contributor			
+Madeline	E.	Schreiber	Virginia Tech	mschreib@vt.edu	0000-0002-1858-7730	contributor			

@@ -1,11 +1,12 @@
+#*****************************************************************     
+#* TITLE:   FCR GLM-AED figure preparation: organize input data         
+#* AUTHORS:  R.P. McClure, C.C. Carey                                         
+#* DATE:   Originally developed 28 May 2021; Last modified 13 Sept 2021                            
+#* NOTES:  Goal of this script is to organize the data to generate the 
+#*         data figures (which are in subsequent scripts) for the FCR-GLM-AED
+#*         manuscript
+#*****************************************************************
 
-### Develop plots for FCR-GLM MS ###
-### Original plots from CCC --> Figure development by AGH, ASL, RPM, & WMW
-
-### Last update 06Jan21
-
-#This script is a workflow that organizes the original GLM run and the oxic
-#and anoxic scenarios for the MS figure generation. 
 
 # get the packages we will need for the plotting exercises
 # install.packages('remotes')
@@ -59,7 +60,7 @@ mod_oxy_anoxic <- get_var(nc_anoxic, "OXY_oxy", reference="surface", z_out=9) %>
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST")))   %>%
   mutate(OXYcum = cumsum(OXY_oxy))
 
-sss_oxy<-read.csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/Calc_HOX_flow_DO_20190916.csv') %>%
+sss_oxy<-read.csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/inputs/HOx_Operations_20190916.csv') %>%
   rename(DateTime = time) %>%
   select(DateTime, mmol.O2.m3.day)%>%
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) 
@@ -118,6 +119,7 @@ DIN_oxic <- left_join(mod_nit_oxic,mod_amm_oxic, by = "DateTime")%>%
 DIN_anoxic <- left_join(mod_nit_anoxic,mod_amm_anoxic, by = "DateTime")%>%
   mutate(DIN_anoxic = NIT_nit + NIT_amm)%>%
   select(DateTime, DIN_anoxic)
+
 #SRP
 var="PHS_frp"
 
@@ -334,7 +336,6 @@ obs_total_pools <-read_csv('FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/t
 
 
 #####make the anoxic vs oxic dataset for the boxplot figures####
-
 #pull out deep-water chemistry from each output file
 A_oxy <- get_var(nc_anoxic,'OXY_oxy',z_out=9,reference = 'surface') 
 O_oxy <- get_var(nc_oxic,'OXY_oxy',z_out=9,reference = 'surface') 
@@ -523,7 +524,6 @@ mediandata <- data4 %>%
             med_O_PO4 = median(O_PO4))
 
 
-
 #Get the retention values for the MS
 weir <- read.csv("FCR_2013_2019GLMHistoricalRun_GLMv3beta/inputs/FCR_weir_inflow_2013_2019_20200828_allfractions_2poolsDOC.csv") %>% 
   mutate(TP = FLOW*(PHS_frp + OGM_dop + OGM_dopr + OGM_pop),
@@ -594,25 +594,25 @@ outputs <- merge(outflow,data1, by="time") %>%
 fluxdata <- merge(inputs, outputs, by="time")
 
 #retention for full calendar year
-retention_full_year <- fluxdata %>% 
-  mutate(year = year(time))%>%
-  group_by(year) %>% 
-  summarise(Fnet_A_TN = 100*(sum(A_TN_output)-sum(inputTN))/sum(inputTN),
-            Fnet_O_TN = 100*(sum(O_TN_output)-sum(inputTN))/sum(inputTN),
-            Fnet_A_TP = 100*(sum(A_TP_output)-sum(inputTP))/sum(inputTP),
-            Fnet_O_TP = 100*(sum(O_TP_output)-sum(inputTP))/sum(inputTP),
-            Fnet_A_TOC = 100*(sum(A_TOC_output)-sum(inputTOC))/sum(inputTOC),
-            Fnet_O_TOC = 100*(sum(O_TOC_output)-sum(inputTOC))/sum(inputTOC),
-            Fnet_A_DOC = 100*(sum(A_DOC_output)-sum(inputDOC))/sum(inputDOC),
-            Fnet_O_DOC = 100*(sum(O_DOC_output)-sum(inputDOC))/sum(inputDOC),
-            Fnet_A_DIN = 100*(sum(A_DIN_output)-sum(inputDIN))/sum(inputDIN),
-            Fnet_O_DIN = 100*(sum(O_DIN_output)-sum(inputDIN))/sum(inputDIN),
-            Fnet_A_NO3 = 100*(sum(A_NO3_output)-sum(inputNO3))/sum(inputNO3),
-            Fnet_O_NO3 = 100*(sum(O_NO3_output)-sum(inputNO3))/sum(inputNO3),
-            Fnet_A_FRP = 100*(sum(A_FRP_output)-sum(inputFRP))/sum(inputFRP),
-            Fnet_O_FRP = 100*(sum(O_FRP_output)-sum(inputFRP))/sum(inputFRP),
-            Fnet_A_NH4 = 100*(sum(A_NH4_output)-sum(inputNH4))/sum(inputNH4),
-            Fnet_O_NH4 = 100*(sum(O_NH4_output)-sum(inputNH4))/sum(inputNH4))
+# retention_full_year <- fluxdata %>% 
+#   mutate(year = year(time))%>%
+#   group_by(year) %>% 
+#   summarise(Fnet_A_TN = 100*(sum(A_TN_output)-sum(inputTN))/sum(inputTN),
+#             Fnet_O_TN = 100*(sum(O_TN_output)-sum(inputTN))/sum(inputTN),
+#             Fnet_A_TP = 100*(sum(A_TP_output)-sum(inputTP))/sum(inputTP),
+#             Fnet_O_TP = 100*(sum(O_TP_output)-sum(inputTP))/sum(inputTP),
+#             Fnet_A_TOC = 100*(sum(A_TOC_output)-sum(inputTOC))/sum(inputTOC),
+#             Fnet_O_TOC = 100*(sum(O_TOC_output)-sum(inputTOC))/sum(inputTOC),
+#             Fnet_A_DOC = 100*(sum(A_DOC_output)-sum(inputDOC))/sum(inputDOC),
+#             Fnet_O_DOC = 100*(sum(O_DOC_output)-sum(inputDOC))/sum(inputDOC),
+#             Fnet_A_DIN = 100*(sum(A_DIN_output)-sum(inputDIN))/sum(inputDIN),
+#             Fnet_O_DIN = 100*(sum(O_DIN_output)-sum(inputDIN))/sum(inputDIN),
+#             Fnet_A_NO3 = 100*(sum(A_NO3_output)-sum(inputNO3))/sum(inputNO3),
+#             Fnet_O_NO3 = 100*(sum(O_NO3_output)-sum(inputNO3))/sum(inputNO3),
+#             Fnet_A_FRP = 100*(sum(A_FRP_output)-sum(inputFRP))/sum(inputFRP),
+#             Fnet_O_FRP = 100*(sum(O_FRP_output)-sum(inputFRP))/sum(inputFRP),
+#             Fnet_A_NH4 = 100*(sum(A_NH4_output)-sum(inputNH4))/sum(inputNH4),
+#             Fnet_O_NH4 = 100*(sum(O_NH4_output)-sum(inputNH4))/sum(inputNH4))
 
 
 #retention for stratified period

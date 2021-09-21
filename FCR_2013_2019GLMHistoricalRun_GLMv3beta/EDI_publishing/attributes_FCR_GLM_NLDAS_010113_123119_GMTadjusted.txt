@@ -1,0 +1,8 @@
+attributeName	attributeDefinition	class	unit	dateTimeFormatString	missingValueCode	missingValueCodeExplanation
+time	Date and time of meteorological data (NLDAS-2), for the eastern standard time zone of the U.S.A., with daylight savings time not observed	Date		YYYY-MM-DD HH:MM	NA	value is missing
+ShortWave	Shortwave radiation	numeric	WattsPerSquareMeter		NA	value is missing
+LongWave	Longwave radiation	numeric	WattsPerSquareMeter		NA	value is missing
+AirTemp	Air temperature	numeric	celsius		NA	value is missing
+RelHum	Relative humidity in percent	numeric	dimensionless		NA	value is missing
+WindSpeed	Wind speed	numeric	metersPerSecond		NA	value is missing
+Rain	Precipitation accumulation	numeric	metersPerDay		NA	value is missing

@@ -1,8 +1,15 @@
-#script that contains all packages need for sensitivity and optimization analyses
-#written by Robert Ladwig & Tadhg Moore, given to CCC in 2019
-#NOTE - search for "EDIT" in this file - you will need to edit multiple lines in this file to make 
-# specific for your analysis/calibration & validation period/dynamic library files on your machine
-#Last updated by CCC 3 June 2020
+#*****************************************************************                                                           *
+#* TITLE:   Functions for GLM-AED sensitivity and optimization 
+#*           analyses
+#* AUTHORS:  R. Ladwig, T. Moore, and C.C. Carey                    
+#* DATE:   Originally developed by R. Ladwig and T. Moore in 2018; 
+#*         Last modified by CCC in 9 Sept 2021                            
+#* NOTES:  CCC modified the original script in 2019 for FCR modeling, 
+#*        with subsequent tweaks to annotation in summer 2021. 
+#*        NOTE - search for "EDIT" in this file, which shows you where you will  
+#*        need to edit multiple lines to make specific for your 
+#*        analysis/calibration and validation period/dynamic library files on your machine
+#*****************************************************************
 
 read.packages <- function(){
   Packages <- c("dplyr", "ggplot2", "tidyverse", "cluster", "zoo", "gtools", 
@@ -753,7 +760,7 @@ run_sensitivity <- function(var, max_r, x0, lb, ub, pars, obs, nml_file){
   #   }
 
     
-  write.csv(cal_pars, paste0('calibration_file_',var,'.csv'), row.names = F, quote = F)
+  write.csv(cal_pars, paste0('sensitivity/calibration_file_',var,'.csv'), row.names = F, quote = F)
   
   return()
 }
@@ -900,7 +907,7 @@ run_calibvalid <- function(var, var_unit, var_seq, cal_pars, pars, ub, lb, init.
   
   
   validation.list <- list("start" = '2019-01-01 00:00:00',
-                          "stop" = '2019-12-31 12:00:00') # EDITED THIS
+                          "stop" = '2019-12-31 12:00:00') # EDIT THIS
   nml <- read_nml('glm3.nml')
   nml <- set_nml(nml, arg_list = validation.list)
   write_nml(nml, 'glm3.nml')
@@ -916,7 +923,7 @@ run_calibvalid <- function(var, var_unit, var_seq, cal_pars, pars, ub, lb, init.
   
   
   total.list <- list("start" = '2013-05-15 12:00:00', "stop" = '2019-12-31 12:00:00') #EDIT THIS!
-                #EDITED THIS
+                #EDIT THIS
                 #list("start" = '1980-04-01 00:00:00',
                 #     "stop" = '2015-12-31 00:00:00')
   nml <- read_nml('glm3.nml')

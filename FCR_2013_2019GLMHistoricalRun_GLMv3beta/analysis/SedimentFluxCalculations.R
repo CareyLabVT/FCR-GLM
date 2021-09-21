@@ -1,3 +1,13 @@
+#*****************************************************************                                                           *
+#* TITLE:   Falling Creek Reservoir Sediment Flux Calculations   *
+#* AUTHORS:  C.C. Carey                                          *
+#* DATE:   Originally developed 28 May 2021; Last modified 10 Sept 2021                            
+#* NOTES:  Goal of this script is to analyze the sediment flux 
+#*          chamber data measured for NH4, NO3, SRP, and DOC to 
+#*          complement the Fe and Mn data already published in 
+#*          Krueger et al. 2020 Water Research. 
+#*****************************************************************
+
 library(tidyverse)
 library(lubridate)
 
@@ -59,4 +69,5 @@ max(statsreport$srpflux_moles)
 median(statsreport$docflux_moles)
 mean(statsreport$docflux_moles)
 sd(statsreport$docflux_moles)/(8^.5)
+max(statsreport$docflux_moles)
 

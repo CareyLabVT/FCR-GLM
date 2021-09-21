@@ -1,9 +1,11 @@
-### Develop plots for FCR-GLM MS ###
-### Original plots from CCC --> Figure development by AGH, ASL, RPM, & WMW
-
-### Figure #2 --> Modeled vs Observed
-
-### Last update 06Jan21
+#*****************************************************************
+#* TITLE:   FCR GLM-AED script to create figure 2             
+#* AUTHORS:  R.P. McClure and C.C. Carey                                          
+#* DATE:   Originally developed by CCC in summer 2020; updated by RPM
+#*         to convert to ggplot in January 2021; Last modified 13 Sept 2021                            
+#* NOTES:  This script uses the data objects created by the 
+#*         "MakeFigure_OrganizeDataForFigures.R" 
+#*****************************************************************
 
 #temp plot
 temp <- ggplot()+

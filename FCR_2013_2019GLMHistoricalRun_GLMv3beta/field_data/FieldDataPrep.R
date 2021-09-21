@@ -1,6 +1,13 @@
-#Use this script to create field data files for the pertinent FCR water quality variables
-#written by CCC originally on 16 July 2018
-#updated and cleaned up on 2 June 2020
+#*****************************************************************
+#* TITLE:   FCR GLM-AED script to create field data files for water
+#*          quality variables            
+#* AUTHORS: C.C. Carey                                          
+#* DATE:   Originally developed by CCC on 16 July 2018; made tidy and 
+#*         cleaned up on 2 June 2020; last editing on 13 Sep 2021                           
+#* NOTES:  This script creates data files that are used for the 
+#*         sensitivity analysis, model calibration, and comparison of
+#*         modeled output vs. observed concentrations.
+#*****************************************************************
 
 setwd("./field_data")
 
@@ -391,9 +398,13 @@ silica <- read.csv("silica_master_df.csv", header=T) %>%
 #write.csv(silica, "field_silica.csv", row.names = F)
 
 #read in lab dataset of dissolved methane concentrations, measured in FCR
-ch4 <- read.csv("Dissolved_GHG_data_FCR_BVR_site50_inf_wet_15_19_not_final.csv", header=T) %>%
+inUrl1  <- "https://pasta.lternet.edu/package/data/eml/edi/551/5/38d72673295864956cccd6bbba99a1a3" 
+infile1 <- paste0(getwd(),"/Dissolved_CO2_CH4_Virginia_Reservoirs.csv")
+download.file(inUrl1,infile1,method="curl")
+
+ch4 <- read.csv("Dissolved_CO2_CH4_Virginia_Reservoirs.csv", header=T) %>%
   dplyr::filter(Reservoir=="FCR") %>%
-  dplyr::filter(Depth_m < 10) %>% #to remove weir inflow site
+  dplyr::filter(Site == 50) %>% #to remove weir inflow site
   mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
   rename(Depth = Depth_m, CAR_ch4 = ch4_umolL, CAR_pCO2 = co2_umolL) %>%
   select(DateTime, Depth, CAR_ch4, CAR_pCO2) %>%

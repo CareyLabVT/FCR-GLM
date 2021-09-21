@@ -1,5 +1,15 @@
-#to compare scenarios for oxic vs anoxic scenario conditions in FCR
-#time series of anoxic vs oxic concentrations
+#*****************************************************************
+#* TITLE:   FCR GLM-AED script to compare output for oxic vs anoxic 
+#*          model scenarios  in FCR             
+#* AUTHORS:  C.C. Carey                                          
+#* DATE:   Originally developed summer 2020; Last modified 13 Sept 2021                            
+#* NOTES:  Goal of this script is to compare anoxic vs. oxic 
+#*         hypolimnetic concentrations, molar ratios, & reservoir retention.
+#*         Most of the base R figures below are commented out because their 
+#*         "official" figure generation for the manuscript are done in ggplot
+#*         in other R scripts
+#*****************************************************************
+
 
 #load packages
 library(zoo)
@@ -30,6 +40,7 @@ B_TN <- get_var(anoxic, "TOT_tn",z_out=9,reference = 'surface')
 B_TP <- get_var(anoxic, "TOT_tp",z_out=9,reference = 'surface')
 B_TOC <- get_var(anoxic, "TOT_toc",z_out=9,reference = 'surface')
 
+#need to sum up the phytoplankton fractions of CNP
 B_cyano <- get_var(anoxic,var_name = 'PHY_cyano',z_out=9,reference = 'surface') %>% 
   pivot_longer(cols=starts_with(paste0("PHY_cyano_")), names_to="Depth", names_prefix="PHY_cyano_",values_to = "CyanoConc") %>%
   mutate(B_cyanoN = CyanoConc*0.12,
@@ -88,7 +99,6 @@ data4 <- data1 %>%
 #write.csv(data4, "output/DailyObservedRates&Ratios_22Feb2021.csv", row.names = F)
   
 #####find max concentrations during the summer
-
 max_concs <- data4 %>% 
   group_by(year) %>% 
   summarise(max_B_TN_TP = max(B_TN_TP),
@@ -123,45 +133,44 @@ max_concs <- data4 %>%
 #write.csv(max_concs, "output/maximumSummerObservedConcentrations_22Feb2021.csv", row.names=F)
 
 ####boxplots of median summer ratios####
-pdf("figures/BoxplotCNPRatios_AnoxicOxicScenarios.pdf", width=8.5, height=11)
-par(mfrow=c(4,2))
-
-#boxplots for TN:TP
-boxplot(mediandata$med_A_TN_TP,mediandata$med_O_TN_TP, ylab="median TN:TP", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="TN:TP")
-
-#boxplots for DIN:DRP
-boxplot(mediandata$med_A_DIN_PO4,mediandata$med_O_DIN_PO4, ylab="median DIN:DRP", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="DIN:DRP")
-
-#boxplots for TOC:TN
-boxplot(mediandata$med_A_TOC_TN,mediandata$med_O_TOC_TN, ylab="median TOC:TN", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="TOC:TN")
-
-#boxplots for DOC:DIN
-boxplot(mediandata$med_A_DOC_DIN,mediandata$med_O_DOC_DIN, ylab="median DOC:DIN", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="DOC:DIN")
-
-#boxplots for DOC:NH4
-boxplot(mediandata$med_A_DOC_NH4,mediandata$med_O_DOC_NH4, ylab="median DOC:NH4", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="DOC:NH4")
-
-#boxplots for DOC:NO3
-boxplot(mediandata$med_A_DOC_NO3,mediandata$med_O_DOC_NO3, ylab="median DOC:NO3", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="DOC:NO3")
-
-#boxplots for TOC:TP
-boxplot(mediandata$med_A_TOC_TP,mediandata$med_O_TOC_TP, ylab="median TOC:TP", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="TOC:TP")
-
-#boxplots for DOC:DRP
-boxplot(mediandata$med_A_DOC_PO4,mediandata$med_O_DOC_PO4, ylab="median DOC:DRP", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="DOC:DRP")
-
-dev.off()
+# pdf("figures/BoxplotCNPRatios_AnoxicOxicScenarios.pdf", width=8.5, height=11)
+# par(mfrow=c(4,2))
+# 
+# #boxplots for TN:TP
+# boxplot(mediandata$med_A_TN_TP,mediandata$med_O_TN_TP, ylab="median TN:TP", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="TN:TP")
+# 
+# #boxplots for DIN:DRP
+# boxplot(mediandata$med_A_DIN_PO4,mediandata$med_O_DIN_PO4, ylab="median DIN:DRP", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="DIN:DRP")
+# 
+# #boxplots for TOC:TN
+# boxplot(mediandata$med_A_TOC_TN,mediandata$med_O_TOC_TN, ylab="median TOC:TN", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="TOC:TN")
+# 
+# #boxplots for DOC:DIN
+# boxplot(mediandata$med_A_DOC_DIN,mediandata$med_O_DOC_DIN, ylab="median DOC:DIN", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="DOC:DIN")
+# 
+# #boxplots for DOC:NH4
+# boxplot(mediandata$med_A_DOC_NH4,mediandata$med_O_DOC_NH4, ylab="median DOC:NH4", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="DOC:NH4")
+# 
+# #boxplots for DOC:NO3
+# boxplot(mediandata$med_A_DOC_NO3,mediandata$med_O_DOC_NO3, ylab="median DOC:NO3", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="DOC:NO3")
+# 
+# #boxplots for TOC:TP
+# boxplot(mediandata$med_A_TOC_TP,mediandata$med_O_TOC_TP, ylab="median TOC:TP", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="TOC:TP")
+# 
+# #boxplots for DOC:DRP
+# boxplot(mediandata$med_A_DOC_PO4,mediandata$med_O_DOC_PO4, ylab="median DOC:DRP", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="DOC:DRP")
+# 
+# dev.off()
 
 ####stats for median summer ratios####
-
 t.test(mediandata$med_A_TN_TP,mediandata$med_O_TN_TP, paired=TRUE)
 t.test(mediandata$med_A_DIN_PO4,mediandata$med_O_DIN_PO4, paired=TRUE)
 t.test(mediandata$med_A_TOC_TN,mediandata$med_O_TOC_TN, paired=TRUE)
@@ -173,42 +182,42 @@ t.test(mediandata$med_A_DOC_PO4,mediandata$med_O_DOC_PO4, paired=TRUE)
 
 
 ####boxplots of raw (median) summer concentrations####
-pdf("figures/BoxplotCNPConcentrations_AnoxicOxicScenarios.pdf", width=8.5, height=11)
-par(mfrow=c(4,2))
-
-#boxplots for TOC
-boxplot(mediandata$med_A_TOC,mediandata$med_O_TOC, ylab="median TOC mmol/m3", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="TOC concentration")
-
-#boxplots for DOC
-boxplot(mediandata$med_A_DOC,mediandata$med_O_DOC, ylab="median DOC mmol/m3", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="DOC concentration")
-
-#boxplots for TN
-boxplot(mediandata$med_A_TN,mediandata$med_O_TN, ylab="median TN mmol/m3", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="TN concentration")
-
-#boxplots for DIN
-boxplot(mediandata$med_A_DIN,mediandata$med_O_DIN, ylab="median DIN mmol/m3", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="DIN concentration")
-
-#boxplots for NH4
-boxplot(mediandata$med_A_NH4,mediandata$med_O_NH4, ylab="median NH4 mmol/m3", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="NH4 concentration")
-
-#boxplots for NO3
-boxplot(mediandata$med_A_NO3,mediandata$med_O_NO3, ylab="median NO3 mmol/m3", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="NO3 concentration")
-
-#boxplots for TP
-boxplot(mediandata$med_A_TP,mediandata$med_O_TP, ylab="median TP mmol/m3", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="TP concentration")
-
-#boxplots for PO4
-boxplot(mediandata$med_A_PO4,mediandata$med_O_PO4, ylab="median P04 mmol/m3", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="PO4 concentration")
-
-dev.off()
+# pdf("figures/BoxplotCNPConcentrations_AnoxicOxicScenarios.pdf", width=8.5, height=11)
+# par(mfrow=c(4,2))
+# 
+# #boxplots for TOC
+# boxplot(mediandata$med_A_TOC,mediandata$med_O_TOC, ylab="median TOC mmol/m3", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="TOC concentration")
+# 
+# #boxplots for DOC
+# boxplot(mediandata$med_A_DOC,mediandata$med_O_DOC, ylab="median DOC mmol/m3", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="DOC concentration")
+# 
+# #boxplots for TN
+# boxplot(mediandata$med_A_TN,mediandata$med_O_TN, ylab="median TN mmol/m3", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="TN concentration")
+# 
+# #boxplots for DIN
+# boxplot(mediandata$med_A_DIN,mediandata$med_O_DIN, ylab="median DIN mmol/m3", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="DIN concentration")
+# 
+# #boxplots for NH4
+# boxplot(mediandata$med_A_NH4,mediandata$med_O_NH4, ylab="median NH4 mmol/m3", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="NH4 concentration")
+# 
+# #boxplots for NO3
+# boxplot(mediandata$med_A_NO3,mediandata$med_O_NO3, ylab="median NO3 mmol/m3", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="NO3 concentration")
+# 
+# #boxplots for TP
+# boxplot(mediandata$med_A_TP,mediandata$med_O_TP, ylab="median TP mmol/m3", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="TP concentration")
+# 
+# #boxplots for PO4
+# boxplot(mediandata$med_A_PO4,mediandata$med_O_PO4, ylab="median P04 mmol/m3", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="PO4 concentration")
+# 
+# dev.off()
 
 ####stats of raw (median) summer concs####
 t.test(mediandata$med_A_TOC,mediandata$med_O_TOC, paired=T)
@@ -318,111 +327,111 @@ retention <- fluxdata %>%
             Fnet_O_FRP = 100*(sum(O_FRP_output)-sum(inputFRP))/sum(inputFRP),
             Fnet_A_NH4 = 100*(sum(A_NH4_output)-sum(inputNH4))/sum(inputNH4),
             Fnet_O_NH4 = 100*(sum(O_NH4_output)-sum(inputNH4))/sum(inputNH4)) %>% 
-  write.csv("output/RetentionPerYear_30Nov2020.csv", row.names=F)
+#write.csv("output/RetentionPerYear_30Nov2020.csv", row.names=F)
 #Data indicate net flux (%) for each year; flux < 0 represents net retention and/or removal, 
   #flux > 0 represents net downstream export
 
 
 
 ####boxplots annual retention####
-pdf("figures/BoxplotAnnualDownstreamExport_AnoxicOxicScenarios.pdf", width=8.5, height=11)
-par(mfrow=c(4,2))
-
-#boxplots for TOC
-boxplot(retention$Fnet_A_TOC,retention$Fnet_O_TOC, ylab="TOC flux (%)", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="TOC export")
-
-#boxplots for DOC
-boxplot(retention$Fnet_A_DOC,retention$Fnet_O_DOC, ylab="DOC flux (%)", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="DOC export")
-
-#boxplots for TN
-boxplot(retention$Fnet_A_TN,retention$Fnet_O_TN, ylab="TN flux (%)", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="TN export")
-
-#boxplots for DIN
-boxplot(retention$Fnet_A_DIN,retention$Fnet_O_DIN, ylab="DIN flux (%)", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="DIN export")
-
-#boxplots for NH4
-boxplot(retention$Fnet_A_NH4,retention$Fnet_O_NH4, ylab="NH4 flux (%)", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="NH4 export")
-
-#boxplots for NO3
-boxplot(retention$Fnet_A_NO3,retention$Fnet_O_NO3, ylab="NO3 flux (%)", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="NO3 export")
-
-#boxplots for TP
-boxplot(retention$Fnet_A_TP,retention$Fnet_O_TP, ylab="TP flux (%)", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="TP export")
-
-#boxplots for PO4
-boxplot(retention$Fnet_A_FRP,retention$Fnet_O_FRP, ylab="P04 flux (%)", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="PO4 export")
-
-dev.off()
+# pdf("figures/BoxplotAnnualDownstreamExport_AnoxicOxicScenarios.pdf", width=8.5, height=11)
+# par(mfrow=c(4,2))
+# 
+# #boxplots for TOC
+# boxplot(retention$Fnet_A_TOC,retention$Fnet_O_TOC, ylab="TOC flux (%)", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="TOC export")
+# 
+# #boxplots for DOC
+# boxplot(retention$Fnet_A_DOC,retention$Fnet_O_DOC, ylab="DOC flux (%)", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="DOC export")
+# 
+# #boxplots for TN
+# boxplot(retention$Fnet_A_TN,retention$Fnet_O_TN, ylab="TN flux (%)", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="TN export")
+# 
+# #boxplots for DIN
+# boxplot(retention$Fnet_A_DIN,retention$Fnet_O_DIN, ylab="DIN flux (%)", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="DIN export")
+# 
+# #boxplots for NH4
+# boxplot(retention$Fnet_A_NH4,retention$Fnet_O_NH4, ylab="NH4 flux (%)", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="NH4 export")
+# 
+# #boxplots for NO3
+# boxplot(retention$Fnet_A_NO3,retention$Fnet_O_NO3, ylab="NO3 flux (%)", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="NO3 export")
+# 
+# #boxplots for TP
+# boxplot(retention$Fnet_A_TP,retention$Fnet_O_TP, ylab="TP flux (%)", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="TP export")
+# 
+# #boxplots for PO4
+# boxplot(retention$Fnet_A_FRP,retention$Fnet_O_FRP, ylab="P04 flux (%)", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="PO4 export")
+# 
+# dev.off()
 
 
 ####boxplots summer retention####
-retention <- fluxdata %>% 
-  group_by(year) %>% 
-  filter(DOY < 275, DOY > 195) %>% 
-  summarise(Fnet_A_TN = 100*(sum(A_TN_output)-sum(inputTN))/sum(inputTN),
-            Fnet_O_TN = 100*(sum(O_TN_output)-sum(inputTN))/sum(inputTN),
-            Fnet_A_TP = 100*(sum(A_TP_output)-sum(inputTP))/sum(inputTP),
-            Fnet_O_TP = 100*(sum(O_TP_output)-sum(inputTP))/sum(inputTP),
-            Fnet_A_TOC = 100*(sum(A_TOC_output)-sum(inputTOC))/sum(inputTOC),
-            Fnet_O_TOC = 100*(sum(O_TOC_output)-sum(inputTOC))/sum(inputTOC),
-            Fnet_A_DOC = 100*(sum(A_DOC_output)-sum(inputDOC))/sum(inputDOC),
-            Fnet_O_DOC = 100*(sum(O_DOC_output)-sum(inputDOC))/sum(inputDOC),
-            Fnet_A_DIN = 100*(sum(A_DIN_output)-sum(inputDIN))/sum(inputDIN),
-            Fnet_O_DIN = 100*(sum(O_DIN_output)-sum(inputDIN))/sum(inputDIN),
-            Fnet_A_NO3 = 100*(sum(A_NO3_output)-sum(inputNO3))/sum(inputNO3),
-            Fnet_O_NO3 = 100*(sum(O_NO3_output)-sum(inputNO3))/sum(inputNO3),
-            Fnet_A_FRP = 100*(sum(A_FRP_output)-sum(inputFRP))/sum(inputFRP),
-            Fnet_O_FRP = 100*(sum(O_FRP_output)-sum(inputFRP))/sum(inputFRP),
-            Fnet_A_NH4 = 100*(sum(A_NH4_output)-sum(inputNH4))/sum(inputNH4),
-            Fnet_O_NH4 = 100*(sum(O_NH4_output)-sum(inputNH4))/sum(inputNH4)) #%>% 
+# retention <- fluxdata %>% 
+#   group_by(year) %>% 
+#   filter(DOY < 275, DOY > 195) %>% 
+#   summarise(Fnet_A_TN = 100*(sum(A_TN_output)-sum(inputTN))/sum(inputTN),
+#             Fnet_O_TN = 100*(sum(O_TN_output)-sum(inputTN))/sum(inputTN),
+#             Fnet_A_TP = 100*(sum(A_TP_output)-sum(inputTP))/sum(inputTP),
+#             Fnet_O_TP = 100*(sum(O_TP_output)-sum(inputTP))/sum(inputTP),
+#             Fnet_A_TOC = 100*(sum(A_TOC_output)-sum(inputTOC))/sum(inputTOC),
+#             Fnet_O_TOC = 100*(sum(O_TOC_output)-sum(inputTOC))/sum(inputTOC),
+#             Fnet_A_DOC = 100*(sum(A_DOC_output)-sum(inputDOC))/sum(inputDOC),
+#             Fnet_O_DOC = 100*(sum(O_DOC_output)-sum(inputDOC))/sum(inputDOC),
+#             Fnet_A_DIN = 100*(sum(A_DIN_output)-sum(inputDIN))/sum(inputDIN),
+#             Fnet_O_DIN = 100*(sum(O_DIN_output)-sum(inputDIN))/sum(inputDIN),
+#             Fnet_A_NO3 = 100*(sum(A_NO3_output)-sum(inputNO3))/sum(inputNO3),
+#             Fnet_O_NO3 = 100*(sum(O_NO3_output)-sum(inputNO3))/sum(inputNO3),
+#             Fnet_A_FRP = 100*(sum(A_FRP_output)-sum(inputFRP))/sum(inputFRP),
+#             Fnet_O_FRP = 100*(sum(O_FRP_output)-sum(inputFRP))/sum(inputFRP),
+#             Fnet_A_NH4 = 100*(sum(A_NH4_output)-sum(inputNH4))/sum(inputNH4),
+#             Fnet_O_NH4 = 100*(sum(O_NH4_output)-sum(inputNH4))/sum(inputNH4)) #%>% 
   #write.csv("output/RetentionSummerOnly_6Jan2020.csv", row.names=F)
 #Data indicate net flux (%) for each year; flux < 0 represents net retention and/or removal, 
 #flux > 0 represents net downstream export
 
-pdf("figures/BoxplotSummerOnlyDownstreamExport_AnoxicOxicScenarios.pdf", width=8.5, height=11)
-par(mfrow=c(4,2))
-
-#boxplots for TOC
-boxplot(retention$Fnet_A_TOC,retention$Fnet_O_TOC, ylab="TOC flux (%)", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="TOC export")
-
-#boxplots for DOC
-boxplot(retention$Fnet_A_DOC,retention$Fnet_O_DOC, ylab="DOC flux (%)", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="DOC export")
-
-#boxplots for TN
-boxplot(retention$Fnet_A_TN,retention$Fnet_O_TN, ylab="TN flux (%)", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="TN export")
-
-#boxplots for DIN
-boxplot(retention$Fnet_A_DIN,retention$Fnet_O_DIN, ylab="DIN flux (%)", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="DIN export")
-
-#boxplots for NH4
-boxplot(retention$Fnet_A_NH4,retention$Fnet_O_NH4, ylab="NH4 flux (%)", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="NH4 export")
-
-#boxplots for NO3
-boxplot(retention$Fnet_A_NO3,retention$Fnet_O_NO3, ylab="NO3 flux (%)", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="NO3 export")
-
-#boxplots for TP
-boxplot(retention$Fnet_A_TP,retention$Fnet_O_TP, ylab="TP flux (%)", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="TP export")
-
-#boxplots for PO4
-boxplot(retention$Fnet_A_FRP,retention$Fnet_O_FRP, ylab="P04 flux (%)", col=c("red","blue"),
-        names=c("Anoxic", "Oxic"), main="PO4 export")
-
-dev.off()
+# pdf("figures/BoxplotSummerOnlyDownstreamExport_AnoxicOxicScenarios.pdf", width=8.5, height=11)
+# par(mfrow=c(4,2))
+# 
+# #boxplots for TOC
+# boxplot(retention$Fnet_A_TOC,retention$Fnet_O_TOC, ylab="TOC flux (%)", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="TOC export")
+# 
+# #boxplots for DOC
+# boxplot(retention$Fnet_A_DOC,retention$Fnet_O_DOC, ylab="DOC flux (%)", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="DOC export")
+# 
+# #boxplots for TN
+# boxplot(retention$Fnet_A_TN,retention$Fnet_O_TN, ylab="TN flux (%)", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="TN export")
+# 
+# #boxplots for DIN
+# boxplot(retention$Fnet_A_DIN,retention$Fnet_O_DIN, ylab="DIN flux (%)", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="DIN export")
+# 
+# #boxplots for NH4
+# boxplot(retention$Fnet_A_NH4,retention$Fnet_O_NH4, ylab="NH4 flux (%)", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="NH4 export")
+# 
+# #boxplots for NO3
+# boxplot(retention$Fnet_A_NO3,retention$Fnet_O_NO3, ylab="NO3 flux (%)", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="NO3 export")
+# 
+# #boxplots for TP
+# boxplot(retention$Fnet_A_TP,retention$Fnet_O_TP, ylab="TP flux (%)", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="TP export")
+# 
+# #boxplots for PO4
+# boxplot(retention$Fnet_A_FRP,retention$Fnet_O_FRP, ylab="P04 flux (%)", col=c("red","blue"),
+#         names=c("Anoxic", "Oxic"), main="PO4 export")
+# 
+# dev.off()
 
 ####stats for summer retention####
 

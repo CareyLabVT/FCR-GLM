@@ -1,9 +1,11 @@
-### Develop plots for FCR-GLM MS ###
-### Original plots from CCC --> Figure development by AGH, ASL, RPM, & WMW
-
-### Figure #3 --> Oxic Vs Anoxic Scenarios
-
-### Last update 25Mar21 --> reduced dpi to 300
+#*****************************************************************
+#* TITLE:   FCR GLM-AED script to create figure 3             
+#* AUTHORS:  R.P. McClure and C.C. Carey                                          
+#* DATE:   Originally developed by CCC in summer 2020; updated by RPM
+#*         to convert to ggplot in January 2021; Last modified 13 Sept 2021                            
+#* NOTES:  This script uses the data objects created by the 
+#*         "MakeFigure_OrganizeDataForFigures.R" 
+#*****************************************************************
 
 temp_scenarios <- ggplot()+
   geom_line(data = modtemp_oxic, aes(DateTime, temp, color = "Oxic"), size = 1.3)+
@@ -192,5 +194,4 @@ figure3 <- (temp_scenarios|oxy_scenarios)/
 figure3
 dev.off()
 
-
-A temp B DO, C TOC, D DOC, E TN, F DIN, G NH4, H NO3, I TP, J DRP
+#panel lettering: A temp B DO, C TOC, D DOC, E TN, F DIN, G NH4, H NO3, I TP, J DRP

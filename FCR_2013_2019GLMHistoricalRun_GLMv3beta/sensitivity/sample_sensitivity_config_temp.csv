@@ -11,6 +11,11 @@ coef_mix_hyp,0.2,0.8,0.5
 ce,5e-04,0.002,0.0013
 ch,5e-04,0.002,0.0013
 cd,5e-04,0.002,0.0013
+zone_heights,0.1,9.5,5
+zone_heights,0.1,9.5,9
+rain_factor,0.75,1.25,1
+at_factor,0.75,1.25,1
+rh_factor,0.75,1.25,1
 sed_temp_mean,3,20,11
 sed_temp_mean,3,20,17
 sed_temp_amplitude,2,12,6

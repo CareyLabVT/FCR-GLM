@@ -1,0 +1,3 @@
+attributeName	attributeDefinition	class	unit	dateTimeFormatString	missingValueCode	missingValueCodeExplanation
+time	Date and time	Date		YYYY-MM-DD	NA	value is missing
+FLOW	Total reservoir outflow	numeric	cubicMetersPerSecond		NA	value is missing
