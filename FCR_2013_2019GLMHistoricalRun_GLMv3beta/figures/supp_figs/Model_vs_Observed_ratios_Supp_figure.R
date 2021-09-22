@@ -16,17 +16,24 @@ obs_doc_din_ts <- left_join(obs_doc, obs_amm, by = "DateTime")%>%
   left_join(., obs_nit, by = "DateTime")%>%
   mutate(obs_doc_din_ratio = OGM_doc/(NIT_amm+NIT_nit))
 
-doc_din_ts <- ggplot(mod_doc_din_ts, aes(DateTime, mod_doc_din_ratio))+
+doc_din_ts <- ggplot(mod_doc_din_ts, aes(DateTime, mod_doc_din_ratio, color = "Modeled Ratios"))+
   geom_line(size = 1)+
-  geom_point(data = obs_doc_din_ts, aes(DateTime, obs_doc_din_ratio),pch = 16, size = 2.5, color = "red")+
+  geom_point(data = obs_doc_din_ts, aes(DateTime, obs_doc_din_ratio, color = "Observed Ratios"), pch = 16, size = 2.5)+
   theme_classic()+
   ylab("Hypolimnetic DOC:DIN")+
   xlab("")+
   labs(title = "A")+
-  #labs(title = expression('RMSE = 1.32'*~degree*C*''))+
+  scale_color_manual(breaks = c("Modeled Ratios", "Observed Ratios"),
+                                      values = c("Modeled Ratios" = "black", "Observed Ratios" = "red"),
+                                      guide = guide_legend(override.aes = list(linetype = c(1, 0),
+                                                                               shape = c(NA, 16),
+                                                                               color = c("black","red"))))+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
+        legend.position = c(0.3,0.9),
+        legend.title = element_blank(),
+        legend.text = element_text(size = 30, color = "black"),
         plot.title = element_text(face = "bold"))
 
 #DOC:NH4 ratio
