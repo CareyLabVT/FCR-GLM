@@ -11,12 +11,12 @@
 # get the packages we will need for the plotting exercises
 # install.packages('remotes')
 # install.packages('devtools')
-devtools::install_github("GLEON/GLMr", INSTALL_opts=c("--no-multiarch"))
-remotes::install_github('CareyLabVT/glmtools', force = T, INSTALL_opts=c("--no-multiarch"))
-# 
+# devtools::install_github("GLEON/GLMr", INSTALL_opts=c("--no-multiarch"))
+# remotes::install_github('CareyLabVT/glmtools', force = T, INSTALL_opts=c("--no-multiarch"))
+# # 
 
 if (!require('pacman')) install.packages('pacman'); library('pacman')
-pacman::p_load(tidyverse, dplyr, lubridate, reshape2, patchwork, ncdf4, GLM3r)
+pacman::p_load(tidyverse, dplyr, lubridate, reshape2, patchwork, ncdf4, glmtools)
 
 nc_main <- file.path('./FCR_2013_2019GLMHistoricalRun_GLMv3beta/output/output_2013_2019.nc')
 nc_oxic <- file.path('./FCR_2013_2019GLMHistoricalRun_GLMv3beta/output/output_oxic.nc') 
