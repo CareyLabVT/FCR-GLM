@@ -1,9 +1,13 @@
 # FCR-GLM
 
-This repository contains the files for running GLM-AED calibrated for Falling Creek Reservoir (Vinton, VA, USA), analyzing the model output, and generating figures for Carey et al. in prep. Each of the directories below detail the workflow in order.
+This repository contains the files for calibrating and running the General Lake Model-Aquatic EcoDynamics (GLM-AED) model for Falling Creek Reservoir (FCR; located in Vinton, VA, USA), analyzing the model output, and generating figures for the manuscript on the effects of anoxia on reservoir biogeochemistry by Carey et al. Each of the directories below detail the workflow in order.
 
 ## field_data
+This directory contains the field data files needed for GLM-AED model driver data, the model sensitivity analysis and parameter calibration, and comparison of model output vs. observations. The "FieldDataPrep.R" script will pull in published datasets via the Environmental Data Initiative's API and format the data as needed for model analyses as CSV (comma-separated value) files. A "CTD_YSI_comp.R" script provides an easy way to compare FCR depth profiles of temperature and dissolved oxygen from different sensors. Among the CSV files in this directory, two of particular note are: 1) "Calc_HOX_flow_DO_20190916.csv", which provides the oxygenation schedule for FCR from 2013-2019, and 2) "SedimentChambersFluxes.csv", which provides the ancillary data of carbon, nitrogen, and phosphorus concentrations measured by Krueger et al. 2020 (DOI: 10.1016/j.watres.2020.116003) in sediment chambers in FCR.
+
 ## inputs
+This directory includes the
+
 ## aed2
 ## modeling
 ## output
