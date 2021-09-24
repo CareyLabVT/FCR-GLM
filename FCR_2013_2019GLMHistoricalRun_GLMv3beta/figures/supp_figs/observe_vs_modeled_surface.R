@@ -1,9 +1,12 @@
-### Develop plots for FCR-GLM MS ###
-### Original plots from CCC --> Figure development by AGH, ASL, RPM, & WMW
-
-### supp Modeled vs Observed
-
-### Last update 06Jan21
+#*****************************************************************
+#* TITLE:   FCR GLM-AED script to create supplementary figure of 
+#*           epilimnetic (surface) modeled vs. observed data   
+#* AUTHORS:  R.P. McClure and C.C. Carey                                          
+#* DATE:   Originally developed by CCC in summer 2020; updated by RPM
+#*         to convert to ggplot in January 2021; Last modified 24 Sept 2021                            
+#* NOTES:  This script uses the data objects created by the 
+#*         "evaluate_surface.R" script 
+#*****************************************************************
 
 #temp plot
 temp <- ggplot()+

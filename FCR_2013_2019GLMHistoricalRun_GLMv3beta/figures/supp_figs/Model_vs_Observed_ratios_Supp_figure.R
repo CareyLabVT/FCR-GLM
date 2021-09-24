@@ -1,8 +1,10 @@
 #*****************************************************************
-#* TITLE:   FCR GLM-AED script to create figure 2             
+#* TITLE:   FCR GLM-AED script to create a figure comparing the 
+#*          molar ratios of hypolimnetic (9m) chemistry in observed
+#*          vs. model output          
 #* AUTHORS:  R.P. McClure and C.C. Carey                                          
 #* DATE:   Originally developed by CCC in summer 2020; updated by RPM
-#*         to convert to ggplot in January 2021; Last modified 13 Sept 2021                            
+#*         to convert to ggplot in January 2021; Last modified 24 Sept 2021                            
 #* NOTES:  This script uses the data objects created by the 
 #*         "MakeFigure_OrganizeDataForFigures.R" 
 #*****************************************************************

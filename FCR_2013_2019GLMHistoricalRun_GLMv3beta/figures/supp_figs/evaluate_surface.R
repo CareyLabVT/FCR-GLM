@@ -1,3 +1,13 @@
+#*****************************************************************
+#* TITLE:   FCR GLM-AED script to create data objects needed to make
+#*         the supplementary figure looking at epilimnetic model
+#*         vs. observed outpu            
+#* AUTHORS:  R.P. McClure and C.C. Carey                                          
+#* DATE:   Originally developed by CCC in summer 2020; updated by RPM
+#*         to convert to ggplot in January 2021; Last modified 13 Sept 2021                            
+#* NOTES:  This script makes the data objects needed to make the figure 
+#*          "Supp_Figure_Model_vs_Observed_EPI_FCR_GLM.jpg" 
+#*****************************************************************
 
 ### Develop plots for FCR-GLM MS ###
 ### Original plots from CCC --> Figure development by AGH, ASL, RPM, & WMW
