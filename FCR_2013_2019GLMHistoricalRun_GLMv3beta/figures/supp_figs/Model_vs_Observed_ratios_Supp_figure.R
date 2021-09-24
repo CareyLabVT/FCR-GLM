@@ -7,6 +7,7 @@
 #*         "MakeFigure_OrganizeDataForFigures.R" 
 #*****************************************************************
 
+
 #DOC:DIN ratio
 mod_doc_din_ts <- left_join(mod_doc, mod_amm, by = "DateTime")%>%
   left_join(., mod_nit, by = "DateTime")%>%
@@ -22,6 +23,7 @@ doc_din_ts <- ggplot(mod_doc_din_ts, aes(DateTime, mod_doc_din_ratio, color = "M
   theme_classic()+
   ylab("Hypolimnetic DOC:DIN")+
   xlab("")+
+  ylim(0,275)+
   labs(title = "A")+
   scale_color_manual(breaks = c("Modeled Ratios", "Observed Ratios"),
                                       values = c("Modeled Ratios" = "black", "Observed Ratios" = "red"),
@@ -50,6 +52,7 @@ doc_nh4_ts <- ggplot(mod_doc_nh4_ts, aes(DateTime, mod_doc_nh4_ratio))+
   ylab(expression(paste("Hypolimnetic DOC:NH" [" 4"],""^"+")))+
   xlab("")+
   labs(title = "B")+
+  ylim(0,275)+
   #labs(title = expression('RMSE = 1.32'*~degree*C*''))+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -61,8 +64,11 @@ mod_doc_no3_ts <- left_join(mod_doc, mod_nit, by = "DateTime")%>%
   mutate(mod_doc_no3_ratio = OGM_doc/NIT_nit)%>%
   filter(!is.infinite(mod_doc_no3_ratio))
 
+mod_doc_no3_ts$mod_doc_no3_ratio[mod_doc_no3_ts$mod_doc_no3_ratio>1250]<-NA
+
 obs_doc_no3_ts <- left_join(obs_doc, obs_nit, by = "DateTime")%>%
-  mutate(obs_doc_no3_ratio = OGM_doc/NIT_nit)
+  mutate(obs_doc_no3_ratio = OGM_doc/NIT_nit) %>%
+  filter(!is.infinite(obs_doc_no3_ratio))
 
 doc_no3_ts <- ggplot(mod_doc_no3_ts, aes(DateTime, mod_doc_no3_ratio))+
   geom_line(size = 1)+
@@ -71,7 +77,7 @@ doc_no3_ts <- ggplot(mod_doc_no3_ts, aes(DateTime, mod_doc_no3_ratio))+
   ylab(expression(paste("Hypolimnetic DOC:NO" [" 3"],""^"-")))+
   xlab("")+
   labs(title = "C")+
-  coord_cartesian(ylim = c(0,2000))+
+  coord_cartesian(ylim = c(0,1250))+
   #labs(title = expression('RMSE = 1.32'*~degree*C*''))+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -93,6 +99,7 @@ doc_srp_ts <- ggplot(mod_doc_srp_ts, aes(DateTime, mod_doc_srp_ratio))+
   ylab("Hypolimnetic DOC:DRP")+
   xlab("")+
   labs(title = "D")+
+  coord_cartesian(ylim = c(0,2200))+
   #labs(title = expression('RMSE = 1.32'*~degree*C*''))+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -113,6 +120,7 @@ tn_tp_ts <- ggplot(mod_tn_tp_ts, aes(DateTime, mod_tn_tp_ratio))+
   ylab("Hypolimnetic TN:TP")+
   xlab("")+
   labs(title = "E")+
+  coord_cartesian(ylim = c(0,275))+
   #labs(title = expression('RMSE = 1.32'*~degree*C*''))+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -128,6 +136,8 @@ obs_din_srp_ts <- left_join(obs_srp, obs_amm, by = "DateTime")%>%
   left_join(., obs_nit, by = "DateTime")%>%
   mutate(obs_din_srp_ratio = (NIT_amm+NIT_nit)/PHS_frp)
 
+mod_din_srp_ts$mod_din_srp_ratio[mod_din_srp_ts$mod_din_srp_ratio>1250]<-NA
+
 din_srp_ts <- ggplot(mod_din_srp_ts, aes(DateTime, mod_din_srp_ratio))+
   geom_line(size = 1)+
   geom_point(data = obs_din_srp_ts, aes(DateTime, obs_din_srp_ratio),pch = 16, size = 2.5, color = "red")+
@@ -135,6 +145,7 @@ din_srp_ts <- ggplot(mod_din_srp_ts, aes(DateTime, mod_din_srp_ratio))+
   ylab("Hypolimnetic DIN:DRP")+
   xlab("")+
   labs(title = "F")+
+  coord_cartesian(ylim = c(0,1500))+
   #labs(title = expression('RMSE = 1.32'*~degree*C*''))+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
