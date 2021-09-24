@@ -141,7 +141,7 @@ nh4data <- data1 %>%
          value = ifelse(Process == "anammox", -value, value)) %>% 
   #pivot_wider(names_from = Scenario, values_from = value) %>% 
   mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
-  mutate(Process=recode(Process, sed = "Sediment flux",don="DON mineralization", 
+  mutate(Process=recode(Process, sed = "Sediment flux",don="DON mineralization (labl.)", 
                      donr="DON mineralization (recalc.)",nitrif="Nitrification",
                      anammox = "Anammox", dnra = "DNRA")) %>% 
   mutate(nutrient = "NH4")
@@ -158,7 +158,7 @@ no3data <- data1 %>%
          value = ifelse(Process == "dnra", -value, value)) %>% 
   mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
   mutate(Process=recode(Process, sed = "Sediment flux",nitrif="Nitrification",
-                     dnra = "DNRA")) %>% 
+                     dnra = "DNRA", Denitrification= "WC Denitrification")) %>% 
   mutate(nutrient = "NO3")
 
 nitrogen <- rbind(nh4data, no3data)
@@ -171,7 +171,7 @@ po4data <- data1 %>%
   pivot_longer(cols = A_dop_miner:O_sed_frp, names_to = c("Scenario", "Process"), names_sep ="_") %>% 
   #pivot_wider(names_from = Scenario, values_from = value) %>% 
   mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
-  mutate(Process=recode(Process, sed = "Sediment flux", dop="DOP mineralization",
+  mutate(Process=recode(Process, sed = "Sediment flux", dop="DOP mineralization (labl.)",
                      dopr = "DOP mineralization (recalc.)"))%>% 
   mutate(nutrient = "DRP")
 
@@ -185,7 +185,7 @@ docdata <- data1 %>%
          value = ifelse(Process == "docr", -value, value)) %>% 
   #pivot_wider(names_from = Scenario, values_from = value) %>% 
   mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
-  mutate(Process=recode(Process, sed = "Sediment flux",doc="DOC mineralization",
+  mutate(Process=recode(Process, sed = "Sediment flux",doc="DOC mineralization (labl.)",
                      docr = "DOC mineralization (recalc.)", poc= "POC hydrolysis"))%>% 
   mutate(nutrient = "DOC")
 
@@ -193,21 +193,21 @@ docdata <- data1 %>%
 # Using the "Safe" color palette from rcartocolor: https://github.com/Nowosad/rcartocolor
 
 cols_c <- c("Sediment flux" = "#D55E00", 
-            "DOC mineralization" = "#6699CC", 
+            "DOC mineralization (labl.)" = "#6699CC", 
             "DOC mineralization (recalc.)" = "#888888",
-            "POC hydrolysis" = "#E58606")
+            "POC hydrolysis" = "#e59906")
 
 cols_p <- c("Sediment flux" = "#D55E00", 
-          "DOP mineralization" = "#6699CC", 
+          "DOP mineralization (labl.)" = "#6699CC", 
           "DOP mineralization (recalc.)" = "#888888")
 
 cols_n <- c("Sediment flux" = "#D55E00", 
-            "DON mineralization" = "#6699CC", 
+            "DON mineralization (labl.)" = "#6699CC", 
             "DON mineralization (recalc.)" = "#888888",
             "Anammox" = "#AA4499",
             "Nitrification" = "#332288",
             "DNRA" = "#117733",
-            "Denitrification" = "#88CCEE")   
+            "WC Denitrification" = "#88CCEE")   
 
 p1 <- nitrogen %>% 
   ggplot(aes(x = Scenario, y = value, fill = Process)) +
@@ -238,7 +238,7 @@ p3 <- docdata %>%
   geom_bar(position = "stack", stat = "identity") +
   scale_fill_manual(values = cols_c, name = "") +
   facet_wrap(facets = vars(nutrient))+
-  labs(x = "Scenario", y = "", title = "Carbon") +
+  labs(x = "", y = "", title = "Carbon") +
   ylim(-0.5, 2.0)+
   geom_hline(yintercept = 0, lty = "dashed")+
   theme_bw()+

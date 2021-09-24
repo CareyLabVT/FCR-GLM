@@ -39,7 +39,7 @@ oxy <- ggplot(sss_oxy, aes(DateTime, mmol.O2.m3.day))+
   theme_classic()+
   ylab(expression(paste("Hypolimnetic Oxygen (mmol m" ^"-3",")")))+
   xlab("")+
-  scale_y_continuous(sec.axis = sec_axis( trans=~.*1, name=expression(paste("SSS Oxygen addition (mmol m" ^"-3","d" ^"-1",")"))))+
+  scale_y_continuous(sec.axis = sec_axis( trans=~.*1, name=expression(paste("HOx oxygen addition (mmol m" ^"-3","d" ^"-1",")"))))+
   labs(title = "B")+
   coord_cartesian(ylim = c(0,650))+
   #labs(title = expression(paste("RMSE = 100.5 mmol m" ^"-3","")))+
