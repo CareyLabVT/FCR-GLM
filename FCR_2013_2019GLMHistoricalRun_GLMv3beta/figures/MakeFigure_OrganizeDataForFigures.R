@@ -1,7 +1,7 @@
 #*****************************************************************     
 #* TITLE:   FCR GLM-AED figure preparation: organize input data         
 #* AUTHORS:  R.P. McClure, C.C. Carey                                         
-#* DATE:   Originally developed 28 May 2021; Last modified 13 Sept 2021                            
+#* DATE:   Originally developed 28 May 2021; Last modified 24 Sept 2021                            
 #* NOTES:  Goal of this script is to organize the data to generate the 
 #*         data figures (which are in subsequent scripts) for the FCR-GLM-AED
 #*         manuscript
