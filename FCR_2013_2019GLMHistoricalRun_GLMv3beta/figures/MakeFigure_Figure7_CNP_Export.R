@@ -25,6 +25,7 @@ toc_export <- retention_stratified_period%>%
   xlab("")+
   labs(title = "A")+
   theme_classic()+
+  geom_hline(yintercept = 0, lty = "dashed")+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
@@ -94,6 +95,7 @@ doc_export <- retention_stratified_period%>%
   xlab("")+
   labs(title = "B")+
   theme_classic()+
+  geom_hline(yintercept = 0, lty = "dashed")+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
@@ -165,6 +167,7 @@ no3_export <- retention_stratified_period%>%
   xlab("")+
   labs(title = "F")+
   theme_classic()+
+  geom_hline(yintercept = 0, lty = "dashed")+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
@@ -189,6 +192,7 @@ drp_export <- retention_stratified_period%>%
   xlab("")+
   labs(title = "H")+
   theme_classic()+
+  geom_hline(yintercept = 0, lty = "dashed")+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
