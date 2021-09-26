@@ -8,9 +8,23 @@ This directory contains the field data files needed for GLM-AED model driver dat
 ## inputs
 This directory contains R scripts to make the model driver data files to run GLM-AED for FCR, as well as the actual driver data files. The "WetlandInflowPrep.R" script calculates the water budget for Tunnel Branch and Falling Creek using EDI published datasets. The water budget is then used in the "StreamInflowPrep.R" file to make the inflow files for the two streams (which includes their individual water temperature, discharge, and chemistry). Finally, the "SSSInflowPrep.R" script makes the inflow file for the submerged stream inflow into FCR that simulates the hypolimnetic oxygenation system. The three stream inflow files, as well as the outflow driver file and meteorological driver data file (hourly NLDAS-2 weather data), are included in the directory as CSV files.
 
-## aed2
 ## modeling
-## output
+This directory contains R scripts needed to run the GLM-AED sensitivity analysis and automated calibration ("SensitivityCalibration.R") for FCR, which use functions provided in the "functions-glm.R" script. The "GLM_Run_Script_FCR.R" is used to run the model once it is calibrated and compare each of the focal state variables with observations at multiple reservoir depths.
+
 ## sensitivity
+This directory contains the CSV files that serve as inputs to and outputs from the model sensitivity analysis run in the "modeling/SensitivityCalibration.R" script for the focal model state variables. 
+
+## aed2
+This directory contains the two AED configuration files ("aed2_20210204_2DOCpools.nml" for the reservoir's biogeochemistry, "aed2_phyto_pars_30June2020.nml" for the reservoir's phytoplankton community) with calibrated parameters for FCR. 
+
+## output
+After the model is run, this directory contains the output netcdf files from GLM-AED. This directory also contains summarized output in CSV files needed for the analysis in Carey et al. (including t-test statistics, % reservoir retention, modeled vs. observed elemental concentrations and ratios, etc.)
+
 ## analysis
+This directory contains the R scripts needed to analyze the model output for the Carey et al. analysis. This includes the script used for making the oxic/anoxic model scenarios ("ScenarioGeneration.R"), comparing observations and model simulations for the anoxic/oxic scenarios ("Analyze Observed Simulation.R"), analyzing the sediment flux chambers for comparison with calibrated parameters ("SedimentFluxCalculations.R"), and calculating the needed values used in the manuscript ("NeededNumbersForText.R" and "NIDFacts.R").
+
 ## figures
+This directory contains the R script used to make data objects for visualization ("MakeFigure_OrganizeDataForFigures.R"), individual scripts used for making each of the data figures ("MakeFigure_FigureX..."), and the actual figures. A subdirectory called "supp_figs" contains the R scripts and output files for the supplementary figures and tables in the manuscript.
+
+## main directory
+Within the FCR-GLM directory contains the dynamic library files needed to run the GLM-AED model (v.3.2.0a3) on mac computers only, the GLM-AED binary file for this model version, and the three GLM configuration files: 1) "glm3.nml", to simulate observed conditions; 2) "glm3_anoxic.nml", the anoxic model scenario; and 3) "glm3_oxic.nml", the oxic model scenario. To run either scenario, the "_anoxic" or "_oxic" suffix would need to be removed first.
