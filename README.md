@@ -12,7 +12,10 @@ This directory contains R scripts to make the model driver data files to run GLM
 This directory contains R scripts needed to run the GLM-AED sensitivity analysis and automated calibration ("SensitivityCalibration.R") for FCR, which use functions provided in the "functions-glm.R" script. The "GLM_Run_Script_FCR.R" is used to run the model once it is calibrated and compare each of the focal state variables with observations at multiple reservoir depths.
 
 ## sensitivity
-This directory contains the CSV files that serve as inputs to and outputs from the model sensitivity analysis run in the "modeling/SensitivityCalibration.R" script for the focal model state variables. 
+This directory contains the CSV files that serve as inputs to the model sensitivity analysis run in the "modeling/SensitivityCalibration.R" script for the focal model state variables. 
+
+## results
+This directory contains the output from the model sensitivity analysis and calibration analysis run in the "modeling/SensitivityCalibration.R" script for the focal model state variables. 
 
 ## aed2
 This directory contains the two AED configuration files ("aed2_20210204_2DOCpools.nml" for the reservoir's biogeochemistry, "aed2_phyto_pars_30June2020.nml" for the reservoir's phytoplankton community) with calibrated parameters for FCR. 
