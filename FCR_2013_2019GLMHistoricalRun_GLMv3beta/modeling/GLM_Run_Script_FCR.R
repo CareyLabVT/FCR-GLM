@@ -17,7 +17,6 @@ if (!require('pacman')) install.packages('pacman'); library('pacman')
 pacman::p_load(tidyverse, lubridate, ncdf4, GLMr, glmtools)
 
 setwd("./FCR_2013_2019GLMHistoricalRun_GLMv3beta")
-setwd("../") #if pulling from github, sets it to proper wd, which should be "/FCR_2013_2019GLMHistoricalRun_GLMv3beta"
 sim_folder <- getwd()
 
 #look at glm and aed nml files
@@ -1088,3 +1087,5 @@ plot(time_1,ch4flux[,1], ylim=c(0,2.5), ylab="CH4 flux, mmol/m2/d", xlab="Date")
 points(time_1,(ch4flux[,1]+sample(rnorm(1,mean=0.3,sd=0.3))), col="red")
 legend("topleft", c("Baseline","+2 degrees"), fill=c("black","red"))
 nc_close(nc)
+
+#Mary says: congrats! you now get a cookie!

@@ -2,14 +2,14 @@
 #* TITLE:   Falling Creek Reservoir GLM-AED stream inflow file 
 #*          preparation                                          *
 #* AUTHORS:  C.C. Carey                                          *
-#* DATE:   Originally developed 16 July 2018; Last modified 8 Sept 2021                            
+#* DATE:   Originally developed 16 July 2018; Last modified 26 Sept 2021                            
 #* NOTES:  CCC developed to estimate reservoir inflows for FCR; 
 #*         CCC subsequently edited on 1 June 2020 and made tidy,
 #*         with subsequent tweaks to annotation in summer 2021
 #*****************************************************************
 
 
-setwd("./inputs")
+setwd("FCR_2013_2019GLMHistoricalRun_GLMv3beta/inputs")
 sim_folder <- getwd()
 
 #load packages

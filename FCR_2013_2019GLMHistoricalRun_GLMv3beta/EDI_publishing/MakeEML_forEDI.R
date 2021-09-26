@@ -6,7 +6,9 @@
 #* NOTES:  Goal of this script is to develop an EDI data publication
 #*         that can be cited in a manuscript for the calibrated FCR-GLM-AED
 #*         model. All nml files and input files are included for running
-#*         the model for FCR during 2013-2019.
+#*         the model for FCR during 2013-2019. We thank Colin Smith
+#*         for all of his amazing work generating the EMLassemblyline package
+#*         which enables this process to be so streamlined and easy!!
 #*****************************************************************
 # useful ref for learning more about publishing data in EDI: 
 #https://github.com/EDIorg/EMLassemblyline/blob/master/documentation/instructions.md
@@ -15,10 +17,10 @@
 # install.packages("devtools")
 # library(devtools)
 #devtools::install_github("EDIorg/EMLassemblyline")
+setwd("./FCR_2013_2019GLMHistoricalRun_GLMv3beta")
 library(EMLassemblyline)
 
 #Step 1: Create a directory for your dataset, here "EDI_publishing" within the main repo
-#setwd("./EDI_publishing")
 
 #Step 2: Move your dataset to the directory
 file.copy('glm3.nml', 'EDI_publishing/glm3.nml')
@@ -31,6 +33,7 @@ file.copy('inputs/FCR_weir_inflow_2013_2019_20200828_allfractions_2poolsDOC.csv'
 file.copy('inputs/FCR_wetland_inflow_2013_2019_20200828_allfractions_2DOCpools.csv', 'EDI_publishing/FCR_wetland_inflow_2013_2019_20200828_allfractions_2DOCpools.csv')
 #once the nml files are copied over, I put them in a sub-directory called "model_configuration_nml_files"
 
+#now set files to the correct directory
 setwd("./EDI_publishing")
 #Step 3: Create an intellectual rights license
 #ours is CCBY

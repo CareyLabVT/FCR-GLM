@@ -2,14 +2,14 @@
 #* TITLE:   Falling Creek Reservoir GLM-AED HOx submerged inflow 
 #*         driver file preparation                               *
 #* AUTHORS:  C.C. Carey                                          *
-#* DATE:   Originally developed 16 July 2018; Last modified 9 Sept 2021                            
+#* DATE:   Originally developed 16 July 2018; Last modified 26 Sept 2021                            
 #* NOTES:  CCC subsequently edited on 1 June 2020 and made tidy,
 #*         with subsequent tweaks to annotation in summer 2021. 
 #*         SSS = side stream supersaturation, another way of describing
 #*         the hypolimnetic oxygenation system (HOx)
 #*****************************************************************
 
-setwd("../inputs")
+setwd("FCR_2013_2019GLMHistoricalRun_GLMv3beta/inputs")
 
 #load packages
 library(zoo)

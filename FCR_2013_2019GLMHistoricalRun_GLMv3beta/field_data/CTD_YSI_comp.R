@@ -9,8 +9,7 @@
 #*         dataset of temp and oxygen measurements during 2013-2019
 #*****************************************************************
 
-#CTD vs YSI comparison for FCR GLM manuscript
-#21 Dec 2020 - HLW
+setwd("./FCR_2013_2019GLMHistoricalRun_GLMv3beta")
 
 #load packages
 pacman::p_load(tidyverse,lubridate,data.table,ggpubr,Metrics)

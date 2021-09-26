@@ -15,7 +15,6 @@ pacman::p_load(zoo,tidyverse,lubridate,hydroGOF,GLMr,glmtools,ggplot2)
 
 # Set working directory
 setwd("./FCR_2013_2019GLMHistoricalRun_GLMv3beta")
-setwd("../") #if pulling from github, sets it to proper wd, which should be "/FCR_2013_2019GLMHistoricalRun_GLMv3beta"
 sim_folder <- getwd()
 
 # Using baseline model data (aka: no oxygenation scenarios)

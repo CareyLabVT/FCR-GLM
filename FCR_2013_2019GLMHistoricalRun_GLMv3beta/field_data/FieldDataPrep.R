@@ -9,7 +9,7 @@
 #*         modeled output vs. observed concentrations.
 #*****************************************************************
 
-setwd("./field_data")
+setwd("FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data")
 
 library(tidyverse)
 library(lubridate)

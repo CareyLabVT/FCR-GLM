@@ -3,7 +3,7 @@
 #*          Calculations                                         *
 #* AUTHORS:  B. Steele, modified by N.K. Ward, W.M. Woelmer,     *
 #*              & C.C. Carey                                     *
-#* DATE:   Last modified 8 Sept 2021                             *
+#* DATE:   Last modified 26 Sept 2021                             *
 #* NOTES:  W.M. Woelmer modified B. Steele and N.K. Ward's code 
 #*         originally developed for Lake Sunapee 
 #*         for CCC to estimate reservoir inflows for FCR; 
@@ -16,7 +16,7 @@
 # and wetland inflow (Falling Creek).
 
 
-setwd("./inputs")
+setwd("FCR_2013_2019GLMHistoricalRun_GLMv3beta/inputs")
 
 library(dplyr)
 library(tidyverse)
