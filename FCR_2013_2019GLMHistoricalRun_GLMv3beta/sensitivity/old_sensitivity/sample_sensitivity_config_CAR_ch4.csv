@@ -1,7 +1,0 @@
-par,lb,ub,x0
-Rch4ox,1e-04,5,1
-Kch4ox,1e-04,5,0.5
-vTch4ox,0.9,1.2,1.08
-Fsed_ch4,0.001,100,30
-Ksed_ch4,0.001,100,30
-theta_sed_ch4,1,1.15,1.08
