@@ -127,8 +127,6 @@ data1 <- data %>%
   dplyr::filter(month_day <= "10-01", month_day >= "07-15") %>%
   select(-month_day)
 
-#write.csv(data1, "AllnutdataForQuinn.csv", row.names = F)
-
 ######
 #ammonium first
 
@@ -220,7 +218,7 @@ cols_n <- c("Sediment flux" = "#D55E00",
 p1 <- nitrogen %>% 
   ggplot(aes(x = Scenario, y = value, fill = Process)) +
   geom_bar(position = "stack", stat = "identity") +
-  scale_fill_manual(values = cols_n, name = "") +
+  scale_fill_manual(values = cols_n, name = "Process") +
   facet_wrap(~Variable, scales = "free_y", ncol = 2,
              labeller=as_labeller(nutrient_labels, label_parsed)) + 
   labs(title = "Nitrogen", y = "", x = "") +
@@ -234,7 +232,7 @@ p1 <- nitrogen %>%
 p2 <- po4data %>% 
   ggplot(aes(x = Scenario, y = value, fill = Process)) +
   geom_bar(position = "stack", stat = "identity") +
-  scale_fill_manual(values = cols_p, name = "") +
+  scale_fill_manual(values = cols_p, name = "Process") +
   facet_wrap(facets = vars(nutrient))+
   labs(x = "Scenario", y = "", title = "Phosphorus") +
   geom_hline(yintercept = 0, lty = "dashed")+
