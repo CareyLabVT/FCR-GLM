@@ -144,7 +144,8 @@ nh4data <- data1 %>%
   mutate(Process=recode(Process, sed = "Sediment flux",don="DON mineralization (labl.)", 
                      donr="DON mineralization (recalc.)",nitrif="Nitrification",
                      anammox = "Anammox", dnra = "DNRA")) %>% 
-  mutate(nutrient = "NH4")
+  mutate(nutrient = "NH4")%>%
+  mutate(Variable = "A")
 
 ###then nitrate
 no3data <- data1 %>% 
@@ -159,9 +160,16 @@ no3data <- data1 %>%
   mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
   mutate(Process=recode(Process, sed = "Sediment flux",nitrif="Nitrification",
                      dnra = "DNRA", Denitrification= "WC Denitrification")) %>% 
-  mutate(nutrient = "NO3")
+  mutate(nutrient = "NO3")%>%
+  mutate(Variable = "B")
 
-nitrogen <- rbind(nh4data, no3data)
+nitrogen <- rbind(nh4data, no3data) %>% 
+  mutate(Variable=
+           case_when(nutrient == "NH4" ~ 'NH[4]^{"+"}',
+                     nutrient == "NO3" ~ 'NO[3]^{"-"}')) %>%
+  arrange(nutrient)
+
+nutrient_labels <-  parse(text=unique(nitrogen$Variable))
 
 ###now phosphorus
 po4data <- data1 %>% 
@@ -212,9 +220,9 @@ cols_n <- c("Sediment flux" = "#D55E00",
 p1 <- nitrogen %>% 
   ggplot(aes(x = Scenario, y = value, fill = Process)) +
   geom_bar(position = "stack", stat = "identity") +
-  scale_fill_manual(values = cols_n, name = "Process") +
-  facet_wrap(facets = vars(nutrient),
-             labeller = as_labeller(c("NH4" = "NH[4]", "NO3" = "NO[3]"), default = label_parsed)) +
+  scale_fill_manual(values = cols_n, name = "") +
+  facet_wrap(~Variable, scales = "free_y", ncol = 2,
+             labeller=as_labeller(nutrient_labels, label_parsed)) + 
   labs(title = "Nitrogen", y = "", x = "") +
   geom_hline(yintercept = 0, lty = "dashed")+
   labs(x = "", y = expression(mmol~m^{-2}~day^{-1}), title = "Nitrogen") +
@@ -236,7 +244,7 @@ p2 <- po4data %>%
 p3 <- docdata %>% 
   ggplot(aes(x = Scenario, y = value, fill = Process)) +
   geom_bar(position = "stack", stat = "identity") +
-  scale_fill_manual(values = cols_c, name = "") +
+  scale_fill_manual(values = cols_c, name = "Process") +
   facet_wrap(facets = vars(nutrient))+
   labs(x = "", y = "", title = "Carbon") +
   ylim(-0.5, 2.0)+
