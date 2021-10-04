@@ -1,8 +1,8 @@
 #*****************************************************************
-#* TITLE:   FCR GLM-AED script to create figure 3             
+#* TITLE:   FCR GLM-AED script to create figure 4             
 #* AUTHORS:  R.P. McClure and C.C. Carey                                          
 #* DATE:   Originally developed by CCC in summer 2020; updated by RPM
-#*         to convert to ggplot in January 2021; Last modified 13 Sept 2021                            
+#*         to convert to ggplot in January 2021; Last modified 4 Oct 2021                            
 #* NOTES:  This script uses the data objects created by the 
 #*         "MakeFigure_OrganizeDataForFigures.R" 
 #*****************************************************************
@@ -185,7 +185,7 @@ srp_scenarios <- ggplot()+
 
 
 
-jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure3_Oxic_vs_Anoxic_scenarios.jpg", width = 20, height = 25, units = 'in', res = 1000)
+jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure4_Oxic_vs_Anoxic_scenarios.jpg", width = 20, height = 25, units = 'in', res = 1000)
 figure3 <- (temp_scenarios|oxy_scenarios)/
   (toc_scenarios|doc_scenarios)/
   (TN_scenarios|DIN_scenarios)/

@@ -1,8 +1,8 @@
 #*****************************************************************
-#* TITLE:   FCR GLM-AED script to create figure 5             
+#* TITLE:   FCR GLM-AED script to create figure 6             
 #* AUTHORS:  R.P. McClure and C.C. Carey                                          
 #* DATE:   Originally developed by CCC in summer 2020; updated by RPM
-#*         to convert to ggplot in January 2021; Last modified 13 Sept 2021                            
+#*         to convert to ggplot in January 2021; Last modified 4 Oct 2021                            
 #* NOTES:  This script uses the data objects created by the 
 #*         "MakeFigure_OrganizeDataForFigures.R" 
 #*****************************************************************
@@ -210,7 +210,7 @@ din_drp_boxplot <- mediandata%>%
 
 
 
-jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure5_MedianStratPeriodBoxplots_v1.jpg", width = 20, height = 25, units = 'in', res = 1000)
+jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure6_MedianStratPeriodBoxplots_v1.jpg", width = 20, height = 25, units = 'in', res = 1000)
 figure5 <- (toc_tn_boxplot|toc_tp_boxplot)/(doc_din_boxplot|doc_nh4_boxplot)/(doc_no3_boxplot|doc_drp_boxplot)/(tn_tp_boxplot|din_drp_boxplot)
 figure5
 dev.off()

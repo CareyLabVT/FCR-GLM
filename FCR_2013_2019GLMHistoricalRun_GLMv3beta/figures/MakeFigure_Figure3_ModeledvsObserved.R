@@ -1,8 +1,8 @@
 #*****************************************************************
-#* TITLE:   FCR GLM-AED script to create figure 2             
+#* TITLE:   FCR GLM-AED script to create figure 3             
 #* AUTHORS:  R.P. McClure and C.C. Carey                                          
 #* DATE:   Originally developed by CCC in summer 2020; updated by RPM
-#*         to convert to ggplot in January 2021; Last modified 13 Sept 2021                            
+#*         to convert to ggplot in January 2021; Last modified 4 Oct 2021                            
 #* NOTES:  This script uses the data objects created by the 
 #*         "MakeFigure_OrganizeDataForFigures.R" 
 #*****************************************************************
@@ -136,7 +136,7 @@ TP <- ggplot(mod_total_pools, aes(DateTime, totalP))+
 #patch all of the figures together using patchwork
 #this resolution might be a bit much but I am going to leave it for now (RPM:06 January 21)
 # Ryan reduced the resolution from 800 to 300 dpi (which is the general requirement for most papers) (RPM:25Mar21)
-jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure2_Model_vs_Observed_FCR_GLM.jpg", width = 20, height = 25, units = 'in', res = 1000)
+jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure3_Model_vs_Observed_FCR_GLM.jpg", width = 20, height = 25, units = 'in', res = 1000)
 figure2 <- (temp|oxy)/(DOC|TN)/(NIT_amm|NIT_nit)/(TP|SRP)
 figure2
 dev.off()

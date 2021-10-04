@@ -1,9 +1,9 @@
 #*****************************************************************
-#* TITLE:   FCR GLM-AED script to create figure 6             
+#* TITLE:   FCR GLM-AED script to create figure 7             
 #* AUTHORS:  C.C. Carey, R.P. McClure, R.Q. Thomas                                          
 #* DATE:   Originally developed by CCC in summer 2021; RQT added some
 #*         ggplot magic, then was updated by RPM to match other figures;
-#*         Last modified 13 Sept 2021                            
+#*         Last modified 4 Oct 2021                            
 #* NOTES:  This script uses the data objects created by the 
 #*         "MakeFigure_OrganizeDataForFigures.R" 
 #*****************************************************************
@@ -250,7 +250,7 @@ p3 <- docdata %>%
   theme_bw()+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
-jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure6_BiogeoRates.jpg", width = 6, height = 8, units = 'in', res = 1000)
+jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure7_BiogeoRates.jpg", width = 6, height = 8, units = 'in', res = 1000)
 draft <- p3 / p1 / p2
 draft
 dev.off()
