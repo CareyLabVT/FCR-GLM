@@ -308,12 +308,12 @@ chla <- more1 %>%
 ###### WATER CHEM DATA FROM EDI
 
 #now let's build a chemistry field_data file
-#first pull in FCR chem data from 2013-2019 from EDI
-inUrl1  <- "https://pasta.lternet.edu/package/data/eml/edi/199/6/2b3dc84ae6b12d10bd5485f1c300af13" 
-infile1 <- paste0(getwd(),"/chem.csv")
-download.file(inUrl1,infile1,method="curl")
+#first pull in FCR chem data from 2013-2020 from EDI
+inUrl1  <- "https://pasta.lternet.edu/package/data/eml/edi/199/9/fe500aac19d1a0d78bb2cb1d196cdbd7" 
+infile1 <- paste0(getwd(),"/chemistry_2013_2020.csv")
+download.file(inUrl1,infile1,method="curl", extra="-k")
 
-FCRchem <- read.csv("chem.csv", header=T) %>%
+FCRchem <- read.csv("chemistry_2013_2020.csv", header=T) %>%
   select(Reservoir:DIC_mgL) %>%
   dplyr::filter(Reservoir=="FCR") %>%
   dplyr::filter(Site==50) %>%
@@ -332,7 +332,7 @@ FCRchem <- read.csv("chem.csv", header=T) %>%
   filter(OGM_docr<500) %>% #remove high DOC outliers
   distinct(DateTime, Depth, .keep_all=TRUE)
  
-ggplot(FCRchem, aes(DateTime, OGM_docr, colour=Depth)) + 
+ggplot(FCRchem, aes(DateTime, NIT_nit, colour=Depth)) + 
   geom_point()
 
 write.csv(FCRchem, "field_chem_2DOCpools.csv", row.names = F)
