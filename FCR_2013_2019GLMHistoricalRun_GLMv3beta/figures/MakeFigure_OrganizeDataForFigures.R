@@ -525,7 +525,7 @@ mediandata <- data4 %>%
 
 
 #Get the retention values for the MS
-weir <- read.csv("FCR_2013_2019GLMHistoricalRun_GLMv3beta/inputs/FCR_weir_inflow_2013_2019_20200828_allfractions_2poolsDOC.csv") %>% 
+weir <- read.csv("FCR_2013_2019GLMHistoricalRun_GLMv3beta/inputs/FCR_weir_inflow_2013_2019_20220104_allfractions_2poolsDOC.csv") %>% 
   mutate(TP = FLOW*(PHS_frp + OGM_dop + OGM_dopr + OGM_pop),
          TN = FLOW*(NIT_amm + NIT_nit + OGM_don + OGM_donr + OGM_pon),
          TOC = FLOW*(OGM_doc + OGM_docr + OGM_poc),
@@ -536,7 +536,7 @@ weir <- read.csv("FCR_2013_2019GLMHistoricalRun_GLMv3beta/inputs/FCR_weir_inflow
          DOC = FLOW*(OGM_doc + OGM_docr)) %>% 
   select(time,TP:DOC)
 
-wetland <- read.csv("FCR_2013_2019GLMHistoricalRun_GLMv3beta/inputs/FCR_wetland_inflow_2013_2019_20200828_allfractions_2DOCpools.csv") %>% 
+wetland <- read.csv("FCR_2013_2019GLMHistoricalRun_GLMv3beta/inputs/FCR_wetland_inflow_2013_2019_20220104_allfractions_2DOCpools.csv") %>% 
   mutate(TP = FLOW*(PHS_frp + OGM_dop + OGM_dopr + OGM_pop),
          TN = FLOW*(NIT_amm + NIT_nit + OGM_don + OGM_donr + OGM_pon),
          TOC = FLOW*(OGM_doc + OGM_docr + OGM_poc),
