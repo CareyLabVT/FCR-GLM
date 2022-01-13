@@ -198,7 +198,7 @@ drp_boxplot <- mediandata%>%
         legend.text = element_text(size = 24, color = "black"),
         plot.title = element_text(face = "bold"))
 
-jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure5_StratifiedPeriodMedianHypoCNP_concetrations_v1.jpg", width = 20, height = 25, units = 'in', res = 1000)
-figure4 <- (toc_boxplot|doc_boxplot)/(tn_boxplot|din_boxplot)/(nh4_boxplot|no3_boxplot)/(tp_boxplot|drp_boxplot)
-figure4
+jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure5_StratifiedPeriodMedianHypoCNP_concentrations_new.jpg", width = 20, height = 25, units = 'in', res = 1000)
+figure5 <- (toc_boxplot|doc_boxplot)/(tn_boxplot|din_boxplot)/(nh4_boxplot|no3_boxplot)/(tp_boxplot|drp_boxplot)
+figure5
 dev.off()
