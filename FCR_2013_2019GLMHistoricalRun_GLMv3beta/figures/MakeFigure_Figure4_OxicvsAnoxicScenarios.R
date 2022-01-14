@@ -2,7 +2,7 @@
 #* TITLE:   FCR GLM-AED script to create figure 4             
 #* AUTHORS:  R.P. McClure and C.C. Carey                                          
 #* DATE:   Originally developed by CCC in summer 2020; updated by RPM
-#*         to convert to ggplot in January 2021; Last modified 4 Oct 2021                            
+#*         to convert to ggplot in January 2021                            
 #* NOTES:  This script uses the data objects created by the 
 #*         "MakeFigure_OrganizeDataForFigures.R" 
 #*****************************************************************
@@ -17,9 +17,12 @@ temp_scenarios <- ggplot()+
   xlab("")+
   ylim(0,20)+
   labs(title = "A")+
-  theme(axis.text = element_text(size = 24, color = "black"),
-        axis.title = element_text(size = 24, color = "black"),
-        title = element_text(size = 24, color = "black"),
+  scale_x_datetime(breaks="year", labels=scales::date_format("%Y")) +
+  theme(axis.text = element_text(size = 22, color = "black"),
+        axis.text.x = element_text(size = 22),
+        axis.title = element_text(size = 23, color = "black"),
+        axis.ticks.length=unit(.25, "cm"),
+        title = element_text(size = 23, color = "black"),
         legend.position = c(0.15,0.9),
         legend.title = element_blank(),
         legend.text = element_text(size = 30, color = "black"),
@@ -34,9 +37,12 @@ oxy_scenarios <- ggplot()+
   ylab(expression(paste("Hypolimnetic Oxygen (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "B")+
-  theme(axis.text = element_text(size = 24, color = "black"),
-        axis.title = element_text(size = 24, color = "black"),
-        title = element_text(size = 24, color = "black"),
+  scale_x_datetime(breaks="year", labels=scales::date_format("%Y")) +
+  theme(axis.text = element_text(size = 22, color = "black"),
+        axis.title = element_text(size = 23, color = "black"),
+        title = element_text(size = 23, color = "black"),
+        axis.text.x = element_text(size = 22),
+        axis.ticks.length=unit(.25, "cm"),
         legend.position = "none",
         legend.title = element_blank(),
         legend.text = element_text(size = 16, color = "black"),
@@ -51,9 +57,12 @@ toc_scenarios <- ggplot()+
   ylab(expression(paste("Hypolimnetic TOC (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "C")+
-  theme(axis.text = element_text(size = 24, color = "black"),
-        axis.title = element_text(size = 24, color = "black"),
-        title = element_text(size = 24, color = "black"),
+  scale_x_datetime(breaks="year", labels=scales::date_format("%Y")) +
+  theme(axis.text = element_text(size = 22, color = "black"),
+        axis.title = element_text(size = 23, color = "black"),
+        title = element_text(size = 23, color = "black"),
+        axis.text.x = element_text(size = 22),
+        axis.ticks.length=unit(.25, "cm"),
         legend.position = "none",
         legend.title = element_blank(),
         legend.text = element_text(size = 16, color = "black"),
@@ -68,9 +77,12 @@ doc_scenarios <- ggplot()+
   ylab(expression(paste("Hypolimnetic DOC (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "D")+
-  theme(axis.text = element_text(size = 24, color = "black"),
-        axis.title = element_text(size = 24, color = "black"),
-        title = element_text(size = 24, color = "black"),
+  scale_x_datetime(breaks="year", labels=scales::date_format("%Y")) +
+  theme(axis.text = element_text(size = 22, color = "black"),
+        axis.title = element_text(size = 23, color = "black"),
+        title = element_text(size = 23, color = "black"),
+        axis.text.x = element_text(size = 22),
+        axis.ticks.length=unit(.25, "cm"),
         legend.position = "none",
         legend.title = element_blank(),
         legend.text = element_text(size = 16, color = "black"),
@@ -85,9 +97,12 @@ TN_scenarios <- ggplot()+
   ylab(expression(paste("Hypolimnetic TN (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "E")+
-  theme(axis.text = element_text(size = 24, color = "black"),
-        axis.title = element_text(size = 24, color = "black"),
-        title = element_text(size = 24, color = "black"),
+  scale_x_datetime(breaks="year", labels=scales::date_format("%Y")) +
+  theme(axis.text = element_text(size = 22, color = "black"),
+        axis.title = element_text(size = 23, color = "black"),
+        title = element_text(size = 23, color = "black"),
+        axis.text.x = element_text(size = 22),
+        axis.ticks.length=unit(.25, "cm"),
         legend.position = "none",
         legend.title = element_blank(),
         legend.text = element_text(size = 16, color = "black"),
@@ -102,9 +117,12 @@ DIN_scenarios <- ggplot()+
   ylab(expression(paste("Hypolimnetic DIN (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "F")+
-  theme(axis.text = element_text(size = 24, color = "black"),
-        axis.title = element_text(size = 24, color = "black"),
-        title = element_text(size = 24, color = "black"),
+  scale_x_datetime(breaks="year", labels=scales::date_format("%Y")) +
+  theme(axis.text = element_text(size = 22, color = "black"),
+        axis.title = element_text(size = 23, color = "black"),
+        title = element_text(size = 23, color = "black"),
+        axis.text.x = element_text(size = 22),
+        axis.ticks.length=unit(.25, "cm"),
         legend.position = "none",
         legend.title = element_blank(),
         legend.text = element_text(size = 16, color = "black"),
@@ -120,9 +138,12 @@ amm_scenarios <- ggplot()+
   ylab(expression(paste("Hypolimnetic NH" [" 4"],""^"+"," (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "G")+
-  theme(axis.text = element_text(size = 24, color = "black"),
-        axis.title = element_text(size = 24, color = "black"),
-        title = element_text(size = 24, color = "black"),
+  scale_x_datetime(breaks="year", labels=scales::date_format("%Y")) +
+  theme(axis.text = element_text(size = 22, color = "black"),
+        axis.title = element_text(size = 23, color = "black"),
+        title = element_text(size = 23, color = "black"),
+        axis.text.x = element_text(size = 22),
+        axis.ticks.length=unit(.25, "cm"),
         legend.position = "none",
         legend.title = element_blank(),
         legend.text = element_text(size = 16, color = "black"),
@@ -139,9 +160,12 @@ nit_scenarios <- ggplot()+
   ylab(expression(paste("Hypolimnetic NO" [" 3"],""^"-"," (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "H")+
-  theme(axis.text = element_text(size = 24, color = "black"),
-        axis.title = element_text(size = 24, color = "black"),
-        title = element_text(size = 24, color = "black"),
+  scale_x_datetime(breaks="year", labels=scales::date_format("%Y")) +
+  theme(axis.text = element_text(size = 22, color = "black"),
+        axis.title = element_text(size = 23, color = "black"),
+        axis.text.x = element_text(size = 22),
+        axis.ticks.length=unit(.25, "cm"),
+        title = element_text(size = 23, color = "black"),
         legend.position = "none",
         legend.title = element_blank(),
         legend.text = element_text(size = 16, color = "black"),
@@ -156,9 +180,12 @@ TP_scenarios <- ggplot()+
   ylab(expression(paste("Hypolimnetic TP (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "I")+
-  theme(axis.text = element_text(size = 24, color = "black"),
-        axis.title = element_text(size = 24, color = "black"),
-        title = element_text(size = 24, color = "black"),
+  scale_x_datetime(breaks="year", labels=scales::date_format("%Y")) +
+  theme(axis.text = element_text(size = 22, color = "black"),
+        axis.title = element_text(size = 23, color = "black"),
+        title = element_text(size = 23, color = "black"),
+        axis.text.x = element_text(size = 22),
+        axis.ticks.length=unit(.25, "cm"),
         legend.position = "none",
         legend.title = element_blank(),
         legend.text = element_text(size = 16, color = "black"),
@@ -173,9 +200,12 @@ srp_scenarios <- ggplot()+
   ylab(expression(paste("Hypolimnetic DRP (mmol m" ^"-3",")")))+
   xlab("")+
   labs(title = "J")+
-  theme(axis.text = element_text(size = 24, color = "black"),
-        axis.title = element_text(size = 24, color = "black"),
-        title = element_text(size = 24, color = "black"),
+  scale_x_datetime(breaks="year", labels=scales::date_format("%Y")) +
+  theme(axis.text = element_text(size = 22, color = "black"),
+        axis.title = element_text(size = 23, color = "black"),
+        title = element_text(size = 23, color = "black"),
+        axis.text.x = element_text(size = 22),
+        axis.ticks.length=unit(.25, "cm"),
         legend.position = "none",
         legend.title = element_blank(),
         legend.text = element_text(size = 16, color = "black"),
@@ -185,13 +215,13 @@ srp_scenarios <- ggplot()+
 
 
 
-jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure4_Oxic_vs_Anoxic_scenarios.jpg", width = 20, height = 25, units = 'in', res = 1000)
-figure3 <- (temp_scenarios|oxy_scenarios)/
+jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure4_Oxic_vs_Anoxic_scenarios_new.jpg", width = 20, height = 25, units = 'in', res = 1000)
+figure4 <- (temp_scenarios|oxy_scenarios)/
   (toc_scenarios|doc_scenarios)/
   (TN_scenarios|DIN_scenarios)/
   (amm_scenarios|nit_scenarios)/
   (TP_scenarios|srp_scenarios)
-figure3
+figure4
 dev.off()
 
 #panel lettering: A temp B DO, C TOC, D DOC, E TN, F DIN, G NH4, H NO3, I TP, J DRP
