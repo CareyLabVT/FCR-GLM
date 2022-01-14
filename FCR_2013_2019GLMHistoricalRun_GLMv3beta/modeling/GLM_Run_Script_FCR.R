@@ -185,7 +185,7 @@ RMSE = function(m, o){
 
 #calculate RMSE for oxygen
 oxygen <- resample_to_field(nc_file, field_file, precision="days", method='interp', 
-                            var_name="OXY_oxy")
+                             var_name="OXY_oxy")
 oxygen <-oxygen[complete.cases(oxygen),] #remove missing data
 
 m_oxygen <- oxygen$Modeled_OXY_oxy[oxygen$Depth>=1 & oxygen$Depth<=1] #1m depth
@@ -412,7 +412,7 @@ compare<-na.omit(compare)
 for(i in 1:length(depths)){
   tempdf<-subset(compare, compare$Depth==depths[i])
   if(nrow(tempdf)>1){
-    plot(tempdf$DateTime,eval(parse(text=paste0("tempdf$",var,".y"))), type='l', col='red',
+    plot(tempdf$DateTime,eval(parse(text=paste0("tempdf$",var,".y"))), col='red',
          ylab=var, xlab='time',
          main = paste0("Obs=Red,Mod=Black,Depth=",depths[i]))
     points(tempdf$DateTime, eval(parse(text=paste0("tempdf$",var,".x"))), type="l",col='black')
@@ -444,11 +444,11 @@ RMSE(mod,obs)
 ###### nitrate #########################################
 
 var="NIT_nit"
-field_file <- file.path(sim_folder,'/field_data/field_chem.csv') 
+field_file <- file.path(sim_folder,'/field_data/field_chem_2DOCpools.csv') 
 
-obs<-read.csv('field_data/field_chem.csv', header=TRUE) %>% #read in observed chemistry data
+obs<-read.csv('field_data/field_chem_2DOCpools.csv', header=TRUE) %>% #read in observed chemistry data
   dplyr::mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
-  select(DateTime, Depth, var) %>%
+  dplyr::select(DateTime, Depth, var) %>%
   na.omit()
 
 #plot_var_compare(nc_file,field_file,var_name = var, precision="days",col_lim = c(0,1000)) #compare obs vs modeled
@@ -468,7 +468,7 @@ compare<-na.omit(compare)
 for(i in 1:length(depths)){
   tempdf<-subset(compare, compare$Depth==depths[i])
   if(nrow(tempdf)>1){
-    plot(tempdf$DateTime,eval(parse(text=paste0("tempdf$",var,".y"))), type='l', col='red',
+    plot(tempdf$DateTime,eval(parse(text=paste0("tempdf$",var,".y"))), type='p', col='red',
          ylab=var, xlab='time',
          main = paste0("Obs=Red,Mod=Black,Depth=",depths[i]))
     points(tempdf$DateTime, eval(parse(text=paste0("tempdf$",var,".x"))), type="l",col='black')
@@ -525,9 +525,9 @@ compare<-na.omit(compare)
 for(i in 1:length(depths)){
   tempdf<-subset(compare, compare$Depth==depths[i])
   if(nrow(tempdf)>1){
-    plot(tempdf$DateTime,eval(parse(text=paste0("tempdf$",var,".y"))), type='l', col='red',
+    plot(tempdf$DateTime,eval(parse(text=paste0("tempdf$",var,".y"))), type='p', col='red',
          ylab=var, xlab='time',
-         main = paste0("Obs=Red,Mod=Black,Depth=",depths[i]))
+         main = paste0("Obs=Red,Mod=Black,Depth=",depths[i]),ylim=c(0,0.5))
     points(tempdf$DateTime, eval(parse(text=paste0("tempdf$",var,".x"))), type="l",col='black')
   }
 }
@@ -1043,13 +1043,48 @@ phytos <- get_var(file=nc_file,var_name = 'PHY_AGGREGATE',z_out=0.1,reference = 
 plot(phytos$DateTime, phytos$PHY_AGGREGATE_0.1, col="cyan", type="l", ylab="Phyto C mmol/m3", ylim=c(0,30))
 
 
-#######################################################
-#### ancillary code #######
+####Secchi & light####
+
+var="extc_coef"
+field_file <- file.path(sim_folder,'/field_data/field_secchi.csv') 
+
+obs<-read.csv('field_data/field_secchi.csv', header=TRUE) %>% #read in observed chemistry data
+  dplyr::mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
+  select(DateTime, Secchi_m) %>%
+  rename(Secchi_obs = Secchi_m) %>% 
+  na.omit()
+
+#plot_var_compare(nc_file,field_file,var_name = var, precision="days",col_lim = c(0,50)) #compare obs vs modeled
+
+mod<- get_var(nc_file, var, reference="surface", z_out=1) %>%
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
+  mutate(Secchi_mod = 1.7/extc_coef_1) %>% 
+  na.omit()
+
+#lets do depth by depth comparisons of the sims
+compare<-merge(mod, obs, by=c("DateTime"))
+compare<-na.omit(compare)
+
+plot(compare$DateTime,compare$Secchi_obs, col='red',
+         ylab="Secchi", xlab='time',
+         main = paste0("Obs=Red,Mod=Black,Depth=1"), ylim=c(0,5))
+points(compare$DateTime,compare$Secchi_mod, type="l",col='black')
+
+
+#calculate RMSE
+RMSE(compare$Secchi_mod,compare$Secchi_obs)
 
 #plot Secchi depth & light extinction
 lec <- get_var(file=nc_file,var_name = 'extc_coef',z_out=1,reference = 'surface')
-plot(lec$DateTime, 1.7/lec$extc_coef_1)
-plot(lec$DateTime, lec$extc_coef_1)
+plot(lec$DateTime, 1.7/lec$extc_coef_1, type="l")
+plot(lec$DateTime, lec$extc_coef_1, type="l")
+
+nc_file_old <- file.path(sim_folder, 'output/output_2013_2019.nc') #defines the output.nc file 
+lec <- get_var(file=nc_file_old,var_name = 'extc_coef',z_out=1,reference = 'surface')
+plot(lec$DateTime, 1.7/lec$extc_coef_1, type="l")
+
+
+#### ancillary code #######
 
 #see what vars are available for diagnostics
 sim_metrics(with_nml = TRUE)
@@ -1069,9 +1104,27 @@ axis(side = 4)
 mtext(side = 4, line = 3, 'RED: Flow rate of SSS (m3/day)')
 
 
-#Particulate organic P
+#Particulate organic P dynamics
 pop9 <- get_var(file=nc_file,var_name = 'OGM_pop',z_out=9,reference = 'surface') 
-plot(pop9$DateTime, pop9$OGM_pop_9, ylim=c(0,0.5))
+plot(pop9$DateTime, pop9$OGM_pop_9, type="l")
+
+dop9 <- get_var(file=nc_file,var_name = 'OGM_dop',z_out=9,reference = 'surface')
+lines(dop9$DateTime, dop9$OGM_dop_9, type="l", col="blue")
+
+psed_pop <- get_var(file=nc_file, var_name= "OGM_Psed_pop", z_out=9, reference="surface")
+lines(psed_pop$DateTime, -100000*psed_pop$OGM_Psed_pop_9, col="green")
+
+#Particulate organic C
+poc <- get_var(file=nc_file,var_name = 'OGM_poc',z_out=1,reference = 'surface') 
+plot(poc$DateTime, poc$OGM_poc_1, type="l")
+
+#CDOM
+cdom <- get_var(file=nc_file,var_name = 'OGM_CDOM',z_out=1,reference = 'surface') 
+plot(cdom$DateTime, cdom$OGM_CDOM_1, type="l")
+
+#CPOM
+cpom <- get_var(file=nc_file,var_name = 'OGM_cpom',z_out=1,reference = 'surface') 
+plot(cpom$DateTime, cpom$OGM_cpom_1, type="l")
 
 #get CH4 atmospheric flux
 get_var(file=nc_file,var_name = 'CAR_atm_ch4_flux',reference = "bottom",z_out = 1) #, z_out=1, reference='surface')
