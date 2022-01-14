@@ -32,7 +32,7 @@ anoxic <- file.path(sim_folder, 'output/output_anoxic.nc')
 oxic <- file.path(sim_folder, 'output/output_oxic.nc')
 
 #observed
-observed <- read.csv("./field_data/field_chem_hypo.csv", header=T) %>% 
+observed <- read.csv("./field_data/field_chem_2DOCpools.csv", header=T) %>% 
   mutate(time = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST")))
 totals <- read.csv("./field_data/totalNP.csv", header=T) %>% 
   mutate(time = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST")))
@@ -63,64 +63,68 @@ sd(outflow$HRT)/(length(outflow$FLOW)^0.5) #12 days for SE
 ####Results####
 ###############
 ##calculating the summer anoxic vs oxic observational differences
-#did not end up making it into the manuscript, but leaving here for posterity
-# data <- merge(observed, totals, by=c('time', "Depth"), all.x=T, all.y=T) %>% 
-#   filter(Depth==9) %>% 
+ data_obs <- merge(observed, totals, by=c('time', "Depth"), all.x=T, all.y=T) %>%
+   filter(Depth==9) %>%
+   mutate(month_day = format(as.Date(time), "%m-%d")) %>%
+   mutate(year = year(time))%>%
+   dplyr::filter(month_day <= "10-01", month_day >= "07-15") %>%
+   filter(year>2015,
+          year<2020) %>% #to focus on oxic vs anoxic summers only
+   filter((year %in% c(2016,2017)) |
+          (year == 2018 & time >= as_date("2018-08-01")) | 
+          (year == 2019 & time >= as_date("2019-08-19"))) %>% 
+  #removing dates when oxygenation system was on during "anoxic" summers
+   mutate(DOC = OGM_doc + OGM_docr) %>%
+   select(time, year, Depth, NIT_amm:PHS_frp,DOC, TOT_tn:TOT_tp) %>%
+   mutate(Status = case_when(
+    year == 2018 | year == 2019 ~ "Anoxic",
+    year == 2016 | year == 2017 ~ "Oxic")) %>% 
+  drop_na()
+write.csv(data_obs, "output/ObservedOxicAnoxicSummerValues.csv", row.names = F)
+
+
+data1_obs <- data_obs %>% 
+  drop_na() %>%
+  group_by(Status) %>% 
+  filter(PHS_frp>0.08) %>% 
+  summarise(max_NH4 = max(NIT_amm),
+            max_NIT = max(NIT_nit),
+            max_FRP = max(PHS_frp),
+            max_DOC = max(DOC),
+            max_TN = max(TOT_tn),
+            max_TP = max(TOT_tp),
+            mean_NH4 = mean(NIT_amm),
+            mean_NIT = mean(NIT_nit),
+            mean_FRP = mean(PHS_frp),
+            mean_DOC = mean(DOC),
+            mean_TN = mean(TOT_tn),
+            mean_TP = mean(TOT_tp),
+            median_NH4 = median(NIT_amm),
+            median_NIT = median(NIT_nit),
+            median_FRP = median(PHS_frp),
+            median_DOC = median(DOC),
+            median_TN = median(TOT_tn),
+            median_TP = median(TOT_tp))
+
+(data1_obs$median_DOC[1]/data1_obs$median_DOC[2])
+(data1_obs$median_NH4[1]/data1_obs$median_NH4[2])
+(data1_obs$median_FRP[1]/data1_obs$median_FRP[2])
+(data1_obs$median_TN[1]/data1_obs$median_TN[2])
+(data1_obs$median_TP[1]/data1_obs$median_TP[2])
+
+(data1_obs$median_NIT[2]/data1_obs$median_NIT[1])
+#for second results paragraph that needs numbers on x difference in observed data
+#between oxygenated and non-oxygenated summers
+
+# data <- merge(observed, totals, by=c('time', "Depth"), all.x=T, all.y=T) %>%
+#   filter(Depth==9) %>%
 #   mutate(month_day = format(as.Date(time), "%m-%d")) %>%
 #   mutate(year = year(time))%>%
 #   dplyr::filter(month_day <= "10-01", month_day >= "07-15") %>%
-#   mutate(DOC = OGM_doc + OGM_docr) %>% 
-#   select(time, year, Depth, NIT_amm:PHS_frp,DOC, TOT_tn:TOT_tp) %>% 
-#   group_by(year) %>% drop_na() %>% 
-#   summarise(mean_NH4 = mean(NIT_amm),
-#             mean_NIT = mean(NIT_nit),
-#             mean_FRP = mean(PHS_frp),
-#             mean_DOC = mean(DOC),
-#             mean_TN = mean(TOT_tn),
-#             mean_TP = mean(TOT_tp),
-#             max_NH4 = max(NIT_amm),
-#             max_NIT = max(NIT_nit),
-#             max_FRP = max(PHS_frp),
-#             max_DOC = max(DOC),
-#             max_TN = max(TOT_tn),
-#             max_TP = max(TOT_tp),
-#             min_NIT = min(NIT_nit)) %>%
-#   mutate(Status = case_when(
-#     year == 2014 | year == 2018 | year == 2019 ~ "Anoxic",
-#     year == 2015 | year == 2016 | year == 2017 ~ "Oxic")) %>% 
-#   group_by(Status) %>% 
-#   summarise(mean_annual_NH4 = mean(mean_NH4),
-#             mean_annual_NIT = mean(mean_NIT),
-#             mean_annual_FRP = mean(mean_FRP),
-#             mean_annual_DOC = mean(mean_DOC),
-#             mean_annual_TN = mean(mean_TN),
-#             mean_annual_TP = mean(mean_TP),
-#             max_annual_NH4 = mean(max_NH4),
-#             max_annual_NIT = mean(max_NIT),
-#             max_annual_FRP = mean(max_FRP),
-#             max_annual_DOC = mean(max_DOC),
-#             max_annual_TN = mean(max_TN),
-#             max_annual_TP = mean(max_TP))
-# 
-# (data$max_annual_NH4[1]-data$max_annual_NH4[2])/data$max_annual_NH4[2]
-# (data$max_annual_FRP[1]-data$max_annual_FRP[2])/data$max_annual_FRP[2]
-# (data$max_annual_DOC[1]-data$max_annual_DOC[2])/data$max_annual_DOC[2]
-# (data$max_annual_NIT[1]-data$max_annual_NIT[2])/data$max_annual_NIT[2]
-# (data$max_annual_TN[1]-data$max_annual_TN[2])/data$max_annual_TN[2]
-# (data$max_annual_TP[1]-data$max_annual_TP[2])/data$max_annual_TP[2]
-#for second results paragraph that needs numbers on % difference in observed data 
-# between oxygenated and non-oxygenated summers
-
-
-# data <- merge(observed, totals, by=c('time', "Depth"), all.x=T, all.y=T) %>% 
-#   filter(Depth==9) %>% 
-#   mutate(month_day = format(as.Date(time), "%m-%d")) %>%
-#   mutate(year = year(time))%>%
-#   dplyr::filter(month_day <= "10-01", month_day >= "07-15") %>%
-#   mutate(DOC = OGM_doc + OGM_docr) %>% 
-#   select(time, year, Depth, NIT_amm:PHS_frp,DOC, TOT_tn:TOT_tp) %>% 
-#   group_by(year) %>% 
-#   drop_na() %>% 
+#   mutate(DOC = OGM_doc + OGM_docr) %>%
+#   select(time, year, Depth, NIT_amm:PHS_frp,DOC, TOT_tn:TOT_tp) %>%
+#   group_by(year) %>%
+#   drop_na() %>%
 #   mutate(DIN = NIT_amm + NIT_nit,
 #          NIT_DIN = NIT_amm/DIN,
 #          TN_TP = TOT_tn/TOT_tp,
@@ -128,10 +132,10 @@ sd(outflow$HRT)/(length(outflow$FLOW)^0.5) #12 days for SE
 #          DOC_DIN = DOC/DIN,
 #          DOC_NH4 = DOC/NIT_amm,
 #          DOC_NO3 = DOC/NIT_nit,
-#          DOC_FRP = DOC/PHS_frp) %>% 
-#  # print(mean(data$NIT_DIN)) %>% 
+#          DOC_FRP = DOC/PHS_frp) %>%
+#  # print(mean(data$NIT_DIN)) %>%
 #  # print(sd(data$NIT_DIN))
-#   group_by(year) %>% 
+#   group_by(year) %>%
 #   summarise(mean_NIT_DIN = mean(NIT_DIN),
 #             mean_TN_TP = mean(TN_TP),
 #             mean_DIN_FRP = mean(DIN_FRP),
@@ -145,11 +149,11 @@ sd(outflow$HRT)/(length(outflow$FLOW)^0.5) #12 days for SE
 #             max_DOC_DIN = max(DOC_DIN),
 #             max_DOC_NH4 = max(DOC_NH4),
 #             max_DOC_NO3 = max(DOC_NO3),
-#             max_DOC_FRP = max(DOC_FRP)) %>% drop_na() %>% 
+#             max_DOC_FRP = max(DOC_FRP)) %>% drop_na() %>%
 #   mutate(Status = case_when(
 #            year == 2014 | year == 2018 | year == 2019 ~ "Anoxic",
-#            year == 2015 | year == 2016 | year == 2017 ~ "Oxic")) %>% 
-#   group_by(Status) %>% 
+#            year == 2015 | year == 2016 | year == 2017 ~ "Oxic")) %>%
+#   group_by(Status) %>%
 #   summarise(mean_annual_NIT_DIN = mean(mean_NIT_DIN),
 #             mean_annual_TN_TP = mean(mean_TN_TP),
 #             mean_annual_DIN_FRP = mean(mean_DIN_FRP),
