@@ -927,3 +927,66 @@ std_err(vals$DRP_TP)
 602-195#difference in N fluxes
 12-10#difference in P fluxes
 ###################################################################
+
+###################################################################
+####SI water budget####
+
+#let's read in EDI discharge file to compare *baseflow* weir and wetland inflow levels
+inUrl1  <- "https://pasta.lternet.edu/package/data/eml/edi/454/4/a18421fd2e95c15d6f97009d5fef3e59" 
+infile1 <- paste0(getwd(),"/2019_Continuum_Discharge.csv")
+download.file(inUrl1,infile1,method="curl", extra='-k')
+
+inflow<-read_csv("inflow_for_EDI_2013_06Mar2020.csv") %>% 
+  dplyr::select(DateTime, WVWA_Flow_cms, WVWA_Temp_C) %>% 
+  rename(time=DateTime, FLOW=WVWA_Flow_cms, TEMP=WVWA_Temp_C) %>%
+  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
+  dplyr::filter(time < "2020-01-01") %>%
+  group_by(time) %>% 
+  summarise(FLOW=mean(FLOW), TEMP=mean(TEMP)) #gives averaged daily flow per day in m3/s
+
+#First let's read in the wetland pricipitation-driven flow (runoff) calculated from the Schuler equation
+# as output of the WetlandInflowPrep.R script.
+runoff <- read.csv("WetlandWeir_Runoff_FCR_20200615.csv", header=T) %>% 
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
+  rename(time=DateTime)
+#this gives us the precip-driven discharge at the wetland; we now need to add this to baseflow
+
+#creating new dataframe with list of all dates
+datelist<-seq.Date(as.Date("2013/05/15"),as.Date("2019/12/31"), "days")
+datelist<-as.data.frame(datelist)
+colnames(datelist)=c("time")
+datelist$time<-as.POSIXct(strptime(datelist$time, "%Y-%m-%d", tz="EST"))
+
+#merge inflow file with datelist to make sure that we have all days covered
+weir_inflow <- merge(datelist, inflow, by="time", all.x=TRUE) %>%
+  mutate(FLOW = na.fill(na.approx(FLOW),"extend"))
+
+#some diagnostic plots of inflow weir
+plot(weir_inflow$time, weir_inflow$FLOW, type = "o")
+
+#next, subtract the Schuler-derived weir precipitation runoff from the measured (gauged) inflow
+weir_data <- merge(runoff, weir_inflow, by="time") %>% 
+  mutate(baseflow_subtracted = FLOW-weir_runoff_m3s) 
+
+plot(weir_data$time, weir_data$FLOW, type="l", ylab="m3/s")
+lines(weir_data$time, weir_data$baseflow_subtracted, col="red")
+
+#now we need to determine the ratio of baseflows from weir:wetland  
+discharge <- read_csv("inputs/2019_Continuum_Discharge.csv") %>%
+  dplyr::filter(Reservoir=="FCR")  %>%
+  dplyr::filter(Site == 200) %>% #wetland site = 200; weir site = 100
+  rename(time=Date, wetlandFLOW=Flow_cms) %>%
+  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST"))) %>%
+  select(time, wetlandFLOW)
+
+#merged in wetland discharge + weir inflow
+data <- merge(inflow,discharge, by="time", all=FALSE)  %>%
+  mutate(ratio = wetlandFLOW/FLOW) %>% 
+  na.omit()
+
+#comparing weir vs. wetland inflows
+mean(data$ratio)*100 #69% of Tunnel Branch is Falling Creek's inflow
+sd(data$ratio)*100 #48%
+#these numbers are going into the SI 
+
+
