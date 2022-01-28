@@ -638,3 +638,12 @@ retention_stratified_period <- fluxdata %>%
             Fnet_O_FRP = 100*(sum(O_FRP_output)-sum(inputFRP))/sum(inputFRP),
             Fnet_A_NH4 = 100*(sum(A_NH4_output)-sum(inputNH4))/sum(inputNH4),
             Fnet_O_NH4 = 100*(sum(O_NH4_output)-sum(inputNH4))/sum(inputNH4))
+
+#data for Figure 9 
+Fig9data <- retention_stratified_period %>% 
+  select(Fnet_A_TN:Fnet_O_TOC) %>% 
+  summarise(across(everything(), list(median))) %>% 
+  round()
+Fig9data1<-Fig9data+100
+write.csv(Fig9data1, "FCR_2013_2019GLMHistoricalRun_GLMv3beta/output/MedianExportDataForFigure9.csv", row.names = F)
+  
