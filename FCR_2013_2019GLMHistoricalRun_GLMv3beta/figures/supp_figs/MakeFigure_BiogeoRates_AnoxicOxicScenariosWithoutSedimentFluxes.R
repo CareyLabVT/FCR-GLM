@@ -1,8 +1,9 @@
 #*****************************************************************
-#* TITLE:   FCR GLM-AED script to create figure 7             
-#* AUTHORS:  C.C. Carey, R.P. McClure, R.Q. Thomas                                          
-#* DATE:   Originally developed by CCC in summer 2021; RQT added some
-#*         ggplot magic, then was updated by RPM to match other figures
+#* TITLE:   FCR GLM-AED script to create figure supplemental figure
+#*            without sediment fluxes
+#* AUTHORS:  C.C. Carey                                        
+#* DATE:   Developed by CCC for revisions built on Figure 7 formatting
+#*         removing all sediment fluxes from the figure
 #* NOTES:  This script uses the data objects created by the 
 #*         "MakeFigure_OrganizeDataForFigures.R" 
 #*****************************************************************
@@ -36,11 +37,11 @@ O_dnra <- get_var(oxic,'NIT_dnra',z_out=9,reference = 'surface')
 A_nitrif<- get_var(anoxic,'NIT_nitrif',z_out=9,reference = 'surface') 
 O_nitrif <- get_var(oxic,'NIT_nitrif',z_out=9,reference = 'surface') 
 
-A_sed_nit<- get_var(anoxic,'NIT_sed_nit',z_out=9,reference = 'surface') 
-O_sed_nit <- get_var(oxic,'NIT_sed_nit',z_out=9,reference = 'surface') 
+#A_sed_nit<- get_var(anoxic,'NIT_sed_nit',z_out=9,reference = 'surface') 
+#O_sed_nit <- get_var(oxic,'NIT_sed_nit',z_out=9,reference = 'surface') 
 
-A_sed_amm<- get_var(anoxic,'NIT_sed_amm',z_out=9,reference = 'surface') 
-O_sed_amm <- get_var(oxic,'NIT_sed_amm',z_out=9,reference = 'surface') 
+#A_sed_amm<- get_var(anoxic,'NIT_sed_amm',z_out=9,reference = 'surface') 
+#O_sed_amm <- get_var(oxic,'NIT_sed_amm',z_out=9,reference = 'surface') 
 
 A_OGM_denit<- get_var(anoxic,'OGM_denit',z_out=9,reference = 'surface') 
 O_OGM_denit <- get_var(oxic,'OGM_denit',z_out=9,reference = 'surface') 
@@ -67,8 +68,8 @@ O_docr_miner <- get_var(oxic,'OGM_docr_miner',z_out=9,reference = 'surface')
 A_poc_hydrol<- get_var(anoxic,'OGM_poc_hydrol',z_out=9,reference = 'surface') 
 O_poc_hydrol <- get_var(oxic,'OGM_poc_hydrol',z_out=9,reference = 'surface') 
 
-A_sed_doc<- get_var(anoxic,'OGM_sed_doc',z_out=9,reference = 'surface') 
-O_sed_doc <- get_var(oxic,'OGM_sed_doc',z_out=9,reference = 'surface') 
+#A_sed_doc<- get_var(anoxic,'OGM_sed_doc',z_out=9,reference = 'surface') 
+#O_sed_doc <- get_var(oxic,'OGM_sed_doc',z_out=9,reference = 'surface') 
 
 #finally phosphorus
 A_dop_miner<- get_var(anoxic,'OGM_dop_miner',z_out=9,reference = 'surface') 
@@ -77,45 +78,41 @@ O_dop_miner <- get_var(oxic,'OGM_dop_miner',z_out=9,reference = 'surface')
 A_dopr_miner<- get_var(anoxic,'OGM_dopr_miner',z_out=9,reference = 'surface') 
 O_dopr_miner <- get_var(oxic,'OGM_dopr_miner',z_out=9,reference = 'surface') 
 
-A_sed_frp<- get_var(anoxic,'PHS_sed_frp',z_out=9,reference = 'surface') 
-O_sed_frp <- get_var(oxic,'PHS_sed_frp',z_out=9,reference = 'surface') 
+#A_sed_frp<- get_var(anoxic,'PHS_sed_frp',z_out=9,reference = 'surface') 
+#O_sed_frp <- get_var(oxic,'PHS_sed_frp',z_out=9,reference = 'surface') 
 
 A_phyto_pup<- get_var(anoxic,'PHY_PUP',z_out=9,reference = 'surface') 
 O_phyto_pup <- get_var(oxic,'PHY_PUP',z_out=9,reference = 'surface') 
 
 #these ones for fun and reality checks
-A_anaerobic<- get_var(anoxic,'OGM_anaerobic',z_out=9,reference = 'surface') 
-O_anaerobic <- get_var(oxic,'OGM_anaerobic',z_out=9,reference = 'surface') 
+#A_anaerobic<- get_var(anoxic,'OGM_anaerobic',z_out=9,reference = 'surface') 
+#O_anaerobic <- get_var(oxic,'OGM_anaerobic',z_out=9,reference = 'surface') 
 
-A_sed_oxy<- get_var(anoxic,'OXY_sed_oxy',z_out=9,reference = 'surface') 
-O_sed_oxy <- get_var(oxic,'OXY_sed_oxy',z_out=9,reference = 'surface') 
+#A_sed_oxy<- get_var(anoxic,'OXY_sed_oxy',z_out=9,reference = 'surface') 
+#O_sed_oxy <- get_var(oxic,'OXY_sed_oxy',z_out=9,reference = 'surface') 
 
 
 #bind the data!
-data<-as.data.frame(cbind(A_anammox,A_denit[,2],A_dnra[,2],A_nitrif[,2],A_sed_nit[,2],
-                          A_sed_amm[,2],A_OGM_denit[,2],A_don_miner[,2],A_donr_miner[,2],
+data<-as.data.frame(cbind(A_anammox,A_denit[,2],A_dnra[,2],A_nitrif[,2],
+                          A_OGM_denit[,2],A_don_miner[,2],A_donr_miner[,2],
                           A_phyto_nup_nh4[,2],A_phyto_nup_no3[,2],
-                          A_doc_miner[,2],A_docr_miner[,2],A_poc_hydrol[,2],A_sed_doc[,2],
-                          A_dop_miner[,2],A_dopr_miner[,2],A_sed_frp[,2],A_phyto_pup[,2],
-                          A_anaerobic[,2],A_sed_oxy[,2],
-                          O_anammox[,2],O_denit[,2],O_dnra[,2],O_nitrif[,2],O_sed_nit[,2],
-                          O_sed_amm[,2],O_OGM_denit[,2],O_don_miner[,2],O_donr_miner[,2],
+                          A_doc_miner[,2],A_docr_miner[,2],A_poc_hydrol[,2],
+                          A_dop_miner[,2],A_dopr_miner[,2],A_phyto_pup[,2],
+                          O_anammox[,2],O_denit[,2],O_dnra[,2],O_nitrif[,2],
+                          O_OGM_denit[,2],O_don_miner[,2],O_donr_miner[,2],
                           O_phyto_nup_nh4[,2],O_phyto_nup_no3[,2],
-                          O_doc_miner[,2],O_docr_miner[,2],O_poc_hydrol[,2],O_sed_doc[,2],
-                          O_dop_miner[,2],O_dopr_miner[,2],O_sed_frp[,2],O_phyto_pup[,2],
-                          O_anaerobic[,2],O_sed_oxy[,2])) 
-colnames(data) = c("time", "A_anammox", "A_denit", "A_dnra", "A_nitrif","A_sed_nit",
-                   "A_sed_amm","A_OGM_denit", "A_don_miner", "A_donr_miner", 
+                          O_doc_miner[,2],O_docr_miner[,2],O_poc_hydrol[,2],
+                          O_dop_miner[,2],O_dopr_miner[,2],O_phyto_pup[,2])) 
+colnames(data) = c("time", "A_anammox", "A_denit", "A_dnra", "A_nitrif",
+                   "A_OGM_denit", "A_don_miner", "A_donr_miner", 
                    "A_phyto_nup_nh4", "A_phyto_nup_no3", 
-                   "A_doc_miner","A_docr_miner", "A_poc_hydrol", "A_sed_doc", 
-                   "A_dop_miner", "A_dopr_miner", "A_sed_frp","A_phyto_pup",
-                   "A_anaerobic","A_sed_oxy",
-                   "O_anammox", "O_denit", "O_dnra", "O_nitrif","O_sed_nit",
-                   "O_sed_amm","O_OGM_denit", "O_don_miner", "O_donr_miner", 
+                   "A_doc_miner","A_docr_miner", "A_poc_hydrol",  
+                   "A_dop_miner", "A_dopr_miner", "A_phyto_pup",
+                   "O_anammox", "O_denit", "O_dnra", "O_nitrif",
+                   "O_OGM_denit", "O_don_miner", "O_donr_miner", 
                    "O_phyto_nup_nh4", "O_phyto_nup_no3", 
-                   "O_doc_miner","O_docr_miner", "O_poc_hydrol", "O_sed_doc", 
-                   "O_dop_miner", "O_dopr_miner", "O_sed_frp","O_phyto_pup",
-                   "O_anaerobic","O_sed_oxy") 
+                   "O_doc_miner","O_docr_miner", "O_poc_hydrol", 
+                   "O_dop_miner", "O_dopr_miner", "O_phyto_pup") 
 
 ######subsetting July 15-Oct 1 summer rates
 
@@ -130,15 +127,15 @@ data1 <- data %>%
 #ammonium first
 
 nh4data <- data1 %>% 
-  select(A_sed_amm, A_don_miner,A_donr_miner,A_nitrif,A_anammox,A_dnra,
-         O_sed_amm, O_don_miner,O_donr_miner,O_nitrif,O_anammox,O_dnra) %>% 
+  select(A_don_miner,A_donr_miner,A_nitrif,A_anammox,A_dnra,
+         O_don_miner,O_donr_miner,O_nitrif,O_anammox,O_dnra) %>% 
   summarise_all(list(median)) %>% 
-  pivot_longer(cols = A_sed_amm:O_dnra, names_to = c("Scenario", "Process"), names_sep ="_") %>% 
+  pivot_longer(cols = A_don_miner:O_dnra, names_to = c("Scenario", "Process"), names_sep ="_") %>% 
   mutate(value = ifelse(Process == "nitrif", -value, value),
          value = ifelse(Process == "anammox", -value, value)) %>% 
   #pivot_wider(names_from = Scenario, values_from = value) %>% 
   mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
-  mutate(Process=recode(Process, sed = "Sediment flux",don="DON mineralization (labl.)", 
+  mutate(Process=recode(Process, don="DON mineralization (labl.)", 
                      donr="DON mineralization (recalc.)",nitrif="Nitrification",
                      anammox = "Anammox", dnra = "DNRA")) %>% 
   mutate(nutrient = "NH4")%>%
@@ -146,16 +143,16 @@ nh4data <- data1 %>%
 
 ###then nitrate
 no3data <- data1 %>% 
-  select(A_sed_nit, A_nitrif,A_denit,A_OGM_denit,A_dnra,
-         O_sed_nit, O_nitrif,O_denit,O_OGM_denit,O_dnra) %>% 
+  select(A_nitrif,A_denit,A_OGM_denit,A_dnra,
+         O_nitrif,O_denit,O_OGM_denit,O_dnra) %>% 
   summarise_all(list(median)) %>%
   mutate(A_Denitrification = A_denit + A_OGM_denit, O_Denitrification = O_denit + O_OGM_denit) %>% 
   select(-A_denit,-A_OGM_denit,-O_denit,-O_OGM_denit) %>% 
-  pivot_longer(cols = A_sed_nit:O_Denitrification, names_to = c("Scenario", "Process"), names_sep ="_") %>% 
+  pivot_longer(cols = A_nitrif:O_Denitrification, names_to = c("Scenario", "Process"), names_sep ="_") %>% 
   mutate(value = ifelse(Process == "Denitrification", -value, value),
          value = ifelse(Process == "dnra", -value, value)) %>% 
   mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
-  mutate(Process=recode(Process, sed = "Sediment flux",nitrif="Nitrification",
+  mutate(Process=recode(Process, nitrif="Nitrification",
                      dnra = "DNRA", Denitrification= "WC Denitrification")) %>% 
   mutate(nutrient = "NO3")%>%
   mutate(Variable = "B")
@@ -170,27 +167,27 @@ nutrient_labels <-  parse(text=unique(nitrogen$Variable))
 
 ###now phosphorus
 po4data <- data1 %>% 
-  select(A_dop_miner, A_dopr_miner, A_sed_frp,
-         O_dop_miner, O_dopr_miner, O_sed_frp) %>% 
+  select(A_dop_miner, A_dopr_miner, 
+         O_dop_miner, O_dopr_miner) %>% 
   summarise_all(list(median)) %>%
-  pivot_longer(cols = A_dop_miner:O_sed_frp, names_to = c("Scenario", "Process"), names_sep ="_") %>% 
+  pivot_longer(cols = A_dop_miner:O_dopr_miner, names_to = c("Scenario", "Process"), names_sep ="_") %>% 
   #pivot_wider(names_from = Scenario, values_from = value) %>% 
   mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
-  mutate(Process=recode(Process, sed = "Sediment flux", dop="DOP mineralization (labl.)",
+  mutate(Process=recode(Process, dop="DOP mineralization (labl.)",
                      dopr = "DOP mineralization (recalc.)"))%>% 
   mutate(nutrient = "DRP")
 
 ###finally carbon
 docdata <- data1 %>% 
-  select(A_doc_miner,A_docr_miner, A_poc_hydrol, A_sed_doc, 
-         O_doc_miner,O_docr_miner, O_poc_hydrol, O_sed_doc) %>% 
+  select(A_doc_miner,A_docr_miner, A_poc_hydrol,  
+         O_doc_miner,O_docr_miner, O_poc_hydrol) %>% 
   summarise_all(list(median)) %>%
-  pivot_longer(cols = A_doc_miner:O_sed_doc, names_to = c("Scenario", "Process"), names_sep ="_") %>% 
+  pivot_longer(cols = A_doc_miner:O_poc_hydrol, names_to = c("Scenario", "Process"), names_sep ="_") %>% 
   mutate(value = ifelse(Process == "doc", -value, value),
          value = ifelse(Process == "docr", -value, value)) %>% 
   #pivot_wider(names_from = Scenario, values_from = value) %>% 
   mutate(Scenario=recode(Scenario, A = "Anoxic", O = "Oxic")) %>% 
-  mutate(Process=recode(Process, sed = "Sediment flux",doc="DOC mineralization (labl.)",
+  mutate(Process=recode(Process, doc="DOC mineralization (labl.)",
                      docr = "DOC mineralization (recalc.)", poc= "POC hydrolysis"))%>% 
   mutate(nutrient = "DOC")
 
@@ -223,7 +220,7 @@ p1 <- nitrogen %>%
   labs(title = "Nitrogen", y = "", x = "") +
   geom_hline(yintercept = 0, lty = "dashed")+
   labs(x = "", y = expression(mmol~m^{-2}~day^{-1}), title = "Nitrogen") +
-  ylim(-0.25, 2.1)+
+  ylim(-0.06, 0.06)+
   theme_bw()+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
@@ -244,12 +241,12 @@ p3 <- docdata %>%
   scale_fill_manual(values = cols_c, name = "Process") +
   facet_wrap(facets = vars(nutrient))+
   labs(x = "", y = "", title = "Carbon") +
-  ylim(-0.25, 1.5)+
+  ylim(-0.1, 0.01)+
   geom_hline(yintercept = 0, lty = "dashed")+
   theme_bw()+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
-jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure7_BiogeoRates_new.jpg", width = 6, height = 8, units = 'in', res = 1000)
+jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/supp_figs/BiogeoRates_NoSedimentFluxes.jpg", width = 6, height = 8, units = 'in', res = 1000)
 draft <- p3 / p1 / p2
 draft
 dev.off()
