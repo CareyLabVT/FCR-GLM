@@ -2,7 +2,7 @@
 #* TITLE:   FCR GLM-AED script to create figure 6             
 #* AUTHORS:  R.P. McClure and C.C. Carey                                          
 #* DATE:   Originally developed by CCC in summer 2020; updated by RPM
-#*         to convert to ggplot in January 2021; Last modified 4 Oct 2021                            
+#*         to convert to ggplot in January 2021                            
 #* NOTES:  This script uses the data objects created by the 
 #*         "MakeFigure_OrganizeDataForFigures.R" 
 #*****************************************************************
@@ -44,6 +44,7 @@ doc_no3_boxplot <- mediandata%>%
   pivot_longer(!year,  names_to = "scenario", values_to = "ratio")%>%
   arrange(scenario)%>%
   mutate(ratio = ifelse(is.infinite(ratio), NA, ratio))%>%
+  filter(ratio<1000) %>% 
   ggplot(., aes(scenario, as.numeric(ratio), fill = scenario))+
   geom_boxplot(color = "black")+
   stat_compare_means(label = "p.signif",method = "t.test",label.x = 1.5, size = 8, paired = TRUE)+
@@ -210,7 +211,7 @@ din_drp_boxplot <- mediandata%>%
 
 
 
-jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure6_MedianStratPeriodBoxplots_v1.jpg", width = 20, height = 25, units = 'in', res = 1000)
+jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure6_MedianStratPeriodBoxplots_new.jpg", width = 20, height = 25, units = 'in', res = 1000)
 figure5 <- (toc_tn_boxplot|toc_tp_boxplot)/(doc_din_boxplot|doc_nh4_boxplot)/(doc_no3_boxplot|doc_drp_boxplot)/(tn_tp_boxplot|din_drp_boxplot)
 figure5
 dev.off()
