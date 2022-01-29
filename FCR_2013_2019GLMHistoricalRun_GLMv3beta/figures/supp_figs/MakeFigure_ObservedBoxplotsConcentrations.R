@@ -1,17 +1,20 @@
 #*****************************************************************
-#* TITLE:   FCR GLM-AED script to create figure 5            
-#* AUTHORS:  R.P. McClure and C.C. Carey                                          
-#* DATE:   Originally developed by CCC in summer 2020; updated by RPM
-#*         to convert to ggplot in January 2021; Last modified 4 Oct 2021                            
+#* TITLE:   FCR GLM-AED script to create supplemental figure highlighting
+#*             observed data
+#* AUTHORS:  C.C. Carey                                          
+#* DATE:   Originally developed by CCC to highlight empirical data, 
+#*          and constructed using code to make Figure 5                            
 #* NOTES:  This script uses the data objects created by the 
 #*         "MakeFigure_OrganizeDataForFigures.R" 
 #*****************************************************************
 
 library(tidyverse)
 library(ggpubr)
+library(patchwork)
 
 realdata <- read_csv("FCR_2013_2019GLMHistoricalRun_GLMv3beta/output/ObservedOxicAnoxicSummerValues.csv") %>% 
-  rename(scenario = Status)
+  mutate(scenario=ifelse(Status=="Oxic", "Oxygenated", "Non-oxygenated"))
+
 
 doc_boxplot <- realdata %>%
   ggplot(., aes(scenario, DOC, fill = scenario))+
@@ -103,7 +106,6 @@ tp_boxplot <- realdata %>%
   xlab("")+
   labs(title = "F")+
   theme_classic()+
-  coord_cartesian(ylim = c(0.25,2.2))+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
         title = element_text(size = 24, color = "black"),
@@ -128,6 +130,22 @@ drp_boxplot <- realdata %>%
         legend.title = element_blank(),
         legend.text = element_text(size = 24, color = "black"),
         plot.title = element_text(face = "bold"))
+
+# ghost <- realdata %>%
+#   filter(PHS_frp > 0.08) %>% 
+#   ggplot(., aes(scenario, PHS_frp, fill = scenario))+
+#   geom_boxplot(color = "white")+
+#   scale_fill_manual(values = c("white","white"))+
+#   ylab(expression(paste("Hypolimnetic DRP (mmol m" ^"-3",")")))+
+#   xlab("")+
+#   theme_void()+
+#   theme(axis.text = element_text(size = 24, color = "white"),
+#         axis.title = element_text(size = 24, color = "white"),
+#         title = element_text(size = 24, color = "white"),
+#         legend.position = "none",
+#         legend.title = element_blank(),
+#         legend.text = element_text(size = 24, color = "white"))
+
 
 jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/supp_figs/Supp_Figure_ObservedPatterns.jpg", width = 20, height = 25, units = 'in', res = 1000)
 figure <- (doc_boxplot | plot_spacer())/(tn_boxplot | din_boxplot)/(nh4_boxplot | no3_boxplot)/(tp_boxplot | drp_boxplot)
