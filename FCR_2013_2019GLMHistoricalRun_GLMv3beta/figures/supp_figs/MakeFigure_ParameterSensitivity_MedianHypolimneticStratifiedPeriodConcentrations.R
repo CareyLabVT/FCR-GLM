@@ -1,9 +1,10 @@
 #*****************************************************************
-#* TITLE:   FCR GLM-AED script to create figure 5            
+#* TITLE:   FCR GLM-AED script to create supp figure on parameter sensitivity         
 #* AUTHORS:  C.C. Carey, R.P. McClure                                          
-#* DATE:   Originally developed by CCC in summer 2020; updated by RPM
-#*         to convert to ggplot in January 2021; Cayelan then modified again
-#*         for the parameter sensitivity figure in January 2022                            
+#* DATE:   An earlier version of this script was developed by CCC in 
+#*         summer 2020; updated by RPM to convert to ggplot in January 2021; 
+#*         Cayelan then modified again in January 2022
+#*         for the parameter sensitivity figure                            
 #* NOTES:  This script uses the data objects created by the 
 #*         "MakeFigure_OrganizeDataForFigures.R" 
 #*****************************************************************
@@ -173,7 +174,7 @@ nh4_2x_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic NH" [" 4"],""^"+"," (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "C, Double sed flux")+
+  labs(title = "C, Double sediment flux")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -196,7 +197,7 @@ nh4_half_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic NH" [" 4"],""^"+"," (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "D, Half sed flux")+
+  labs(title = "D, Half sediment flux")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -265,7 +266,7 @@ drp_2x_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic DRP (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "G, Double sed flux")+
+  labs(title = "G, Double sediment flux")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -288,7 +289,7 @@ drp_half_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic DRP (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "H, Half sed flux")+
+  labs(title = "H, Half sediment flux")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -300,6 +301,6 @@ drp_half_boxplot <- mediandata%>%
 
 
 jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/supp_figs/Supp_Figure_ParameterSensitivity.jpg", width = 20, height = 25, units = 'in', res = 1000)
-figure4 <- (doc_2x_boxplot|doc_half_boxplot)/(nh4_2x_boxplot|nh4_half_boxplot)/(no3_2x_boxplot|no3_half_boxplot)/(drp_2x_boxplot|drp_half_boxplot)
-figure4
+suppfig <- (doc_2x_boxplot|doc_half_boxplot)/(nh4_2x_boxplot|nh4_half_boxplot)/(no3_2x_boxplot|no3_half_boxplot)/(drp_2x_boxplot|drp_half_boxplot)
+suppfig
 dev.off()
