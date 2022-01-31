@@ -4,7 +4,7 @@
 #*          vs. model output          
 #* AUTHORS:  R.P. McClure and C.C. Carey                                          
 #* DATE:   Originally developed by CCC in summer 2020; updated by RPM
-#*         to convert to ggplot in January 2021; Last modified 24 Sept 2021                            
+#*         to convert to ggplot in January 20211                            
 #* NOTES:  This script uses the data objects created by the 
 #*         "MakeFigure_OrganizeDataForFigures.R" 
 #*****************************************************************
@@ -25,7 +25,7 @@ doc_din_ts <- ggplot(mod_doc_din_ts, aes(DateTime, mod_doc_din_ratio, color = "M
   theme_classic()+
   ylab("Hypolimnetic DOC:DIN")+
   xlab("")+
-  ylim(0,275)+
+  ylim(0,200)+
   labs(title = "A")+
   scale_color_manual(breaks = c("Modeled Ratios", "Observed Ratios"),
                                       values = c("Modeled Ratios" = "black", "Observed Ratios" = "red"),
@@ -54,7 +54,7 @@ doc_nh4_ts <- ggplot(mod_doc_nh4_ts, aes(DateTime, mod_doc_nh4_ratio))+
   ylab(expression(paste("Hypolimnetic DOC:NH" [" 4"],""^"+")))+
   xlab("")+
   labs(title = "B")+
-  ylim(0,275)+
+  ylim(0,200)+
   #labs(title = expression('RMSE = 1.32'*~degree*C*''))+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -101,7 +101,7 @@ doc_srp_ts <- ggplot(mod_doc_srp_ts, aes(DateTime, mod_doc_srp_ratio))+
   ylab("Hypolimnetic DOC:DRP")+
   xlab("")+
   labs(title = "D")+
-  coord_cartesian(ylim = c(0,2200))+
+  coord_cartesian(ylim = c(0,1590))+
   #labs(title = expression('RMSE = 1.32'*~degree*C*''))+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -122,7 +122,7 @@ tn_tp_ts <- ggplot(mod_tn_tp_ts, aes(DateTime, mod_tn_tp_ratio))+
   ylab("Hypolimnetic TN:TP")+
   xlab("")+
   labs(title = "E")+
-  coord_cartesian(ylim = c(0,275))+
+  coord_cartesian(ylim = c(0,225))+
   #labs(title = expression('RMSE = 1.32'*~degree*C*''))+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -157,7 +157,7 @@ din_srp_ts <- ggplot(mod_din_srp_ts, aes(DateTime, mod_din_srp_ratio))+
 #patch all of the figures together using patchwork
 #this resolution might be a bit much but I am going to leave it for now (RPM:06 January 21)
 # Ryan reduced the resolution from 800 to 300 dpi (which is the general requirement for most papers) (RPM:25Mar21)
-jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/supp_figs/Model_vs_Observed_ratios_FCR_GLM.jpg", width = 20, height = 20, units = 'in', res = 1000)
+jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/supp_figs/Model_vs_Observed_ratios_FCR_GLM_new.jpg", width = 20, height = 20, units = 'in', res = 1000)
 figure1 <- (doc_din_ts|doc_nh4_ts)/(doc_no3_ts|doc_srp_ts)/(tn_tp_ts|din_srp_ts)
 figure1
 dev.off()
