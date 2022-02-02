@@ -24,13 +24,13 @@ library(EMLassemblyline)
 
 #Step 2: Move your dataset to the directory
 file.copy('glm3.nml', 'EDI_publishing/glm3.nml')
-file.copy('aed2/aed2_20210204_2DOCpools.nml', 'EDI_publishing/aed2_20210204_2DOCpools.nml')
-file.copy('aed2/aed2_phyto_pars_30June2020.nml', 'EDI_publishing/aed2_phyto_pars_30June2020.nml')
+file.copy('aed2/aed2_20220111_2DOCpools.nml', 'EDI_publishing/aed2_20220111_2DOCpools.nml')
+file.copy('aed2/aed2_phyto_pars_4Jan2022.nml', 'EDI_publishing/aed2_phyto_pars_4Jan2022.nml')
 file.copy('inputs/FCR_GLM_NLDAS_010113_123119_GMTadjusted.csv', 'EDI_publishing/FCR_GLM_NLDAS_010113_123119_GMTadjusted.csv')
 file.copy('inputs/FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv', 'EDI_publishing/FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv')
 file.copy('inputs/FCR_SSS_inflow_2013_2019_20200701_allfractions_2DOCpools.csv', 'EDI_publishing/FCR_SSS_inflow_2013_2019_20200701_allfractions_2DOCpools.csv')
-file.copy('inputs/FCR_weir_inflow_2013_2019_20200828_allfractions_2poolsDOC.csv', 'EDI_publishing/FCR_weir_inflow_2013_2019_20200828_allfractions_2poolsDOC.csv')
-file.copy('inputs/FCR_wetland_inflow_2013_2019_20200828_allfractions_2DOCpools.csv', 'EDI_publishing/FCR_wetland_inflow_2013_2019_20200828_allfractions_2DOCpools.csv')
+file.copy('inputs/FCR_weir_inflow_2013_2019_20220104_allfractions_2poolsDOC.csv', 'EDI_publishing/FCR_weir_inflow_2013_2019_20220104_allfractions_2poolsDOC.csv')
+file.copy('inputs/FCR_wetland_inflow_2013_2019_20220104_allfractions_2DOCpools.csv', 'EDI_publishing/FCR_wetland_inflow_2013_2019_20220104_allfractions_2DOCpools.csv')
 #once the nml files are copied over, I put them in a sub-directory called "model_configuration_nml_files"
 
 #now set files to the correct directory
@@ -46,8 +46,8 @@ import_templates(path = "/Users/cayelan/Dropbox/ComputerFiles/SCC/FCR-GLM/FCR_20
                  data.files = c("FCR_GLM_NLDAS_010113_123119_GMTadjusted.csv", 
                                 "FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv",
                                 "FCR_SSS_inflow_2013_2019_20200701_allfractions_2DOCpools.csv",
-                                "FCR_weir_inflow_2013_2019_20200828_allfractions_2poolsDOC.csv",
-                                "FCR_wetland_inflow_2013_2019_20200828_allfractions_2DOCpools.csv"))
+                                "FCR_weir_inflow_2013_2019_20220104_allfractions_2poolsDOC.csv",
+                                "FCR_wetland_inflow_2013_2019_20220104_allfractions_2DOCpools.csv"))
 
 # Edit each of these imported template files for your current data package upload, by copying and 
 # pasting the relevant information from the EDI_metadata_template you prepared
@@ -123,7 +123,8 @@ view_unit_dictionary()
 # table (e.g., edi.123.1)
 # Make note of this value, as it will be your package.id below
 
-#for this FCR-GLM-AED data package, identifier is 'edi.471.1'
+#for this FCR-GLM-AED data package, identifier is 'edi.471.1', then .2
+# updated for manuscript revision to be 471.3!
 
 ## Step XXX: Make EML metadata file using the EMLassemblyline::make_eml() command ####
 # For modules that contain only zip folders, modify and run the following 
@@ -140,8 +141,8 @@ make_eml(path = "/Users/cayelan/Dropbox/ComputerFiles/SCC/FCR-GLM/FCR_2013_2019G
          data.files = c("FCR_GLM_NLDAS_010113_123119_GMTadjusted.csv", 
                         "FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv",
                         "FCR_SSS_inflow_2013_2019_20200701_allfractions_2DOCpools.csv",
-                        "FCR_weir_inflow_2013_2019_20200828_allfractions_2poolsDOC.csv",
-                        "FCR_wetland_inflow_2013_2019_20200828_allfractions_2DOCpools.csv"),
+                        "FCR_weir_inflow_2013_2019_20220104_allfractions_2poolsDOC.csv",
+                        "FCR_wetland_inflow_2013_2019_20220104_allfractions_2DOCpools.csv"),
          data.files.description = c('Meteorological driver data',
                                     'Outflow driver data',
                                     'Oxygenation system submerged inflow driver data',
@@ -155,7 +156,7 @@ make_eml(path = "/Users/cayelan/Dropbox/ComputerFiles/SCC/FCR-GLM/FCR_2013_2019G
          maintenance.description = "completed", 
          user.id = "ccarey",
          affiliation = 'EDI',
-         package.id = "edi.471.1") # Put your package.id here, followed by .1 (for 1st version)
+         package.id = "edi.471.3") # Put your package.id here, followed by .1 (for 1st version)
 
 #note: once the EML is validated, THEN need to edit to add in abstract, keywords, and methods.
 #see edi.456.3.xml (Ice at FCR- as an example!)
