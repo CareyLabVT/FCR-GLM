@@ -47,6 +47,9 @@ tn_export <- retention_stratified_period%>%
   mutate(AnoxicFactor = Anoxic/Oxic)
 mean(tn_export$AnoxicFactor)
 #for text in the abstract regarding the factor of anoxic vs oxic TN export
+
+##to get the X-X factors for CNP in the Abstract, refer to Results paragraph 5 below
+#and data object data4 for updated numbers
 ###################################################################
 
 ###################################################################
@@ -62,7 +65,7 @@ sd(outflow$HRT)/(length(outflow$FLOW)^0.5) #12 days for SE
 ###################################################################
 ####Results####
 ###############
-##calculating the summer anoxic vs oxic observational differences
+##calculating the summer anoxic vs oxic observational differences in field data
  data_obs <- merge(observed, totals, by=c('time', "Depth"), all.x=T, all.y=T) %>%
    filter(Depth==9) %>%
    mutate(month_day = format(as.Date(time), "%m-%d")) %>%
@@ -81,7 +84,6 @@ sd(outflow$HRT)/(length(outflow$FLOW)^0.5) #12 days for SE
     year == 2016 | year == 2017 ~ "Oxic")) %>% 
   drop_na()
 write.csv(data_obs, "output/ObservedOxicAnoxicSummerValues.csv", row.names = F)
-
 
 data1_obs <- data_obs %>% 
   drop_na() %>%
@@ -263,6 +265,78 @@ data1_obs <- data_obs %>%
 # (data1$max_annual_TP[1]-data1$max_annual_TP[2])/data1$max_annual_TP[2]
 ##for third paragraph looking at the summers with continuous vs limited oxygenation in baseline sim
 ###################################################################
+
+#Results section on proportion of NO3 of TN in field data 
+vals <- merge(observed, totals, by=c("DateTime", "Depth")) %>% 
+ # filter(Depth ==9) %>% 
+  select(DateTime, NIT_nit, TOT_tn, PHS_frp, TOT_tp) %>% 
+  drop_na() %>% 
+  mutate(NIT_TN = NIT_nit/TOT_tn,
+         PHS_TP = PHS_frp/TOT_tp) %>% 
+hist(vals$NIT_TN)
+hist(vals$PHS_TP)
+median(vals$NIT_TN[!is.infinite(vals$NIT_TN)])
+std(vals$NIT_TN[!is.infinite(vals$NIT_TN)]) #less than 1%
+
+median(vals$PHS_TP[!is.infinite(vals$PHS_TP)])
+std(vals$PHS_TP[!is.infinite(vals$PHS_TP)]) #less than 1%
+
+
+#Results section on proportion of NO3 of TN in baseline simulation
+#pull out deep-water chemistry from each output file
+B_NO3 <- get_var(nc_file, "NIT_nit",z_out=9,reference = 'surface')
+B_TN <- get_var(nc_file, "TOT_tn",z_out=9,reference = 'surface')
+B_PO4 <- get_var(nc_file, "PHS_frp",z_out=9,reference = 'surface')
+B_TP <- get_var(nc_file, "TOT_tp",z_out=9,reference = 'surface')
+ 
+B_cyano <- get_var(nc_file,var_name = 'PHY_cyano',z_out=9,reference = 'surface') %>% 
+  pivot_longer(cols=starts_with(paste0("PHY_cyano_")), names_to="Depth", names_prefix="PHY_cyano_",values_to = "CyanoConc") %>%
+  mutate(B_cyanoN = CyanoConc*0.12,
+         B_cyanoP = CyanoConc*0.0005,
+         B_cyanoC = CyanoConc) %>%
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
+  select(DateTime,Depth,B_cyanoN, B_cyanoP, B_cyanoC)
+
+B_green <- get_var(nc_file,var_name = 'PHY_green',z_out=9,reference = 'surface') %>%
+  pivot_longer(cols=starts_with(paste0("PHY_green_")), names_to="Depth", names_prefix="PHY_green_",values_to = "GreenConc") %>%
+  mutate(B_greenN = GreenConc*0.12,
+         B_greenP = GreenConc*0.0005,
+         B_greenC = GreenConc) %>%
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
+  select(DateTime,Depth,B_greenN, B_greenP, B_greenC)
+
+B_diatom <- get_var(nc_file,var_name = 'PHY_diatom',z_out=9,reference = 'surface') %>%
+  pivot_longer(cols=starts_with(paste0("PHY_diatom_")), names_to="Depth", names_prefix="PHY_diatom_",values_to = "DiatomConc") %>%
+  mutate(B_diatomN = DiatomConc*0.12,
+         B_diatomP = DiatomConc*0.0005,
+         B_diatomC = DiatomConc) %>%
+  mutate(DateTime = as.POSIXct(strptime(DateTime, "%Y-%m-%d", tz="EST"))) %>%
+  select(DateTime,Depth,B_diatomN, B_diatomP, B_diatomC)
+
+#bind the data together
+dataX<-as.data.frame(cbind(B_NO3,B_PO4[,2],
+                          B_TN[,2],B_TP[,2],
+                          B_diatom[,3:5],B_cyano[,3:5],B_green[,3:5]))
+colnames(dataX) = c("time", "B_NO3", "B_PO4",
+                   "B_TN", "B_TP",
+                   "B_diatomN", "B_diatomP", "B_diatomC",
+                   "B_cyanoN", "B_cyanoP", "B_cyanoC", 
+                   "B_greenN", "B_greenP", "B_greenC")
+dataXX <- dataX %>%
+  mutate(B_totalN = B_TN + B_diatomN + B_cyanoN + B_greenN,
+         B_totalP = B_TP + B_diatomP + B_cyanoP + B_greenP,
+         NIT_TN = B_NO3/B_totalN,
+         PHS_TP = B_PO4/B_totalP) %>%
+  select(time,NIT_TN, PHS_TP) %>%
+  mutate(time = as.POSIXct(strptime(time, "%Y-%m-%d", tz="EST")))
+
+hist(dataXX$NIT_TN)
+median(dataXX$NIT_TN[!is.infinite(dataXX$NIT_TN)])
+std(dataXX$NIT_TN[!is.infinite(dataXX$NIT_TN)]) #less than 1%
+
+hist(dataXX$PHS_TP)
+median(dataXX$PHS_TP[!is.infinite(dataXX$PHS_TP)])
+std(dataXX$PHS_TP[!is.infinite(dataXX$PHS_TP)]) 
 
 ###################################################################
 #####make the anoxic vs oxic modeled dataset####
@@ -484,7 +558,7 @@ write.csv(conc_stats1, "output/Hypo_Ratios_TtestStats.csv", row.names = F)
 
 ###################################################################
 ##to calculate t-tests of the median retention rates for the SI
-weir <- read.csv("inputs/FCR_weir_inflow_2013_2019_20200828_allfractions_2poolsDOC.csv") %>% 
+weir <- read.csv("inputs/FCR_weir_inflow_2013_2019_20220104_allfractions_2poolsDOC.csv") %>% 
   mutate(TP = FLOW*(PHS_frp + OGM_dop + OGM_dopr + OGM_pop),
          TN = FLOW*(NIT_amm + NIT_nit + OGM_don + OGM_donr + OGM_pon),
          TOC = FLOW*(OGM_doc + OGM_docr + OGM_poc),
@@ -495,7 +569,7 @@ weir <- read.csv("inputs/FCR_weir_inflow_2013_2019_20200828_allfractions_2poolsD
          DOC = FLOW*(OGM_doc + OGM_docr)) %>% 
   select(time,TP:DOC)
 
-wetland <- read.csv("inputs/FCR_wetland_inflow_2013_2019_20200828_allfractions_2DOCpools.csv") %>% 
+wetland <- read.csv("inputs/FCR_wetland_inflow_2013_2019_20220104_allfractions_2DOCpools.csv") %>% 
   mutate(TP = FLOW*(PHS_frp + OGM_dop + OGM_dopr + OGM_pop),
          TN = FLOW*(NIT_amm + NIT_nit + OGM_don + OGM_donr + OGM_pon),
          TOC = FLOW*(OGM_doc + OGM_docr + OGM_poc),
@@ -791,7 +865,9 @@ biogeo_rates <- data %>%
             median_O_doc_miner = median(O_doc_miner),
             median_O_docr_miner = median(O_docr_miner),
             median_A_nitrif = median(A_nitrif),
-            median_O_nitrif = median(O_nitrif)) %>% 
+            median_O_nitrif = median(O_nitrif),
+            median_A_poc_hydrol = median(A_poc_hydrol),
+            median_O_poc_hydrol = median(O_poc_hydrol)) %>% 
   summarise(A_O_sed_amm = median(median_A_sed_amm/median_O_sed_amm),
          A_O_sed_frp = median(median_A_sed_frp/median_O_sed_frp),
          A_O_sed_doc = median(median_A_sed_doc/median_O_sed_doc),
@@ -801,6 +877,7 @@ biogeo_rates <- data %>%
          O_A_dopr_miner = median(median_O_dopr_miner/median_A_dopr_miner),
          O_A_doc_miner = median(median_O_doc_miner/median_A_doc_miner),
          O_A_docr_miner = median(median_O_docr_miner/median_A_docr_miner),
+         O_A_poc_hydrol = median(median_O_poc_hydrol/median_A_poc_hydrol),
          O_nitrif = median(median_O_nitrif),
          A_sed_amm = median(median_A_sed_amm),
          A_sed_doc = median(median_A_sed_doc),
@@ -830,7 +907,7 @@ POC_burial_by_yr <- data %>%
   group_by(year) %>%
   summarise(mean_anoxic = mean(Anoxic), mean_oxic=mean(Oxic), mean_baseline = mean(Baseline))
 t.test(POC_burial_by_yr$mean_anoxic, POC_burial_by_yr$mean_oxic, paired=T)
-#for SI Text 2, Table S4
+#for SI Text Table S6
 
 POC_burial <- POC_burial_by_yr %>% drop_na() %>%
   mutate(total_anoxic = mean_anoxic*12*365*24*60*60/1000,
@@ -907,6 +984,9 @@ POP_burial <- POP_burial_by_yr %>% drop_na() %>%
 #####Discussion#####
 #getting numbers interspersed in the text
 
+biogeo_rates
+#provides stats on different rates in anoxic vs oxic scenarios
+
 retention_stratified_period
 #provides stats for Discussion paragraph on range of boxplot values in Fig. 7
 
@@ -922,10 +1002,11 @@ hist(vals$DRP_TP)
 median(vals$DRP_TP)
 std_err(vals$DRP_TP)
 
-#Conclusions paragraph
-109-95#difference in C fluxes
-602-195#difference in N fluxes
-12-10#difference in P fluxes
+#Conclusions paragraph (from "MedianExportDataForFigure9.csv")
+105-92#difference in C fluxes
+553-204#difference in N fluxes
+123-78#difference in P fluxes
+
 ###################################################################
 
 ###################################################################
@@ -988,5 +1069,25 @@ data <- merge(inflow,discharge, by="time", all=FALSE)  %>%
 mean(data$ratio)*100 #69% of Tunnel Branch is Falling Creek's inflow
 sd(data$ratio)*100 #48%
 #these numbers are going into the SI 
+
+###################
+###Revision
+##################
+#for Reviewer 3's plot on N export over time
+retention_stratified_period1 <- fluxdata %>% 
+  mutate(month_day = format(as.Date(time), "%m-%d")) %>%
+  mutate(year = year(time))%>%
+  filter(month_day <= "10-01", month_day >= "07-15") %>%
+  select(-month_day)%>%
+  group_by(year) %>%
+  summarise(Fnet_A_TN = 100*(sum(A_TN_output)-sum(inputTN))/sum(inputTN),
+            Fnet_O_TN = 100*(sum(O_TN_output)-sum(inputTN))/sum(inputTN))
+
+plot(retention_stratified_period1$year, retention_stratified_period1$Fnet_A_TN, col="red",
+     pch = 16,
+     ylab = "TN flux (%)", xlab = "Year", ylim=c(0,700), cex=2, cex.lab=1.4, cex.axis=1.5)
+points(retention_stratified_period1$year, retention_stratified_period1$Fnet_O_TN, col="blue",
+       pch = 16, cex=2)
+legend("topleft", legend = c("Anoxic", "Oxic"), pch=16, col=c("red", "blue"), cex=1.5)
 
 
