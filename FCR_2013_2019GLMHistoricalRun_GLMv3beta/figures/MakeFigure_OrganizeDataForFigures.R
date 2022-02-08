@@ -645,5 +645,5 @@ Fig9data <- retention_stratified_period %>%
   summarise(across(everything(), list(median))) %>% 
   round()
 Fig9data1<-Fig9data+100
-write.csv(Fig9data1, "FCR_2013_2019GLMHistoricalRun_GLMv3beta/output/MedianExportDataForFigure9.csv", row.names = F)
+#write.csv(Fig9data1, "FCR_2013_2019GLMHistoricalRun_GLMv3beta/output/MedianExportDataForFigure9.csv", row.names = F)
   

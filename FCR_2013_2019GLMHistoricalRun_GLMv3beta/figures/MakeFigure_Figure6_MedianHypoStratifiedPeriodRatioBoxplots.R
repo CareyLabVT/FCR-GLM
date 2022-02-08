@@ -36,7 +36,9 @@ toc_tn_boxplot <- mediandata%>%
 scenario <- c("Anoxic", "Anoxic", "Anoxic", "Anoxic", "Anoxic", "Anoxic", "Anoxic")
 ratio <- c(38, 38, 38, 38, 38, 38, 38)
 year <- c("2013", "2014", "2015", "2016", "2017", "2018", "2019")
-mis_point <- as.data.frame(cbind(year, scenario, ratio))
+mis_point <- as.data.frame(cbind(year, scenario, ratio)) %>% 
+  mutate(ratio = as.numeric(ratio)) %>% 
+  mutate(ratio = 34*ratio)
 
 doc_no3_boxplot <- mediandata%>%
   select(year, med_A_DOC_NO3, med_O_DOC_NO3)%>%
@@ -44,10 +46,10 @@ doc_no3_boxplot <- mediandata%>%
   pivot_longer(!year,  names_to = "scenario", values_to = "ratio")%>%
   arrange(scenario)%>%
   mutate(ratio = ifelse(is.infinite(ratio), NA, ratio))%>%
-  filter(ratio<1000) %>% 
+  mutate(ratio = ifelse(ratio>1000, NA, ratio)) %>% 
   ggplot(., aes(scenario, as.numeric(ratio), fill = scenario))+
   geom_boxplot(color = "black")+
-  stat_compare_means(label = "p.signif",method = "t.test",label.x = 1.5, size = 8, paired = TRUE)+
+  #stat_compare_means(label = "p.signif",method = "t.test",label.x = 1.5, size = 8, paired = TRUE)+
   geom_jitter(width = 0.0001, size = 8, color = "black", pch = 21, fill = "grey50", alpha = 0.5)+
   geom_text(aes(label=year), size = 2)+
   geom_point(data = mis_point, aes(scenario, as.numeric(ratio)), pch = 4, size = 30, color = "red")+
