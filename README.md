@@ -18,7 +18,7 @@ This directory contains the CSV files that serve as inputs to the model sensitiv
 This directory contains the output from the model sensitivity analysis and calibration analysis run in the "modeling/SensitivityCalibration.R" script for the focal model state variables. 
 
 ## aed2
-This directory contains the two AED configuration files ("aed2_20210204_2DOCpools.nml" for the reservoir's biogeochemistry, "aed2_phyto_pars_30June2020.nml" for the reservoir's phytoplankton community) with calibrated parameters for FCR. 
+This directory contains the two AED configuration files ("aed2_20210204_2DOCpools.nml" for the reservoir's biogeochemistry, "aed2_phyto_pars_30June2020.nml" for the reservoir's phytoplankton community) with calibrated parameters for FCR. These files are used to simulate observed dynamics in the reservoir from 2013-2019. The additional files (all with prefixes of "half" or "2x") refer to the files used in the parameter sensitivity analysis of halving/doubling sensitive parameters.
 
 ## output
 After the model is run, this directory contains the output netcdf files from GLM-AED. This directory also contains summarized output in CSV files needed for the analysis in Carey et al. (including t-test statistics, % reservoir retention, modeled vs. observed elemental concentrations and ratios, etc.)
