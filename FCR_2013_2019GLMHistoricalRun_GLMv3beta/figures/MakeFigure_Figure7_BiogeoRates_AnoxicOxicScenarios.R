@@ -213,7 +213,7 @@ cols_n <- c("Sediment flux" = "#D55E00",
             "Anammox" = "#AA4499",
             "Nitrification" = "#332288",
             "DNRA" = "#117733",
-            "WC Denitrification" = "#88CCEE")   
+            "WC denitrification" = "#88CCEE")   
 
 p1 <- nitrogen %>% 
   ggplot(aes(x = Scenario, y = value, fill = Process)) +
