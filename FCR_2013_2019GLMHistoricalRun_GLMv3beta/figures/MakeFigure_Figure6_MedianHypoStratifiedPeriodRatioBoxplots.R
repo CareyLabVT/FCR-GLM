@@ -2,7 +2,8 @@
 #* TITLE:   FCR GLM-AED script to create figure 6             
 #* AUTHORS:  R.P. McClure and C.C. Carey                                          
 #* DATE:   Originally developed by CCC in summer 2020; updated by RPM
-#*         to convert to ggplot in January 2021                            
+#*         to convert to ggplot in January 2021 and then tweaked for
+#*         GCB formatting in May 2022                           
 #* NOTES:  This script uses the data objects created by the 
 #*         "MakeFigure_OrganizeDataForFigures.R" 
 #*****************************************************************
@@ -23,7 +24,7 @@ toc_tn_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab("Hypolimnetic TOC:TN")+
   xlab("")+
-  labs(title = "A")+
+  labs(title = "(a)")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -37,8 +38,8 @@ scenario <- c("Anoxic", "Anoxic", "Anoxic", "Anoxic", "Anoxic", "Anoxic", "Anoxi
 ratio <- c(38, 38, 38, 38, 38, 38, 38)
 year <- c("2013", "2014", "2015", "2016", "2017", "2018", "2019")
 mis_point <- as.data.frame(cbind(year, scenario, ratio)) %>% 
-  mutate(ratio = as.numeric(ratio)) %>% 
-  mutate(ratio = 34*ratio)
+  mutate(ratio = as.numeric(ratio)) #%>% 
+  #mutate(ratio = 34*ratio)
 
 doc_no3_boxplot <- mediandata%>%
   select(year, med_A_DOC_NO3, med_O_DOC_NO3)%>%
@@ -57,7 +58,7 @@ doc_no3_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic DOC:NO" [" 3"],""^"-")))+
   xlab("")+
-  labs(title = "E")+
+  labs(title = "(e)")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -80,7 +81,7 @@ doc_nh4_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic DOC:NH" [" 4"],""^"+")))+
   xlab("")+
-  labs(title = "D")+
+  labs(title = "(d)")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -104,7 +105,7 @@ toc_tp_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab("Hypolimnetic TOC:TP")+
   xlab("")+
-  labs(title = "B")+
+  labs(title = "(b)")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -128,7 +129,7 @@ doc_drp_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab("Hypolimnetic DOC:DRP")+
   xlab("")+
-  labs(title = "F")+
+  labs(title = "(f)")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -152,7 +153,7 @@ tn_tp_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab("Hypolimnetic TN:TP")+
   xlab("")+
-  labs(title = "G")+
+  labs(title = "(g)")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -176,7 +177,7 @@ doc_din_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab("Hypolimnetic DOC:DIN")+
   xlab("")+
-  labs(title = "C")+
+  labs(title = "(c)")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -201,7 +202,7 @@ din_drp_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab("Hypolimnetic DIN:DRP")+
   xlab("")+
-  labs(title = "H")+
+  labs(title = "(h)")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -214,6 +215,6 @@ din_drp_boxplot <- mediandata%>%
 
 
 jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure6_MedianStratPeriodBoxplots_new.jpg", width = 20, height = 25, units = 'in', res = 1000)
-figure5 <- (toc_tn_boxplot|toc_tp_boxplot)/(doc_din_boxplot|doc_nh4_boxplot)/(doc_no3_boxplot|doc_drp_boxplot)/(tn_tp_boxplot|din_drp_boxplot)
-figure5
+figure6 <- (toc_tn_boxplot|toc_tp_boxplot)/(doc_din_boxplot|doc_nh4_boxplot)/(doc_no3_boxplot|doc_drp_boxplot)/(tn_tp_boxplot|din_drp_boxplot)
+figure6
 dev.off()

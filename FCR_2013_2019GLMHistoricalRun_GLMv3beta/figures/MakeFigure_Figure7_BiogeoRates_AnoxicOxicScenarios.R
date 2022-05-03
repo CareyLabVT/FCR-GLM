@@ -3,6 +3,7 @@
 #* AUTHORS:  C.C. Carey, R.P. McClure, R.Q. Thomas                                          
 #* DATE:   Originally developed by CCC in summer 2021; RQT added some
 #*         ggplot magic, then was updated by RPM to match other figures
+#*         This was then tweaked for GCB formatting in May 2022
 #* NOTES:  This script uses the data objects created by the 
 #*         "MakeFigure_OrganizeDataForFigures.R" 
 #*****************************************************************
@@ -220,9 +221,9 @@ p1 <- nitrogen %>%
   scale_fill_manual(values = cols_n, name = "Process") +
   facet_wrap(~Variable, scales = "free_y", ncol = 2,
              labeller=as_labeller(nutrient_labels, label_parsed)) + 
-  labs(title = "Nitrogen", y = "", x = "") +
+  labs(title = "(b) Nitrogen", y = "", x = "") +
   geom_hline(yintercept = 0, lty = "dashed")+
-  labs(x = "", y = expression(mmol~m^{-2}~day^{-1}), title = "Nitrogen") +
+  labs(x = "", y = expression(mmol~m^{-2}~day^{-1}), title = "(b) Nitrogen") +
   ylim(-0.25, 2.1)+
   theme_bw()+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
@@ -233,7 +234,7 @@ p2 <- po4data %>%
   geom_bar(position = "stack", stat = "identity") +
   scale_fill_manual(values = cols_p, name = "Process") +
   facet_wrap(facets = vars(nutrient))+
-  labs(x = "Scenario", y = "", title = "Phosphorus") +
+  labs(x = "Scenario", y = "", title = "(c) Phosphorus") +
   geom_hline(yintercept = 0, lty = "dashed")+
   theme_bw()+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
@@ -243,15 +244,15 @@ p3 <- docdata %>%
   geom_bar(position = "stack", stat = "identity") +
   scale_fill_manual(values = cols_c, name = "Process") +
   facet_wrap(facets = vars(nutrient))+
-  labs(x = "", y = "", title = "Carbon") +
+  labs(x = "", y = "", title = "(a) Carbon") +
   ylim(-0.25, 1.5)+
   geom_hline(yintercept = 0, lty = "dashed")+
   theme_bw()+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure7_BiogeoRates_new.jpg", width = 6, height = 8, units = 'in', res = 1000)
-draft <- p3 / p1 / p2
-draft
+boom <- p3 / p1 / p2
+boom
 dev.off()
 
 # 

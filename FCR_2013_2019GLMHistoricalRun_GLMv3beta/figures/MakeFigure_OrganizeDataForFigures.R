@@ -7,6 +7,7 @@
 #*         manuscript
 #*****************************************************************
 
+setwd("~/FCR-GLM")
 
 # get the packages we will need for the plotting exercises
 # install.packages('remotes')
@@ -644,6 +645,6 @@ Fig9data <- retention_stratified_period %>%
   select(Fnet_A_TN:Fnet_O_TOC) %>% 
   summarise(across(everything(), list(median))) %>% 
   round()
-Fig9data1<-Fig9data+100
+Fig9data1<-Fig9data+100 #to convert to %
 #write.csv(Fig9data1, "FCR_2013_2019GLMHistoricalRun_GLMv3beta/output/MedianExportDataForFigure9.csv", row.names = F)
   

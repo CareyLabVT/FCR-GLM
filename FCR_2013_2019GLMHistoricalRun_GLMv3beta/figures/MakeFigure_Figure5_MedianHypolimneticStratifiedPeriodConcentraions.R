@@ -2,7 +2,8 @@
 #* TITLE:   FCR GLM-AED script to create figure 5            
 #* AUTHORS:  R.P. McClure and C.C. Carey                                          
 #* DATE:   Originally developed by CCC in summer 2020; updated by RPM
-#*         to convert to ggplot in January 2021                            
+#*         to convert to ggplot in January 2021 and then tweaked for
+#*         GCB formatting in May 2022                            
 #* NOTES:  This script uses the data objects created by the 
 #*         "MakeFigure_OrganizeDataForFigures.R" 
 #*****************************************************************
@@ -23,7 +24,7 @@ toc_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic TOC (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "A")+
+  labs(title = "(a)")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -46,7 +47,7 @@ doc_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic DOC (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "B")+
+  labs(title = "(b)")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -69,7 +70,7 @@ tn_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic TN (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "C")+
+  labs(title = "(c)")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -93,7 +94,7 @@ din_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic DIN (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "D")+
+  labs(title = "(d)")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -117,7 +118,7 @@ nh4_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic NH" [" 4"],""^"+"," (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "E")+
+  labs(title = "(e)")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -141,7 +142,7 @@ no3_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic NO" [" 3"],""^"-"," (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "F")+
+  labs(title = "(f)")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -165,7 +166,7 @@ tp_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic TP (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "G")+
+  labs(title = "(g)")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -188,7 +189,7 @@ drp_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic DRP (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "H")+
+  labs(title = "(h)")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),

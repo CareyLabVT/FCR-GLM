@@ -2,7 +2,8 @@
 #* TITLE:   FCR GLM-AED script to create figure 4             
 #* AUTHORS:  R.P. McClure and C.C. Carey                                          
 #* DATE:   Originally developed by CCC in summer 2020; updated by RPM
-#*         to convert to ggplot in January 2021                            
+#*         to convert to ggplot in January 2021 and then tweaked for
+#*         GCB formatting in May 2022                            
 #* NOTES:  This script uses the data objects created by the 
 #*         "MakeFigure_OrganizeDataForFigures.R" 
 #*****************************************************************
@@ -16,7 +17,7 @@ temp_scenarios <- ggplot()+
   ylab(expression('Hypolimnetic Temperature ('*~degree*C*')'))+
   xlab("")+
   ylim(0,20)+
-  labs(title = "A")+
+  labs(title = "(a)")+
   scale_x_datetime(breaks="year", labels=scales::date_format("%Y")) +
   theme(axis.text = element_text(size = 22, color = "black"),
         axis.text.x = element_text(size = 22),
@@ -36,7 +37,7 @@ oxy_scenarios <- ggplot()+
   theme_classic()+
   ylab(expression(paste("Hypolimnetic Oxygen (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "B")+
+  labs(title = "(b)")+
   scale_x_datetime(breaks="year", labels=scales::date_format("%Y")) +
   theme(axis.text = element_text(size = 22, color = "black"),
         axis.title = element_text(size = 23, color = "black"),
@@ -56,7 +57,7 @@ toc_scenarios <- ggplot()+
   theme_classic()+
   ylab(expression(paste("Hypolimnetic TOC (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "C")+
+  labs(title = "(c)")+
   scale_x_datetime(breaks="year", labels=scales::date_format("%Y")) +
   theme(axis.text = element_text(size = 22, color = "black"),
         axis.title = element_text(size = 23, color = "black"),
@@ -76,7 +77,7 @@ doc_scenarios <- ggplot()+
   theme_classic()+
   ylab(expression(paste("Hypolimnetic DOC (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "D")+
+  labs(title = "(d)")+
   scale_x_datetime(breaks="year", labels=scales::date_format("%Y")) +
   theme(axis.text = element_text(size = 22, color = "black"),
         axis.title = element_text(size = 23, color = "black"),
@@ -96,7 +97,7 @@ TN_scenarios <- ggplot()+
   theme_classic()+
   ylab(expression(paste("Hypolimnetic TN (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "E")+
+  labs(title = "(e)")+
   scale_x_datetime(breaks="year", labels=scales::date_format("%Y")) +
   theme(axis.text = element_text(size = 22, color = "black"),
         axis.title = element_text(size = 23, color = "black"),
@@ -116,7 +117,7 @@ DIN_scenarios <- ggplot()+
   theme_classic()+
   ylab(expression(paste("Hypolimnetic DIN (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "F")+
+  labs(title = "(f)")+
   scale_x_datetime(breaks="year", labels=scales::date_format("%Y")) +
   theme(axis.text = element_text(size = 22, color = "black"),
         axis.title = element_text(size = 23, color = "black"),
@@ -137,7 +138,7 @@ amm_scenarios <- ggplot()+
   theme_classic()+
   ylab(expression(paste("Hypolimnetic NH" [" 4"],""^"+"," (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "G")+
+  labs(title = "(g)")+
   scale_x_datetime(breaks="year", labels=scales::date_format("%Y")) +
   theme(axis.text = element_text(size = 22, color = "black"),
         axis.title = element_text(size = 23, color = "black"),
@@ -159,7 +160,7 @@ nit_scenarios <- ggplot()+
   theme_classic()+
   ylab(expression(paste("Hypolimnetic NO" [" 3"],""^"-"," (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "H")+
+  labs(title = "(h)")+
   scale_x_datetime(breaks="year", labels=scales::date_format("%Y")) +
   theme(axis.text = element_text(size = 22, color = "black"),
         axis.title = element_text(size = 23, color = "black"),
@@ -179,7 +180,7 @@ TP_scenarios <- ggplot()+
   theme_classic()+
   ylab(expression(paste("Hypolimnetic TP (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "I")+
+  labs(title = "(i)")+
   scale_x_datetime(breaks="year", labels=scales::date_format("%Y")) +
   theme(axis.text = element_text(size = 22, color = "black"),
         axis.title = element_text(size = 23, color = "black"),
@@ -199,7 +200,7 @@ srp_scenarios <- ggplot()+
   theme_classic()+
   ylab(expression(paste("Hypolimnetic DRP (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "J")+
+  labs(title = "(j)")+
   scale_x_datetime(breaks="year", labels=scales::date_format("%Y")) +
   theme(axis.text = element_text(size = 22, color = "black"),
         axis.title = element_text(size = 23, color = "black"),

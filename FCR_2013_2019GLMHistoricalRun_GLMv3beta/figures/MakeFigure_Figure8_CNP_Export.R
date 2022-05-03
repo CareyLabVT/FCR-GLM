@@ -2,7 +2,8 @@
 #* TITLE:   FCR GLM-AED script to create figure 8            
 #* AUTHORS:  R.P. McClure and C.C. Carey                                          
 #* DATE:   Originally developed by CCC in summer 2020; updated by RPM
-#*         to convert to ggplot in January 2021                            
+#*         to convert to ggplot in January 2021 and then tweaked for
+#*         GCB formatting in May 2022                            
 #* NOTES:  This script uses the data objects created by the 
 #*         "MakeFigure_OrganizeDataForFigures.R" 
 #*****************************************************************
@@ -23,7 +24,7 @@ toc_export <- retention_stratified_period%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab("TOC flux (%)")+
   xlab("")+
-  labs(title = "A")+
+  labs(title = "(a)")+
   theme_classic()+
   geom_hline(yintercept = 0, lty = "dashed")+
   theme(axis.text = element_text(size = 24, color = "black"),
@@ -47,7 +48,7 @@ tn_export <- retention_stratified_period%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab("TN flux (%)")+
   xlab("")+
-  labs(title = "C")+
+  labs(title = "(c)")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -70,7 +71,7 @@ tp_export <- retention_stratified_period%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab("TP flux (%)")+
   xlab("")+
-  labs(title = "G")+
+  labs(title = "(g)")+
   theme_classic()+
   geom_hline(yintercept = 0, lty = "dashed")+
   theme(axis.text = element_text(size = 24, color = "black"),
@@ -94,7 +95,7 @@ doc_export <- retention_stratified_period%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab("DOC flux (%)")+
   xlab("")+
-  labs(title = "B")+
+  labs(title = "(b)")+
   theme_classic()+
   geom_hline(yintercept = 0, lty = "dashed")+
   theme(axis.text = element_text(size = 24, color = "black"),
@@ -118,7 +119,7 @@ din_export <- retention_stratified_period%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab("DIN flux (%)")+
   xlab("")+
-  labs(title = "D")+
+  labs(title = "(d)")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -142,7 +143,7 @@ nh4_export <- retention_stratified_period%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("NH" [" 4"],""^"+"," flux (%)")))+
   xlab("")+
-  labs(title = "E")+
+  labs(title = "(e)")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -166,7 +167,7 @@ no3_export <- retention_stratified_period%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("NO" [" 3"],""^"-"," flux (%)")))+
   xlab("")+
-  labs(title = "F")+
+  labs(title = "(f)")+
   theme_classic()+
   geom_hline(yintercept = 0, lty = "dashed")+
   theme(axis.text = element_text(size = 24, color = "black"),
@@ -191,7 +192,7 @@ drp_export <- retention_stratified_period%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab("DRP flux (%)")+
   xlab("")+
-  labs(title = "H")+
+  labs(title = "(h)")+
   theme_classic()+
   geom_hline(yintercept = 0, lty = "dashed")+
   theme(axis.text = element_text(size = 24, color = "black"),
@@ -204,8 +205,8 @@ drp_export <- retention_stratified_period%>%
 
 
 jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/Figure8_StratifiedPeriodExportScenarios_new.jpg", width = 20, height = 25, units = 'in', res = 1000)
-figure6x <- (toc_export|doc_export)/(tn_export|din_export)/(nh4_export|no3_export)/(tp_export|drp_export)
-figure6x
+figure8 <- (toc_export|doc_export)/(tn_export|din_export)/(nh4_export|no3_export)/(tp_export|drp_export)
+figure8
 dev.off()
 
 
