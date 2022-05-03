@@ -219,7 +219,7 @@ p1 <- nitrogen %>%
              labeller=as_labeller(nutrient_labels, label_parsed)) + 
   labs(title = "Nitrogen", y = "", x = "") +
   geom_hline(yintercept = 0, lty = "dashed")+
-  labs(x = "", y = expression(mmol~m^{-2}~day^{-1}), title = "Nitrogen") +
+  labs(x = "", y = expression(mmol~m^{-2}~day^{-1}), title = "(b) Nitrogen") +
   ylim(-0.06, 0.06)+
   theme_bw()+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
@@ -230,7 +230,7 @@ p2 <- po4data %>%
   geom_bar(position = "stack", stat = "identity") +
   scale_fill_manual(values = cols_p, name = "Process") +
   facet_wrap(facets = vars(nutrient))+
-  labs(x = "Scenario", y = "", title = "Phosphorus") +
+  labs(x = "Scenario", y = "", title = "(c) Phosphorus") +
   geom_hline(yintercept = 0, lty = "dashed")+
   theme_bw()+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
@@ -240,15 +240,15 @@ p3 <- docdata %>%
   geom_bar(position = "stack", stat = "identity") +
   scale_fill_manual(values = cols_c, name = "Process") +
   facet_wrap(facets = vars(nutrient))+
-  labs(x = "", y = "", title = "Carbon") +
+  labs(x = "", y = "", title = "(a) Carbon") +
   ylim(-0.1, 0.01)+
   geom_hline(yintercept = 0, lty = "dashed")+
   theme_bw()+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/supp_figs/BiogeoRates_NoSedimentFluxes.jpg", width = 6, height = 8, units = 'in', res = 1000)
-draft <- p3 / p1 / p2
-draft
+boom1 <- p3 / p1 / p2
+boom1
 dev.off()
 
 # 

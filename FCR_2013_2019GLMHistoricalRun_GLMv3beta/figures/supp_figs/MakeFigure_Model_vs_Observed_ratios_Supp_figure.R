@@ -4,7 +4,8 @@
 #*          vs. model output          
 #* AUTHORS:  R.P. McClure and C.C. Carey                                          
 #* DATE:   Originally developed by CCC in summer 2020; updated by RPM
-#*         to convert to ggplot in January 20211                            
+#*         to convert to ggplot in January 2021; CCC tweaked for GCB
+#*         in May 2022                            
 #* NOTES:  This script uses the data objects created by the 
 #*         "MakeFigure_OrganizeDataForFigures.R" 
 #*****************************************************************
@@ -26,7 +27,7 @@ doc_din_ts <- ggplot(mod_doc_din_ts, aes(DateTime, mod_doc_din_ratio, color = "M
   ylab("Hypolimnetic DOC:DIN")+
   xlab("")+
   ylim(0,200)+
-  labs(title = "A")+
+  labs(title = "(a)")+
   scale_color_manual(breaks = c("Modeled Ratios", "Observed Ratios"),
                                       values = c("Modeled Ratios" = "black", "Observed Ratios" = "red"),
                                       guide = guide_legend(override.aes = list(linetype = c(1, 0),
@@ -53,7 +54,7 @@ doc_nh4_ts <- ggplot(mod_doc_nh4_ts, aes(DateTime, mod_doc_nh4_ratio))+
   theme_classic()+
   ylab(expression(paste("Hypolimnetic DOC:NH" [" 4"],""^"+")))+
   xlab("")+
-  labs(title = "B")+
+  labs(title = "(b)")+
   ylim(0,200)+
   #labs(title = expression('RMSE = 1.32'*~degree*C*''))+
   theme(axis.text = element_text(size = 24, color = "black"),
@@ -78,7 +79,7 @@ doc_no3_ts <- ggplot(mod_doc_no3_ts, aes(DateTime, mod_doc_no3_ratio))+
   theme_classic()+
   ylab(expression(paste("Hypolimnetic DOC:NO" [" 3"],""^"-")))+
   xlab("")+
-  labs(title = "C")+
+  labs(title = "(c)")+
   coord_cartesian(ylim = c(0,1250))+
   #labs(title = expression('RMSE = 1.32'*~degree*C*''))+
   theme(axis.text = element_text(size = 24, color = "black"),
@@ -100,7 +101,7 @@ doc_srp_ts <- ggplot(mod_doc_srp_ts, aes(DateTime, mod_doc_srp_ratio))+
   theme_classic()+
   ylab("Hypolimnetic DOC:DRP")+
   xlab("")+
-  labs(title = "D")+
+  labs(title = "(d)")+
   coord_cartesian(ylim = c(0,1590))+
   #labs(title = expression('RMSE = 1.32'*~degree*C*''))+
   theme(axis.text = element_text(size = 24, color = "black"),
@@ -121,7 +122,7 @@ tn_tp_ts <- ggplot(mod_tn_tp_ts, aes(DateTime, mod_tn_tp_ratio))+
   theme_classic()+
   ylab("Hypolimnetic TN:TP")+
   xlab("")+
-  labs(title = "E")+
+  labs(title = "(e)")+
   coord_cartesian(ylim = c(0,225))+
   #labs(title = expression('RMSE = 1.32'*~degree*C*''))+
   theme(axis.text = element_text(size = 24, color = "black"),
@@ -146,7 +147,7 @@ din_srp_ts <- ggplot(mod_din_srp_ts, aes(DateTime, mod_din_srp_ratio))+
   theme_classic()+
   ylab("Hypolimnetic DIN:DRP")+
   xlab("")+
-  labs(title = "F")+
+  labs(title = "(f)")+
   coord_cartesian(ylim = c(0,1500))+
   #labs(title = expression('RMSE = 1.32'*~degree*C*''))+
   theme(axis.text = element_text(size = 24, color = "black"),

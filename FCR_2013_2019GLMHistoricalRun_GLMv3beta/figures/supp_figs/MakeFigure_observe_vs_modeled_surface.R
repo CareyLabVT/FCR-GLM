@@ -3,7 +3,8 @@
 #*           epilimnetic (surface) modeled vs. observed data   
 #* AUTHORS:  R.P. McClure and C.C. Carey                                          
 #* DATE:   Originally developed by CCC in summer 2020; updated by RPM
-#*         to convert to ggplot in January 2021                            
+#*         to convert to ggplot in January 2021 and then 
+#*         tweaked by CCC in May 2022 for GCB formatting                            
 #* NOTES:  This script uses the data objects created by the 
 #*         "evaluate_surface.R" script 
 #*****************************************************************
@@ -16,7 +17,7 @@ temp <- ggplot()+
   ylim(2,35)+
   ylab(expression('Epilimnetic Temperature ('*~degree*C*')'))+
   xlab("")+
-  labs(title = "A")+
+  labs(title = "(a)")+
   scale_color_manual(breaks = c("Model", "Observed"),
                      values = c("Model" = "black", "Observed" = "red"),
                      guide = guide_legend(override.aes = list(linetype = c(1, 0),
@@ -42,7 +43,7 @@ oxy <- ggplot(sss_oxy, aes(DateTime, mmol.O2.m3.day))+
   ylab(expression(paste("Epilimnetic Oxygen (mmol m" ^"-3",")")))+
   xlab("")+
   scale_y_continuous(sec.axis = sec_axis( trans=~.*1, name=expression(paste("SSS Oxygen addition (mmol m" ^"-3","d" ^"-1",")"))))+
-  labs(title = "B")+
+  labs(title = "(b)")+
   #labs(title = expression(paste("RMSE = 100.5 mmol m" ^"-3","")))+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -57,7 +58,7 @@ NIT_amm <- ggplot(mod_amm, aes(DateTime, NIT_amm))+
   theme_classic()+
   ylab(expression(paste("Epilimnetic NH" [" 4"],""^"+"," (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "E")+
+  labs(title = "(e)")+
   #labs(title = expression('RMSE = 1.32'*~degree*C*''))+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -71,7 +72,7 @@ NIT_nit <- ggplot(mod_nit, aes(DateTime, NIT_nit))+
   theme_classic()+
   ylab(expression(paste("Epilimnetic NO" [" 3"],""^"-"," (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "F")+
+  labs(title = "(f)")+
   #labs(title = expression('RMSE = 1.32'*~degree*C*''))+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -85,7 +86,7 @@ SRP <- ggplot(mod_srp, aes(DateTime, PHS_frp))+
   theme_classic()+
   ylab(expression(paste("Epilimnetic DRP (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "H")+
+  labs(title = "(h)")+
   #labs(title = expression('RMSE = 1.32'*~degree*C*''))+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -99,7 +100,7 @@ DOC <- ggplot(modDOC, aes(DateTime, DOCall))+
   theme_classic()+
   ylab(expression(paste("Epilimnetic DOC (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "C")+
+  labs(title = "(c)")+
   #labs(title = expression('RMSE = 1.32'*~degree*C*''))+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -113,7 +114,7 @@ TN <- ggplot(mod_total_pools, aes(DateTime, totalN))+
   theme_classic()+
   ylab(expression(paste("Epilimnetic TN (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "D")+
+  labs(title = "(d)")+
   #labs(title = expression('RMSE = 1.32'*~degree*C*''))+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -127,7 +128,7 @@ TP <- ggplot(mod_total_pools, aes(DateTime, totalP))+
   theme_classic()+
   ylab(expression(paste("Epilimnetic TP (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "G")+
+  labs(title = "(g)")+
   #labs(title = expression('RMSE = 1.32'*~degree*C*''))+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -138,6 +139,6 @@ TP <- ggplot(mod_total_pools, aes(DateTime, totalP))+
 #this resolution might be a bit much but I am going to leave it for now (RPM:06 January 21)
 # Ryan reduced the resolution from 800 to 300 dpi (which is the general requirement for most papers) (RPM:25Mar21)
 jpeg("FCR_2013_2019GLMHistoricalRun_GLMv3beta/figures/supp_figs/Supp_Figure_Model_vs_Observed_EPI_FCR_GLM_new.jpg", width = 20, height = 25, units = 'in', res = 1000)
-figure2 <- (temp|oxy)/(DOC|TN)/(NIT_amm|NIT_nit)/(TP|SRP)
-figure2
+suppfigure2 <- (temp|oxy)/(DOC|TN)/(NIT_amm|NIT_nit)/(TP|SRP)
+suppfigure2
 dev.off()

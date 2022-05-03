@@ -3,7 +3,8 @@
 #* AUTHORS:  C.C. Carey, R.P. McClure                                          
 #* DATE:   An earlier version of this script was developed by CCC in 
 #*         summer 2020; updated by RPM to convert to ggplot in January 2021; 
-#*         Cayelan then modified again in January 2022
+#*         Cayelan then modified again in Jan 2022 for revisions and
+#*         May 2022 for GCB formatting
 #*         for the parameter sensitivity figure                            
 #* NOTES:  This script uses the data objects created by the 
 #*         "MakeFigure_OrganizeDataForFigures.R" 
@@ -128,7 +129,7 @@ doc_2x_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic DOC (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "A, Double DOC mineralization")+
+  labs(title = "(a) Double DOC mineralization")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -151,7 +152,7 @@ doc_half_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic DOC (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "B, Half DOC mineralization")+
+  labs(title = "(b) Half DOC mineralization")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -172,9 +173,9 @@ nh4_2x_boxplot <- mediandata%>%
   geom_jitter(width = 0.0001, size = 8, color = "black", pch = 21, fill = "grey50", alpha = 0.5)+
   geom_text(aes(label=year), size = 2)+
   scale_fill_manual(values = c("red","blue"))+
-  ylab(expression(paste("Hypolimnetic NH" [" 4"],""^"+"," (mmol m" ^"-3",")")))+
+  ylab(expression((paste("Hypolimnetic NH" [" 4"],""^"+"," (mmol m" ^"-3",")"))))+
   xlab("")+
-  labs(title = "C, Double sediment flux")+
+  labs(title = expression(bold(paste("(c) Double sediment NH" ["4"],""^"+", " flux"))))+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -197,7 +198,7 @@ nh4_half_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic NH" [" 4"],""^"+"," (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "D, Half sediment flux")+
+  labs(title = expression(bold(paste("(d) Half sediment NH" ["4"],""^"+", " flux"))))+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -220,7 +221,7 @@ no3_2x_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic NO" [" 3"],""^"-"," (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "E, Double nitrification")+
+  labs(title = "(e) Double nitrification")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -243,7 +244,7 @@ no3_half_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic NO" [" 3"],""^"-"," (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "F, Half nitrification")+
+  labs(title = "(f) Half nitrification")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -266,7 +267,7 @@ drp_2x_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic DRP (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "G, Double sediment flux")+
+  labs(title = "(g) Double DRP sediment flux")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
@@ -289,7 +290,7 @@ drp_half_boxplot <- mediandata%>%
   scale_fill_manual(values = c("red","blue"))+
   ylab(expression(paste("Hypolimnetic DRP (mmol m" ^"-3",")")))+
   xlab("")+
-  labs(title = "H, Half sediment flux")+
+  labs(title = "(h) Half DRP sediment flux")+
   theme_classic()+
   theme(axis.text = element_text(size = 24, color = "black"),
         axis.title = element_text(size = 24, color = "black"),
