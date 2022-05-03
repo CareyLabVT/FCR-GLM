@@ -21,8 +21,8 @@ sim_folder <- getwd()
 
 #look at glm and aed nml files
 nml_file <- paste0(sim_folder,"/glm3.nml")
-aed_file <- paste0(sim_folder,"/aed2/aed2_20210204_2DOCpools.nml")
-aed_phytos_file <- paste0(sim_folder,"/aed2/aed2_phyto_pars_30June2020.nml")
+aed_file <- paste0(sim_folder,"/aed2/aed2_20220111_2DOCpools.nml")
+aed_phytos_file <- paste0(sim_folder,"/aed2/aed2_phyto_pars_4Jan2022.nml")
 nml <- read_nml(nml_file) 
 aed <- read_nml(aed_file) #you may get a warning about an incomplete final line but it doesn't matter
 aed_phytos <- read_nml(aed_phytos_file)
@@ -55,8 +55,8 @@ plot(evap$time, evap$evap)
 plot(precip$time, precip$precip)
 
 outflow<-read.csv("inputs/FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv", header=T)
-inflow_weir<-read.csv("inputs/FCR_weir_inflow_2013_2019_20200828_allfractions_2poolsDOC.csv", header=T)
-inflow_wetland<-read.csv("inputs/FCR_wetland_inflow_2013_2019_20200828_allfractions_2DOCpools.csv", header=T)
+inflow_weir<-read.csv("inputs/FCR_weir_inflow_2013_2019_20220104_allfractions_2poolsDOC.csv", header=T)
+inflow_wetland<-read.csv("inputs/FCR_wetland_inflow_2013_2019_20220104_allfractions_2DOCpools.csv", header=T)
 outflow$time<-as.POSIXct(strptime(outflow$time, "%Y-%m-%d", tz="EST"))
 inflow_weir$time<-as.POSIXct(strptime(inflow_weir$time, "%Y-%m-%d", tz="EST"))
 inflow_wetland$time<-as.POSIXct(strptime(inflow_wetland$time, "%Y-%m-%d", tz="EST"))
@@ -673,7 +673,7 @@ RMSE(mod,obs)
 
 var="TOT_tn"
 field_file <- file.path(sim_folder,'/field_data/totalNP.csv') 
-cyanoNcon = 0.12
+cyanoNcon = 0.12  #this is the constant N concentration (Ncon) of cells in the phyto_pars nml file
 greenNcon = 0.12
 diatomNcon = 0.12
 
@@ -769,7 +769,7 @@ RMSE(mod,obs)
 
 var="TOT_tp"
 field_file <- file.path(sim_folder,'/field_data/totalNP.csv') 
-cyanoPcon = 0.0005
+cyanoPcon = 0.0005 #this is the constant P concentration (Pcon) of cells in the phyto_pars nml file
 greenPcon = 0.0005
 diatomPcon = 0.0005
 
@@ -922,7 +922,7 @@ for(i in 1:length(depths)){
 
 #### chlorophyll a #######
 
-var="PHY_TCHLA"
+var="PHY_TCHLA" #note that in more recent versions of GLM-AED, this variable has been renamed "PHY_tchla"
 field_file <- file.path(sim_folder,'/field_data/CleanedObsChla.csv') 
 
 obs<-read.csv('field_data/CleanedObsChla.csv', header=TRUE) %>% #read in observed chemistry data
@@ -1003,6 +1003,7 @@ chla <- get_var(file=nc_file,var_name = 'PHY_TCHLA',z_out=1.0,reference = 'surfa
 lines(chla$DateTime, chla$PHY_TCHLA_1, col="red")
 
 
+#quantify the limitation of eaach phytoplankton group by N, P, N:P, temp, and light
 plot_var(nc_file, "PHY_cyano_fNit")
 plot_var(nc_file, "PHY_cyano_fPho")
 plot_var(nc_file, "PHY_cyano_NtoP")
@@ -1023,7 +1024,7 @@ plot_var(nc_file, "PHY_green_fT")
 plot_var(nc_file, "PHY_green_fI")
 
 
-
+#make some plots of the groups
 phytos <- get_var(file=nc_file,var_name = 'PHY_AGGREGATE',z_out=0.1,reference = 'surface') 
 plot(phytos$DateTime, phytos$PHY_AGGREGATE_0.1, col="cyan", type="l", ylab="Phyto C mmol/m3", ylim=c(0,30))
 
@@ -1141,4 +1142,4 @@ points(time_1,(ch4flux[,1]+sample(rnorm(1,mean=0.3,sd=0.3))), col="red")
 legend("topleft", c("Baseline","+2 degrees"), fill=c("black","red"))
 nc_close(nc)
 
-#Mary says: congrats! you now get a cookie!
+#Mary & Cayelan say: congrats! you now get a cookie!
