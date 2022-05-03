@@ -1,0 +1,2061 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stmml="http://www.xml-cml.org/schema/stmml-1.2" packageId="edi.1127.1" xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0/eml.xsd https://eml.ecoinformatics.org/eml-2.2.0/eml.xsd" system="edi">
+  <access authSystem="https://pasta.edirepository.org/authentication" order="allowFirst" scope="document">
+    <allow>
+      <principal>uid=ccarey,o=EDI,dc=edirepository,dc=org</principal>
+      <permission>all</permission>
+    </allow>
+    <allow>
+      <principal>public</principal>
+      <permission>read</permission>
+    </allow>
+  </access>
+  <dataset>
+    <title>General Lake Model-Aquatic EcoDynamics model parameter set for Falling Creek Reservoir, Vinton, Virginia, USA 2013-2019</title>
+    <creator>
+      <individualName>
+        <givenName>Cayelan</givenName>
+        <givenName>C.</givenName>
+        <surName>Carey</surName>
+      </individualName>
+      <organizationName>Virginia Tech</organizationName>
+      <electronicMailAddress>Cayelan@vt.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0001-8835-4476</userId>
+    </creator>
+    <creator>
+      <individualName>
+        <givenName>Robert</givenName>
+        <givenName>Q.</givenName>
+        <surName>Thomas</surName>
+      </individualName>
+      <organizationName>Virginia Tech</organizationName>
+      <electronicMailAddress>rqthomas@vt.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0003-1282-7825</userId>
+    </creator>
+    <creator>
+      <individualName>
+        <givenName>Paul</givenName>
+        <givenName>C.</givenName>
+        <surName>Hanson</surName>
+      </individualName>
+      <organizationName>University of Wisconsin</organizationName>
+      <electronicMailAddress>pchanson@wisc.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0001-8533-6061</userId>
+    </creator>
+    <associatedParty>
+      <individualName>
+        <givenName>Alexandra</givenName>
+        <givenName>B.</givenName>
+        <surName>Gerling</surName>
+      </individualName>
+      <organizationName>Virginia Tech</organizationName>
+      <electronicMailAddress>alexg13@vt.edu</electronicMailAddress>
+      <role>contributor</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Alexandria</givenName>
+        <givenName>G.</givenName>
+        <surName>Hounshell</surName>
+      </individualName>
+      <organizationName>Virginia Tech</organizationName>
+      <electronicMailAddress>alexgh@vt.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0003-1616-9399</userId>
+      <role>contributor</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Abigail</givenName>
+        <givenName>S.L.</givenName>
+        <surName>Lewis</surName>
+      </individualName>
+      <organizationName>Virginia Tech</organizationName>
+      <electronicMailAddress>aslewis@vt.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0001-9933-4542</userId>
+      <role>contributor</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Mary</givenName>
+        <givenName>E.</givenName>
+        <surName>Lofton</surName>
+      </individualName>
+      <organizationName>Virginia Tech</organizationName>
+      <electronicMailAddress>melofton@vt.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0003-3270-1330</userId>
+      <role>contributor</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Ryan</givenName>
+        <givenName>P.</givenName>
+        <surName>McClure</surName>
+      </individualName>
+      <organizationName>Virginia Tech</organizationName>
+      <electronicMailAddress>ryan333@vt.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0001-6370-3852</userId>
+      <role>contributor</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Heather</givenName>
+        <givenName>L.</givenName>
+        <surName>Wander</surName>
+      </individualName>
+      <organizationName>Virginia Tech</organizationName>
+      <electronicMailAddress>hwander@vt.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0002-3762-6045</userId>
+      <role>contributor</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Whitney</givenName>
+        <givenName>M.</givenName>
+        <surName>Woelmer</surName>
+      </individualName>
+      <organizationName>Virginia Tech</organizationName>
+      <electronicMailAddress>wwoelmer@vt.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0001-5147-3877</userId>
+      <role>contributor</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Barbara</givenName>
+        <givenName>R.</givenName>
+        <surName>Niederlehner</surName>
+      </individualName>
+      <organizationName>Virginia Tech</organizationName>
+      <electronicMailAddress>bniederl@vt.edu</electronicMailAddress>
+      <role>contributor</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Madeline</givenName>
+        <givenName>E.</givenName>
+        <surName>Schreiber</surName>
+      </individualName>
+      <organizationName>Virginia Tech</organizationName>
+      <electronicMailAddress>mschreib@vt.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0002-1858-7730</userId>
+      <role>contributor</role>
+    </associatedParty>
+    <pubDate>2022-05-03</pubDate>
+    <abstract>
+      <para>The General Lake Model (GLM), an open-source, one-dimensional hydrodynamic model, was used to simulate physical, chemical, and biological variables in Falling Creek Reservoir, Vinton, Virginia, USA between 15 May 2013 and 31 December 2019. GLM (v.3.2.0a3) was coupled to the Aquatic EcoDynamics (AED) module library via the Framework for Aquatic Biogeochemical Modeling (FABM). GLM-AED requires three configuration files to run the model. First, the glm3.nml file configures lake metadata (including hypsometry), meteorological driver data, stream inflow and outflow driver data files, and physical response variables (mixing parameters and sediment heat zones). Second, the aed2_20220111_2DOCpools.nml file configures various biogeochemical modules for the simulation of oxygen, carbon, silica, nitrogen, phosphorus, organic matter, and phytoplankton. Third, the aed2_phyto_pars_4Jan2022.nml file configures all parameters pertaining to phytoplankton dynamics. Meteorological data, two surface stream inflow files, a submerged oxygenation inflow file, and outflow file used in this calibration are also included.</para>
+    </abstract>
+    <keywordSet>
+      <keyword>Carey Lab</keyword>
+      <keyword>Virginia Tech</keyword>
+      <keyword>Western Virginia Water Authority</keyword>
+      <keyword>Falling Creek Reservoir</keyword>
+      <keyword>GLM</keyword>
+      <keyword>General Lake Model</keyword>
+      <keyword>Aquatic Eco-Dynamics</keyword>
+      <keyword>GLM-AED</keyword>
+      <keywordThesaurus>carey lab controlled vocabulary</keywordThesaurus>
+    </keywordSet>
+    <keywordSet>
+      <keyword>reservoir</keyword>
+      <keyword>model</keyword>
+      <keyword>hydrodynamic</keyword>
+      <keyword>biogeochemistry</keyword>
+      <keyword>anoxia</keyword>
+      <keyword>carbon</keyword>
+      <keyword>nitrogen</keyword>
+      <keyword>phosphorus</keyword>
+      <keywordThesaurus>cuahsi controlled vocabulary</keywordThesaurus>
+    </keywordSet>
+    <keywordSet>
+      <keyword>lake</keyword>
+      <keywordThesaurus>lter controlled vocabulary</keywordThesaurus>
+    </keywordSet>
+    <additionalInfo>
+      <para>Authorship contributions:</para>
+      <para>CCC developed and coordinated the Falling Creek Reservoir whole-ecosystem oxygenation experiment and monitoring program, led data analyses, and is responsible for maintaining this dataset. PCH and RQT both assisted with model development and calibration.</para>
+      <para>Notes: </para>
+      <para>From 2013 to 2019, multiple whole-ecosystem manipulations were conducted at Falling Creek Reservoir. These manipulations include intermittent operation of hypolimnetic oxygenation and pulsed epilimnetic mixing engineering systems. For a detailed description of the hypolimnetic oxygenation engineered system, see Gerling et al. (2014). These systems were operated over time following Table 1 in Gerling et al. (2016), Table 1 in Munger et al. (2016), and Table 2 in McClure et al. (2018). In 2019, the HOx was activated during the following time periods: 29 June to 11 September, 25 September to 02 December. This hypolimnetic oxygenation schedule is instantiated in the oxygenation inflow file included in this data package. </para>
+      <para>References:
+Gerling, A.B., Browne, R.G., Gantzer, P.A., Mobley, M.H., Little, J.C., and C.C. Carey. 2014. First report of the successful operation of a side stream supersaturation hypolimnetic oxygenation system in a eutrophic, shallow reservoir.  Water Research. 67: 129-143. doi: 10.1016/j.watres.2014.09.002</para>
+      <para>Gerling, A.B., Z.W. Munger, J.P. Doubek, K.D. Hamre, P.A. Gantzer, J.C. Little, and C.C. Carey. 2016. Whole-catchment manipulations of internal and external loading reveal the sensitivity of a century-old reservoir to hypoxia. Ecosystems. 19:555-571. DOI: 10.1007/s10021-015-9951-0</para>
+      <para>McClure, R.P., K.D. Hamre, B.R. Niederlehner, Z.W. Munger, S. Chen, M.E. Lofton, M.E. Schreiber, and C.C. Carey. 2018 Metalimnetic oxygen minima alter the vertical profiles of carbon dioxide and methane in a managed freshwater reservoir. Science of the Total Environment 636: 610-620. DOI: 10.1016/j.scitotenv.2018.04.255</para>
+      <para>Munger, Z.W., C.C. Carey, A.B. Gerling, K.D. Hamre, J.P. Doubek, S.D. Klepatzki, R.P. McClure, and M.E. Schreiber. 2016. Effectiveness of hypolimnetic oxygenation for preventing accumulation of Fe and Mn in a drinking water reservoir. Water Research. 106: 1-14. DOI: 10.1016/j.watres.2016.09.038.</para>
+    </additionalInfo>
+    <intellectualRights>
+      <para>This information is released under the Creative Commons license - Attribution - CC BY (https://creativecommons.org/licenses/by/4.0/). The consumer of these data ("Data User" herein) is required to cite it appropriately in any publication that results from its use. The Data User should realize that these data may be actively used by others for ongoing research and that coordination may be necessary to prevent duplicate publication. The Data User is urged to contact the authors of these data if any questions about methodology or results occur. Where appropriate, the Data User is encouraged to consider collaboration or co-authorship with the authors. The Data User should realize that misinterpretation of data may occur if used out of context of the original study. While substantial efforts are made to ensure the accuracy of data and associated documentation, complete accuracy of data sets cannot be guaranteed. All data are made available "as is." The Data User should be aware, however, that data are updated periodically and it is the responsibility of the Data User to check for new versions of the data. The data authors and the repository where these data were obtained shall not be liable for damages resulting from any use or misinterpretation of the data. Thank you.</para>
+    </intellectualRights>
+    <coverage>
+      <geographicCoverage>
+        <geographicDescription>Falling Creek Reservoir is located in Vinton, Virginia, USA</geographicDescription>
+        <boundingCoordinates>
+          <westBoundingCoordinate>-79.839249</westBoundingCoordinate>
+          <eastBoundingCoordinate>-79.836009</eastBoundingCoordinate>
+          <northBoundingCoordinate>37.309589</northBoundingCoordinate>
+          <southBoundingCoordinate>37.30266</southBoundingCoordinate>
+        </boundingCoordinates>
+      </geographicCoverage>
+      <temporalCoverage>
+        <rangeOfDates>
+          <beginDate>
+            <calendarDate>2013-05-13</calendarDate>
+          </beginDate>
+          <endDate>
+            <calendarDate>2019-12-31</calendarDate>
+          </endDate>
+        </rangeOfDates>
+      </temporalCoverage>
+    </coverage>
+    <maintenance>
+      <description>completed</description>
+    </maintenance>
+    <contact>
+      <individualName>
+        <givenName>Cayelan</givenName>
+        <givenName>C.</givenName>
+        <surName>Carey</surName>
+      </individualName>
+      <organizationName>Virginia Tech</organizationName>
+      <electronicMailAddress>Cayelan@vt.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0001-8835-4476</userId>
+    </contact>
+    <methods>
+      <methodStep>
+        <description>
+          <para>This text describes the 1) driver data, 2) model configuration, and 3) model calibration, with 4) references at the end.</para>
+          <para>1) Driver data</para>
+          <para>GLM-AED requires three driver datasets: meteorological data; inflow stream data (which consists of discharge, water temperature, and chemistry); and outflow water discharge. We developed each of these driver datasets for Falling Creek Reservoir (FCR) for 15 May 2013 to 31 December 2019, as detailed below.</para>
+          <para>Meteorological driver data: 
+GLM-AED was forced with hourly meteorological data (air temperature, relative humidity, shortwave and longwave radiation, wind speed, and precipitation) from NASA's North American Land Data Assimilation System (NLDAS-2; Xia et al. 2012) for FCR. </para>
+          <para>Inflow stream driver data: 
+We developed driver datasets of daily discharge and water temperature for the two primary surface streams entering into FCR, Falling Creek "weir stream" and Tunnel Branch "wetland stream," from manually-collected data and sensor observations from 2013-2019. The total discharge and temperature of Tunnel Branch, the largest stream that enters into FCR, were measured continuously throughout the study period at a weir with pressure sensors measuring every 15 minutes (Carey et al. 2021a). </para>
+          <para>Falling Creek, the smaller stream entering into FCR, was monitored less regularly than the larger inflow and did not have a weir, so its daily total discharge was summed from separate models that calculated precipitation-driven flow and baseflow. First, we estimated daily precipitation-driven flow for both Falling Creek and Tunnel Branch using a simple hydrological model based on their delineated watershed areas and NLDAS-2 precipitation and air temperature (following Ward et al. 2020). Second, we subtracted the modeled daily precipitation-driven flow from total discharge measured at the Tunnel Branch weir to estimate its daily baseflow. Third, we compared baseflow data collected manually in both streams using flowmeters and salt injection on n=19 days without any recent precipitation in 2019 (Carey et al. 2019), and calculated the mean ratio of baseflow in Falling Creek to Tunnel Branch from those 19 days of data. Fourth, we then multiplied that ratio by the daily baseflow in Tunnel Branch to calculate daily baseflow in Falling Creek. Finally, we summed Falling Creek's daily baseflow and its daily precipitation-driven flow to calculate daily total discharge for that stream. </para>
+          <para>Water temperature was measured at an upstream littoral site in FCR near where Falling Creek entered the reservoir on approximately the same frequency as the lacustrine monitoring (Carey et al. 2021b). This littoral temperature dataset was linearly interpolated and used to calculate Falling Creek's daily inflow temperature. </para>
+          <para>The inflow water chemistry driver data for Tunnel Branch and Falling Creek were determined from manual grab sample observations (Carey et al. 2021c). Both streams are well-mixed, so their dissolved oxygen concentrations were estimated assuming 100% saturation using the rMR package (Moulton 2018). Surface grab samples at Tunnel Branch for NO3-, NH4+, DRP, DOC, TN, and TP were collected on approximately the same frequency as the reservoir water column chemistry samples (Carey et al. 2021c), and linearly interpolated to a daily time step. </para>
+          <para>GLM-AED requires additional solute driver data for inflows, including dissolved silica (Si); particulate organic fractions of C, N, and P; two dissolved organic fractions of C, N and P (labile and recalcitrant); dissolved CH4; and DIC; which were estimated from intermittent grab samples or literature ratios to develop the daily inflow dataset. Specifically, following Wetzel (2001)'s synthesis of the distribution of dissolved, organic, and total fractions of C, N, and P in waterbodies similar to FCR, we assumed that: 1) 10% of the DOC, DON, and DOP pools was labile and 90% was recalcitrant; 2) POC concentrations were 10% of DOC concentrations; 3) DON concentrations were five times greater than PON concentrations; and 4) 30% of total organic P is in the DOP fraction. PON and POP concentrations were determined via subtraction, and DIC and dissolved Si concentrations were set at the median of long-term measurements (Carey et al. 2020, Munger et al. 2016). </para>
+          <para>Water chemistry was measured intermittently at Falling Creek, so its daily solute concentrations were calculated from multiplying Tunnel Branch's daily solute concentrations by ratios of the two stream's solutes measured on n=24 days in 2019 (Carey et al. 2021c). </para>
+          <para>We represented FCR's hypolimnetic side-stream supersaturation oxygenation system (HOx or SSS) by a submerged inflow in the model. The mass of dissolved oxygen in the submerged inflow matched the mass of dissolved oxygen added in the reservoir as part of HOx operations during the field manipulation, but with a reduced inflow volume (compared to the volume of water pumped through the HOx system) and no other solutes. We simulated the HOx system in this way to recreate how it works in the reservoir: the HOx system in FCR does not affect water balance or thermal structure because it returns the same volume of water it extracts from 8 m in the hypolimnion for oxygenation onshore back to 8 m without altering its temperature (Gerling et al. 2014). Consequently, because GLM-AED can simulate submerged inflows but not outflows, we reduced the inflow volume of the submerged stream to avoid altering the model's water budget. We did not add any solutes (other than dissolved oxygen) in this inflow to ensure that any effects of the HOx system on hypolimnetic chemistry were due to in situ reservoir processes, not inflow chemistry dynamics. The water temperature of this submerged inflow was set to observations of water temperature at 8 m, the depth at which the HOx injects the oxygenated water into the hypolimnion (Gerling et al. 2014).  </para>
+          <para>Outflow water balance: 
+The daily outflow discharge was estimated as the sum of the two surface streams' daily inflow discharge, as the reservoir did not exhibit large changes in water level during the 2013-2019 study and was managed to maintain full pond conditions. The physical and chemical properties of the outflow were determined by the state of the modeled reservoir.</para>
+          <para>2) Model configuration</para>
+          <para>We simulated two sediment zones in the model, based on the bathymetry of FCR (Gerling et al. 2014), to represent separate epilimnetic and hypolimnetic sediment dynamics. The two sediment zones had different temperature and heat dynamics, as well as different sediment flux rates for oxygen, NH4+, NO3-, and DRP, following observations by McClure et al. (2020), Gerling et al. (2016), and Krueger et al. (2020) in FCR. Phytoplankton were divided into three groups that represented dominant taxa in FCR: cyanobacteria, diatoms, and green algae (Carey et al. 2021d).</para>
+          <para>The total model simulation period was 15 May 2013 to 31 December 2019, which was chosen because the weir on the largest stream inflow was deployed on 14 May 2013. GLM-AED was run on an hourly time step throughout the simulation period, which encompassed a wide range of meteorological conditions, inflow volumes, HOx operation levels, and resulting hypolimnetic oxygen concentrations. Initial water column profiles of water temperature and water chemistry were chosen to represent typical conditions observed in the reservoir in May.</para>
+          <para>The three configuration model configuration files needed to run the model are glm3.nml, aed2_20220111_2DOCpools.nml, and aed2_phyto_pars_4Jan2022.nml.</para>
+          <para>3) Model calibration </para>
+          <para>We divided the total simulation period into calibration (15 May 2013-31 December 2018) and validation (1 January 2019-31 December 2019) periods for model verification.  As GLM-AED is a 1-D model, we focused model calibration on the full depth profile at the deepest site at the reservoir, where the long-term monitoring data were collected (Fig. 9). Earlier studies indicate that oxygen dynamics at the deep site are representative of upstream sites in the reservoir (Gerling et al. 2014, McClure et al. 2018). The monitoring site is immediately adjacent to the reservoir outflow, thereby ensuring that the model accurately captured downstream export of C, N, and P. </para>
+          <para>We calibrated GLM-AED to observed conditions in a three-step approach, following Ladwig et al. (2021). First, we conducted a global sensitivity analysis to identify the most important parameters for simulating water temperature, dissolved oxygen, NH4, NO3, PO4, and DOC using the methods of Morris (1991). Second, we calibrated the identified sensitive parameters using the covariance matrix adaptation evolution strategy (CMA-ES) for automated numerical optimization to minimize root mean square error (RMSE) between observations and model output (Hansen 2016), using all sampling depths in the water column (0.1, 1.6, 2.8, 3.8, 5.0, 6.2, 8.0, and 9.0 m). Initial parameter values were set at model defaults (Hipsey et al. 2019) and run for 1000 iterations. Third, since we found strong trade-offs in performance for NH4+ and NO3- automated calibrations, whereby the best parameters for one solute degraded the performance of the other, we manually choose parameter values that exhibited their best combined performance, following Ladwig et al. (2021). </para>
+          <para>4) References</para>
+          <para>Carey, C.C., W.M. Woelmer, J.T. Maze, and A.G. Hounshell. 2019. Manually-collected discharge data for multiple inflow tributaries entering Falling Creek Reservoir and Beaverdam Reservoir, Vinton, Virginia, USA in 2019 ver 4. Environmental Data Initiative. https://doi.org/10.6073/pasta/4d8e7b7bedbc6507b307ba2d5f2cf9a2 (Accessed 2021-09-15).</para>
+          <para>Carey, C.C., J.P. Doubek, J.H. Wynne, and B.R. Niederlehner. 2020. Dissolved silica time series for Beaverdam Reservoir, Carvins Cove Reservoir, Claytor Lake, Falling Creek Reservoir, Gatewood Reservoir, Smith Mountain Lake, and Spring Hollow Reservoir in southwestern Virginia, USA during 2014 ver 1. Environmental Data Initiative. https://doi.org/10.6073/pasta/353aa34bedfd68800c12275633811341 (Accessed 2021-09-15).</para>
+          <para>Carey, C.C., A.G. Hounshell, M.E. Lofton, F. Birgand, B.J. Bookout, R.S. Corrigan, A.B. Gerling, R.P. McClure, and W.M. Woelmer. 2021a. Discharge time series for the primary inflow tributary entering Falling Creek Reservoir, Vinton, Virginia, USA 2013-2021 ver 7. Environmental Data Initiative. https://doi.org/10.6073/pasta/8d22a432aac5560b0f45aa1b21ae4746 (Accessed 2021-09-15).</para>
+          <para>Carey, C.C., A.S. Lewis, R.P. McClure, A.B. Gerling, S. Chen, A. Das, J.P. Doubek, D.W. Howard, M.E. Lofton, K.D. Hamre, and H.L. Wander. 2021b. Time series of high-frequency profiles of depth, temperature, dissolved oxygen, conductivity, specific conductivity, chlorophyll a, turbidity, pH, oxidation-reduction potential, photosynthetic active radiation, and descent rate for Beaverdam Reservoir, Carvins Cove Reservoir, Falling Creek Reservoir, Gatewood Reservoir, and Spring Hollow Reservoir in Southwestern Virginia, USA 2013-2020 ver 11. Environmental Data Initiative. https://doi.org/10.6073/pasta/5448f9d415fd09e0090a46b9d4020ccc (Accessed 2021-09-15).</para>
+          <para>Carey, C.C., H.L. Wander, W.M. Woelmer, M.E. Lofton, A. Breef-Pilz, J.P. Doubek, A.B. Gerling, A.G. Hounshell, R.P. McClure, and B.R. Niederlehner. 2021c. Water chemistry time series for Beaverdam Reservoir, Carvins Cove Reservoir, Falling Creek Reservoir, Gatewood Reservoir, and Spring Hollow Reservoir in southwestern Virginia, USA 2013-2020 ver 8. Environmental Data Initiative. https://doi.org/10.6073/pasta/8d83ef7ec202eca9192e3da6dd34a4e0 (Accessed 2021-09-15).</para>
+          <para>Carey, C.C., M.E. Lofton, W.M. Woelmer, K.D. Hamre, A. Breef-Pilz, J.P. Doubek, and R.P. McClure. 2021d. Time-series of high-frequency profiles of fluorescence-based phytoplankton spectral groups in Beaverdam Reservoir, Carvins Cove Reservoir, Falling Creek Reservoir, Gatewood Reservoir, and Spring Hollow Reservoir in southwestern Virginia, USA 2014-2020 ver 5. Environmental Data Initiative. https://doi.org/10.6073/pasta/54d4bd2fee1e52e36e2b0f230912d2da (Accessed 2021-09-15).</para>
+          <para>Gerling, A. B., R. G. Browne, P. A. Gantzer, M. H. Mobley, J. C. Little, and C. C. Carey. 2014. First report of the successful operation of a side stream supersaturation hypolimnetic oxygenation system in a eutrophic, shallow reservoir. Water Res 67:129-143.</para>
+          <para>Gerling, A. B., Z. W. Munger, J. P. Doubek, K. D. Hamre, P. A. Gantzer, J. C. Little, and C. C. Carey. 2016. Whole-catchment manipulations of internal and external loading reveal the sensitivity of a century-old reservoir to hypoxia. Ecosystems 19:555-571.</para>
+          <para>Hansen, N. 2016. The CMA Evolution Strategy: A Tutorial, ArXiv160400772 Cs Stat, available at: http://arxiv.org/abs/1604.00772._</para>
+          <para>Hipsey, M. R., Bruce, L. C., Boon, C., Busch, B., Carey, C. C., Hamilton, D. P., Hanson, P. C., Read, J. S., de Sousa, E., Weber, M., and Winslow, L. A. 2019. A General Lake Model (GLM 3.0) for linking with high-frequency sensor data from the Global Lake Ecological Observatory Network (GLEON), Geosci. Model Dev., 12, 473-523, DOI: 10.5194/gmd-12-473-2019.</para>
+          <para>Krueger, K. M., C. E. Vavrus, M. E. Lofton, R. P. McClure, P. Gantzer, C. C. Carey, and M. E. Schreiber. 2020. Iron and manganese fluxes across the sediment-water interface in a drinking water reservoir. Water Research 182:116003.</para>
+          <para>Ladwig, R., P. C. Hanson, H. A. Dugan, C. C. Carey, Y. Zhang, L. Shu, C. J. Duffy, and K. M. Cobourn. 2021. Lake thermal structure drives interannual variability in summer anoxia dynamics in a eutrophic lake over 37 years. Hydrol. Earth Syst. Sci. 25:1009-1032.</para>
+          <para>McClure, R. P., K. D. Hamre, B. R. Niederlehner, Z. W. Munger, S. Chen, M. E. Lofton, M. E. Schreiber, and C. C. Carey. 2018. Metalimnetic oxygen minima alter the vertical profiles of carbon dioxide and methane in a managed freshwater reservoir. Sci Total Environ 636:610-620.</para>
+          <para>McClure, R. P., M. E. Lofton, S. Chen, K. M. Krueger, J. C. Little, and C. C. Carey. 2020. The magnitude and drivers of methane ebullition and diffusion vary on a longitudinal gradient in a small freshwater reservoir. Journal of Geophysical Research: Biogeosciences 125:e2019JG005205.</para>
+          <para>Morris, M. D. 1991. Factorial sampling plans for preliminary computational experiments, Technometrics, 33, 161-174, DOI: 10.1080/00401706.1991.10484804_
+Moulton, T.L. 2018. rMR: Importing Data from Loligo Systems Software, Calculating Metabolic Rates and Critical Tensions. R package version 1.1.0. https://CRAN.R-project.org/package=rMR</para>
+          <para>Munger, Z. W., C. C. Carey, A. B. Gerling, K. D. Hamre, J. P. Doubek, S. D. Klepatzki, R. P. McClure, and M. E. Schreiber. 2016. Effectiveness of hypolimnetic oxygenation for preventing accumulation of Fe and Mn in a drinking water reservoir. Water Research 106:1-14.</para>
+          <para>Ward, N. K.,  Steele, B. G.,  Weathers, K. C.,  Cottingham, K. L.,  Ewing, H. A.,  Hanson, P. C., &amp;  Carey, C. C. 2020. Differential responses of maximum versus median chlorophyll-a to air temperature and nutrient loads in an oligotrophic lake over 31 years. Water Resources Research,  56, e2020WR027296.  DOI: 10.1029/2020WR027296</para>
+          <para>Wetzel, R.G. 2001. Limnology, 3rd edition. Academic Press, New York.</para>
+        </description>
+      </methodStep>
+    </methods>
+    <project>
+      <title>Dynamics of coupled P-Fe-Mn cycling in drinking water reservoirs and implications for water quality</title>
+      <personnel>
+        <individualName>
+          <givenName>Cayelan</givenName>
+          <givenName>C.</givenName>
+          <surName>Carey</surName>
+        </individualName>
+        <organizationName>Virginia Tech</organizationName>
+        <electronicMailAddress>Cayelan@vt.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0001-8835-4476</userId>
+        <role>Principal Investigator</role>
+      </personnel>
+      <funding>Institute of Critical Technology and Applied Science</funding>
+      <relatedProject>
+        <title>No project title to report</title>
+        <personnel>
+          <individualName>
+            <givenName>Cayelan</givenName>
+            <givenName>C.</givenName>
+            <surName>Carey</surName>
+          </individualName>
+          <organizationName>Virginia Tech</organizationName>
+          <electronicMailAddress>Cayelan@vt.edu</electronicMailAddress>
+          <userId directory="https://orcid.org">https://orcid.org/0000-0001-8835-4476</userId>
+          <role>Principal Investigator</role>
+        </personnel>
+        <funding>Virginia Tech Global Change Center</funding>
+      </relatedProject>
+      <relatedProject>
+        <title>No project title to report</title>
+        <personnel>
+          <individualName>
+            <givenName>Cayelan</givenName>
+            <givenName>C.</givenName>
+            <surName>Carey</surName>
+          </individualName>
+          <organizationName>Virginia Tech</organizationName>
+          <electronicMailAddress>Cayelan@vt.edu</electronicMailAddress>
+          <userId directory="https://orcid.org">https://orcid.org/0000-0001-8835-4476</userId>
+          <role>Principal Investigator</role>
+        </personnel>
+        <funding>Fralin Life Sciences Institute</funding>
+      </relatedProject>
+      <relatedProject>
+        <title>SCC-IRG Track 2: Resilient Water Systems: Integrating Environmental Sensor Networks and Real-Time Forecasting to Adaptively Manage Drinking Water Quality and Build Social Trust</title>
+        <personnel>
+          <individualName>
+            <givenName>Cayelan</givenName>
+            <givenName>C.</givenName>
+            <surName>Carey</surName>
+          </individualName>
+          <organizationName>Virginia Tech</organizationName>
+          <electronicMailAddress>Cayelan@vt.edu</electronicMailAddress>
+          <userId directory="https://orcid.org">https://orcid.org/0000-0001-8835-4476</userId>
+          <role>Principal Investigator</role>
+        </personnel>
+        <funding>National Science Foundation 1737424</funding>
+      </relatedProject>
+      <relatedProject>
+        <title>Collaborative Research: Consequences of changing oxygen availability for carbon cycling in freshwater ecosystems</title>
+        <personnel>
+          <individualName>
+            <givenName>Paul</givenName>
+            <givenName>C.</givenName>
+            <surName>Hanson</surName>
+          </individualName>
+          <organizationName>University of Wisconsin</organizationName>
+          <electronicMailAddress>pchanson@wisc.edu</electronicMailAddress>
+          <userId directory="https://orcid.org">https://orcid.org/0000-0001-8533-6061</userId>
+          <role>Principal Investigator</role>
+        </personnel>
+        <funding>National Science Foundation 1753657</funding>
+      </relatedProject>
+      <relatedProject>
+        <title>Collaborative Research: Consequences of changing oxygen availability for carbon cycling in freshwater ecosystems</title>
+        <personnel>
+          <individualName>
+            <givenName>Cayelan</givenName>
+            <givenName>C.</givenName>
+            <surName>Carey</surName>
+          </individualName>
+          <organizationName>Virginia Tech</organizationName>
+          <electronicMailAddress>Cayelan@vt.edu</electronicMailAddress>
+          <userId directory="https://orcid.org">https://orcid.org/0000-0001-8835-4476</userId>
+          <role>Principal Investigator</role>
+        </personnel>
+        <funding>National Science Foundation 1753639</funding>
+      </relatedProject>
+      <relatedProject>
+        <title>Collaborative Research: CIBR: Cyberinfrastructure Enabling End-to-End Workflows for Aquatic Ecosystem Forecasting</title>
+        <personnel>
+          <individualName>
+            <givenName>Cayelan</givenName>
+            <givenName>C.</givenName>
+            <surName>Carey</surName>
+          </individualName>
+          <organizationName>Virginia Tech</organizationName>
+          <electronicMailAddress>Cayelan@vt.edu</electronicMailAddress>
+          <userId directory="https://orcid.org">https://orcid.org/0000-0001-8835-4476</userId>
+          <role>Principal Investigator</role>
+        </personnel>
+        <funding>National Science Foundation 1933016</funding>
+      </relatedProject>
+      <relatedProject>
+        <title>Collaborative Research: CIBR: Cyberinfrastructure Enabling End-to-End Workflows for Aquatic Ecosystem Forecasting</title>
+        <personnel>
+          <individualName>
+            <givenName>Renato</givenName>
+            <givenName>J.</givenName>
+            <surName>Figueiredo</surName>
+          </individualName>
+          <organizationName>University of Florida</organizationName>
+          <electronicMailAddress>renato@ece.ufl.edu</electronicMailAddress>
+          <userId directory="https://orcid.org">https://orcid.org/0000-0001-9841-6060</userId>
+          <role>Principal Investigator</role>
+        </personnel>
+        <funding>National Science Foundation 1933102</funding>
+      </relatedProject>
+    </project>
+    <dataTable>
+      <entityName>FCR_GLM_NLDAS_010113_123119_GMTadjusted.csv</entityName>
+      <entityDescription>Meteorological driver data</entityDescription>
+      <physical>
+        <objectName>FCR_GLM_NLDAS_010113_123119_GMTadjusted.csv</objectName>
+        <size unit="bytes">3872497</size>
+        <authentication method="MD5">8952985d7d05b6367231a68f10519e35</authentication>
+        <dataFormat>
+          <textFormat>
+            <numHeaderLines>1</numHeaderLines>
+            <recordDelimiter>\r\n</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+      </physical>
+      <attributeList>
+        <attribute>
+          <attributeName>time</attributeName>
+          <attributeDefinition>Date and time of meteorological data (NLDAS-2), for the eastern standard time zone of the U.S.A., with daylight savings time not observed</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD HH:MM</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>ShortWave</attributeName>
+          <attributeDefinition>Shortwave radiation</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>wattPerMeterSquared</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">973.516</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>LongWave</attributeName>
+          <attributeDefinition>Longwave radiation</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>wattPerMeterSquared</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">145.04</minimum>
+                  <maximum exclusive="false">474.3500061</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>AirTemp</attributeName>
+          <attributeDefinition>Air temperature</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>celsius</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-17.72001</minimum>
+                  <maximum exclusive="false">36.11001</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>RelHum</attributeName>
+          <attributeDefinition>Relative humidity in percent</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">13.04976</minimum>
+                  <maximum exclusive="false">100</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>WindSpeed</attributeName>
+          <attributeDefinition>Wind speed</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>metersPerSecond</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0.02</minimum>
+                  <maximum exclusive="false">16.85363</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>Rain</attributeName>
+          <attributeDefinition>Precipitation accumulation</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>metersPerDay</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">0.846374359</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+      </attributeList>
+      <numberOfRecords>61344</numberOfRecords>
+    </dataTable>
+    <dataTable>
+      <entityName>FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv</entityName>
+      <entityDescription>Outflow driver data</entityDescription>
+      <physical>
+        <objectName>FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv</objectName>
+        <size unit="bytes">45762</size>
+        <authentication method="MD5">fe06d16d973873b85e48ffdfc65c6e7e</authentication>
+        <dataFormat>
+          <textFormat>
+            <numHeaderLines>1</numHeaderLines>
+            <recordDelimiter>\r\n</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+      </physical>
+      <attributeList>
+        <attribute>
+          <attributeName>time</attributeName>
+          <attributeDefinition>Date and time</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>FLOW</attributeName>
+          <attributeDefinition>Total reservoir outflow</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>cubicMetersPerSecond</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">4e-04</minimum>
+                  <maximum exclusive="false">0.2567</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+      </attributeList>
+      <numberOfRecords>2422</numberOfRecords>
+    </dataTable>
+    <dataTable>
+      <entityName>FCR_SSS_inflow_2013_2019_20200701_allfractions_2DOCpools.csv</entityName>
+      <entityDescription>Oxygenation system submerged inflow driver data</entityDescription>
+      <physical>
+        <objectName>FCR_SSS_inflow_2013_2019_20200701_allfractions_2DOCpools.csv</objectName>
+        <size unit="bytes">171122</size>
+        <authentication method="MD5">e25aa58b3d27bd6116413989b89649be</authentication>
+        <dataFormat>
+          <textFormat>
+            <numHeaderLines>1</numHeaderLines>
+            <recordDelimiter>\r\n</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+      </physical>
+      <attributeList>
+        <attribute>
+          <attributeName>time</attributeName>
+          <attributeDefinition>Date and time</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>FLOW</attributeName>
+          <attributeDefinition>Stream inflow</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>cubicMetersPerSecond</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>whole</numberType>
+                <bounds>
+                  <minimum exclusive="false">1e-08</minimum>
+                  <maximum exclusive="false">1e-08</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>TEMP</attributeName>
+          <attributeDefinition>Water temperature</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>celsius</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">4</minimum>
+                  <maximum exclusive="false">16.65026727</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>SALT</attributeName>
+          <attributeDefinition>Salinity</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>milligramsPerLiter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>whole</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">0</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OXY_oxy</attributeName>
+          <attributeDefinition>Dissolved oxygen concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">1066990800</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>NIT_amm</attributeName>
+          <attributeDefinition>Ammonium concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>whole</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">0</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>NIT_nit</attributeName>
+          <attributeDefinition>Nitrate concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>whole</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">0</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>PHS_frp</attributeName>
+          <attributeDefinition>Filterable reactive phosphorus concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>whole</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">0</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_doc</attributeName>
+          <attributeDefinition>Dissolved organic carbon concentration (labile fraction)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>whole</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">0</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_docr</attributeName>
+          <attributeDefinition>Dissolved organic carbon concentration (recalcitrant fraction)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>whole</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">0</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_poc</attributeName>
+          <attributeDefinition>Particulate organic carbon concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>whole</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">0</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_don</attributeName>
+          <attributeDefinition>Dissolved organic nitrogen concentration (labile fraction)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>whole</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">0</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_donr</attributeName>
+          <attributeDefinition>Dissolved organic nitrogen concentration (recalcitrant fraction)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>whole</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">0</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_pon</attributeName>
+          <attributeDefinition>Particulate organic nitrogen concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>whole</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">0</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_dop</attributeName>
+          <attributeDefinition>Dissolved organic phosphorus concentration (labile fraction)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>whole</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">0</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_dopr</attributeName>
+          <attributeDefinition>Dissolved organic phosphorus concentration (recalcitrant fraction)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>whole</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">0</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_pop</attributeName>
+          <attributeDefinition>Particulate organic phosphorus concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>whole</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">0</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>CAR_dic</attributeName>
+          <attributeDefinition>Dissolved inorganic carbon concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>whole</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">0</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>CAR_ch4</attributeName>
+          <attributeDefinition>Dissolved methane concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>whole</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">0</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>SIL_rsi</attributeName>
+          <attributeDefinition>Reactive silica concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>whole</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">0</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+      </attributeList>
+      <numberOfRecords>2422</numberOfRecords>
+    </dataTable>
+    <dataTable>
+      <entityName>FCR_weir_inflow_2013_2019_20220104_allfractions_2poolsDOC.csv</entityName>
+      <entityDescription>Tunnel Branch stream inflow driver data</entityDescription>
+      <physical>
+        <objectName>FCR_weir_inflow_2013_2019_20220104_allfractions_2poolsDOC.csv</objectName>
+        <size unit="bytes">358936</size>
+        <authentication method="MD5">445102a0bb124c6e56998769cc3790a5</authentication>
+        <dataFormat>
+          <textFormat>
+            <numHeaderLines>1</numHeaderLines>
+            <recordDelimiter>\r\n</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+      </physical>
+      <attributeList>
+        <attribute>
+          <attributeName>time</attributeName>
+          <attributeDefinition>Date and time</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>FLOW</attributeName>
+          <attributeDefinition>Stream inflow</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>cubicMetersPerSecond</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">2e-04</minimum>
+                  <maximum exclusive="false">0.1489</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>TEMP</attributeName>
+          <attributeDefinition>Water temperature</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>celsius</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-1.2658</minimum>
+                  <maximum exclusive="false">26.0231</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>SALT</attributeName>
+          <attributeDefinition>Salinity</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>milligramsPerLiter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>whole</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">0</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OXY_oxy</attributeName>
+          <attributeDefinition>Dissolved oxygen concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">238.189</minimum>
+                  <maximum exclusive="false">446.0513</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>NIT_amm</attributeName>
+          <attributeDefinition>Ammonium concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">2.439</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>NIT_nit</attributeName>
+          <attributeDefinition>Nitrate concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">5.129</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>PHS_frp</attributeName>
+          <attributeDefinition>Filterable reactive phosphorus concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0.0105</minimum>
+                  <maximum exclusive="false">0.2948</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_doc</attributeName>
+          <attributeDefinition>Dissolved organic carbon concentration (labile fraction)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0.8326</minimum>
+                  <maximum exclusive="false">57.4521</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_docr</attributeName>
+          <attributeDefinition>Dissolved organic carbon concentration (recalcitrant fraction)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">7.4938</minimum>
+                  <maximum exclusive="false">517.0691</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_poc</attributeName>
+          <attributeDefinition>Particulate organic carbon concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0.8326</minimum>
+                  <maximum exclusive="false">57.4521</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_don</attributeName>
+          <attributeDefinition>Dissolved organic nitrogen concentration (labile fraction)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0.2614</minimum>
+                  <maximum exclusive="false">3.0676</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_donr</attributeName>
+          <attributeDefinition>Dissolved organic nitrogen concentration (recalcitrant fraction)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">2.3526</minimum>
+                  <maximum exclusive="false">27.6087</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_pon</attributeName>
+          <attributeDefinition>Particulate organic nitrogen concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0.5228</minimum>
+                  <maximum exclusive="false">6.1353</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_dop</attributeName>
+          <attributeDefinition>Dissolved organic phosphorus concentration (labile fraction)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-0.0034</minimum>
+                  <maximum exclusive="false">0.0727</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_dopr</attributeName>
+          <attributeDefinition>Dissolved organic phosphorus concentration (recalcitrant fraction)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-0.0302</minimum>
+                  <maximum exclusive="false">0.6544</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_pop</attributeName>
+          <attributeDefinition>Particulate organic phosphorus concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-0.0783</minimum>
+                  <maximum exclusive="false">1.6966</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>CAR_dic</attributeName>
+          <attributeDefinition>Dissolved inorganic carbon concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">26.659</minimum>
+                  <maximum exclusive="false">87.594</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>CAR_ch4</attributeName>
+          <attributeDefinition>Dissolved methane concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">1e-04</minimum>
+                  <maximum exclusive="false">0.1212</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>SIL_rsi</attributeName>
+          <attributeDefinition>Reactive silica concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">120.9013</minimum>
+                  <maximum exclusive="false">120.9013</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+      </attributeList>
+      <numberOfRecords>2422</numberOfRecords>
+    </dataTable>
+    <dataTable>
+      <entityName>FCR_wetland_inflow_2013_2019_20220104_allfractions_2DOCpools.csv</entityName>
+      <entityDescription>Falling Creek stream inflow driver data</entityDescription>
+      <physical>
+        <objectName>FCR_wetland_inflow_2013_2019_20220104_allfractions_2DOCpools.csv</objectName>
+        <size unit="bytes">366472</size>
+        <authentication method="MD5">044ed8655015b1a2fee33b20acd80048</authentication>
+        <dataFormat>
+          <textFormat>
+            <numHeaderLines>1</numHeaderLines>
+            <recordDelimiter>\r\n</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+      </physical>
+      <attributeList>
+        <attribute>
+          <attributeName>time</attributeName>
+          <attributeDefinition>Date and time</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>FLOW</attributeName>
+          <attributeDefinition>Stream inflow</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>cubicMetersPerSecond</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">1e-04</minimum>
+                  <maximum exclusive="false">0.1152</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>TEMP</attributeName>
+          <attributeDefinition>Water temperature</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>celsius</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">4</minimum>
+                  <maximum exclusive="false">29.422</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>SALT</attributeName>
+          <attributeDefinition>Salinity</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>milligramsPerLiter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>whole</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">0</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OXY_oxy</attributeName>
+          <attributeDefinition>Dissolved oxygen concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">224.1199</minimum>
+                  <maximum exclusive="false">385.6124</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>NIT_amm</attributeName>
+          <attributeDefinition>Ammonium concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">0.1355</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>NIT_nit</attributeName>
+          <attributeDefinition>Nitrate concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">0.035</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>PHS_frp</attributeName>
+          <attributeDefinition>Filterable reactive phosphorus concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0.006</minimum>
+                  <maximum exclusive="false">0.1682</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_doc</attributeName>
+          <attributeDefinition>Dissolved organic carbon concentration (labile fraction)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">1.2309</minimum>
+                  <maximum exclusive="false">84.9292</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_docr</attributeName>
+          <attributeDefinition>Dissolved organic carbon concentration (recalcitrant fraction)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">11.0777</minimum>
+                  <maximum exclusive="false">764.363</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_poc</attributeName>
+          <attributeDefinition>Particulate organic carbon concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">1.2309</minimum>
+                  <maximum exclusive="false">84.9292</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_don</attributeName>
+          <attributeDefinition>Dissolved organic nitrogen concentration (labile fraction)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0.0692</minimum>
+                  <maximum exclusive="false">0.7616</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_donr</attributeName>
+          <attributeDefinition>Dissolved organic nitrogen concentration (recalcitrant fraction)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0.6227</minimum>
+                  <maximum exclusive="false">6.8544</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_pon</attributeName>
+          <attributeDefinition>Particulate organic nitrogen concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0.1384</minimum>
+                  <maximum exclusive="false">1.5232</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_dop</attributeName>
+          <attributeDefinition>Dissolved organic phosphorus concentration (labile fraction)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-0.0031</minimum>
+                  <maximum exclusive="false">0.0081</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_dopr</attributeName>
+          <attributeDefinition>Dissolved organic phosphorus concentration (recalcitrant fraction)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-0.0279</minimum>
+                  <maximum exclusive="false">0.0726</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>OGM_pop</attributeName>
+          <attributeDefinition>Particulate organic phosphorus concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-0.0724</minimum>
+                  <maximum exclusive="false">0.1883</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>CAR_dic</attributeName>
+          <attributeDefinition>Dissolved inorganic carbon concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">40.535</minimum>
+                  <maximum exclusive="false">133.1864</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>CAR_ch4</attributeName>
+          <attributeDefinition>Dissolved methane concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0.0725</minimum>
+                  <maximum exclusive="false">155.0775</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>SIL_rsi</attributeName>
+          <attributeDefinition>Reactive silica concentration</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimolePerMeterCubed</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">120.9013</minimum>
+                  <maximum exclusive="false">120.9013</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NA</code>
+            <codeExplanation>value is missing</codeExplanation>
+          </missingValueCode>
+        </attribute>
+      </attributeList>
+      <numberOfRecords>2422</numberOfRecords>
+    </dataTable>
+    <otherEntity>
+      <entityName>model_configuration_nml_files.zip</entityName>
+      <entityDescription>GLM-AED nml configuration files</entityDescription>
+      <physical>
+        <objectName>model_configuration_nml_files.zip</objectName>
+        <size unit="bytes">10505</size>
+        <authentication method="MD5">bf976878702afc00c210c91af65f0933</authentication>
+        <dataFormat>
+          <externallyDefinedFormat>
+            <formatName>application/zip</formatName>
+          </externallyDefinedFormat>
+        </dataFormat>
+      </physical>
+      <entityType>unknown</entityType>
+    </otherEntity>
+  </dataset>
+</eml:eml>

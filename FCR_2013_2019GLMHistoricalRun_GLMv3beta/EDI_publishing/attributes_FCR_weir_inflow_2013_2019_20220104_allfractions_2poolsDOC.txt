@@ -3,19 +3,19 @@ time	Date and time	Date		YYYY-MM-DD	NA	value is missing
 FLOW	Stream inflow	numeric	cubicMetersPerSecond		NA	value is missing
 TEMP	Water temperature	numeric	celsius		NA	value is missing
 SALT	Salinity	numeric	milligramsPerLiter		NA	value is missing
-OXY_oxy	Dissolved oxygen concentration	numeric	millimolesPerCubicMeter		NA	value is missing
-NIT_amm	Ammonium concentration	numeric	millimolesPerCubicMeter		NA	value is missing
-NIT_nit	Nitrate concentration	numeric	millimolesPerCubicMeter		NA	value is missing
-PHS_frp	Filterable reactive phosphorus concentration	numeric	millimolesPerCubicMeter		NA	value is missing
-OGM_doc	Dissolved organic carbon concentration (labile fraction)	numeric	millimolesPerCubicMeter		NA	value is missing
-OGM_docr	Dissolved organic carbon concentration (recalcitrant fraction)	numeric	millimolesPerCubicMeter		NA	value is missing
-OGM_poc	Particulate organic carbon concentration	numeric	millimolesPerCubicMeter		NA	value is missing
-OGM_don	Dissolved organic nitrogen concentration (labile fraction)	numeric	millimolesPerCubicMeter		NA	value is missing
-OGM_donr	Dissolved organic nitrogen concentration (recalcitrant fraction)	numeric	millimolesPerCubicMeter		NA	value is missing
-OGM_pon	Particulate organic nitrogen concentration	numeric	millimolesPerCubicMeter		NA	value is missing
-OGM_dop	Dissolved organic phosphorus concentration (labile fraction)	numeric	millimolesPerCubicMeter		NA	value is missing
-OGM_dopr	Dissolved organic phosphorus concentration (recalcitrant fraction)	numeric	millimolesPerCubicMeter		NA	value is missing
-OGM_pop	Particulate organic phosphorus concentration	numeric	millimolesPerCubicMeter		NA	value is missing
-CAR_dic	Dissolved inorganic carbon concentration	numeric	millimolesPerCubicMeter		NA	value is missing
-CAR_ch4	Dissolved methane concentration	numeric	millimolesPerCubicMeter		NA	value is missing
-SIL_rsi	Reactive silica concentration	numeric	millimolesPerCubicMeter		NA	value is missing
+OXY_oxy	Dissolved oxygen concentration	numeric	millimolePerMeterCubed		NA	value is missing
+NIT_amm	Ammonium concentration	numeric	millimolePerMeterCubed		NA	value is missing
+NIT_nit	Nitrate concentration	numeric	millimolePerMeterCubed		NA	value is missing
+PHS_frp	Filterable reactive phosphorus concentration	numeric	millimolePerMeterCubed		NA	value is missing
+OGM_doc	Dissolved organic carbon concentration (labile fraction)	numeric	millimolePerMeterCubed		NA	value is missing
+OGM_docr	Dissolved organic carbon concentration (recalcitrant fraction)	numeric	millimolePerMeterCubed		NA	value is missing
+OGM_poc	Particulate organic carbon concentration	numeric	millimolePerMeterCubed		NA	value is missing
+OGM_don	Dissolved organic nitrogen concentration (labile fraction)	numeric	millimolePerMeterCubed		NA	value is missing
+OGM_donr	Dissolved organic nitrogen concentration (recalcitrant fraction)	numeric	millimolePerMeterCubed		NA	value is missing
+OGM_pon	Particulate organic nitrogen concentration	numeric	millimolePerMeterCubed		NA	value is missing
+OGM_dop	Dissolved organic phosphorus concentration (labile fraction)	numeric	millimolePerMeterCubed		NA	value is missing
+OGM_dopr	Dissolved organic phosphorus concentration (recalcitrant fraction)	numeric	millimolePerMeterCubed		NA	value is missing
+OGM_pop	Particulate organic phosphorus concentration	numeric	millimolePerMeterCubed		NA	value is missing
+CAR_dic	Dissolved inorganic carbon concentration	numeric	millimolePerMeterCubed		NA	value is missing
+CAR_ch4	Dissolved methane concentration	numeric	millimolePerMeterCubed		NA	value is missing
+SIL_rsi	Reactive silica concentration	numeric	millimolePerMeterCubed		NA	value is missing

@@ -137,26 +137,34 @@ view_unit_dictionary()
 # temporal.coverage: Update the dates
 # package.id: enter the ID you obtained in Step 6
 make_eml(path = "/Users/cayelan/Dropbox/ComputerFiles/SCC/FCR-GLM/FCR_2013_2019GLMHistoricalRun_GLMv3beta/EDI_publishing",
+         data.path = "/Users/cayelan/Dropbox/ComputerFiles/SCC/FCR-GLM/FCR_2013_2019GLMHistoricalRun_GLMv3beta/EDI_publishing",
+         eml.path = "/Users/cayelan/Dropbox/ComputerFiles/SCC/FCR-GLM/FCR_2013_2019GLMHistoricalRun_GLMv3beta/EDI_publishing",
          dataset.title = "General Lake Model-Aquatic EcoDynamics model parameter set for Falling Creek Reservoir, Vinton, Virginia, USA 2013-2019",
-         data.files = c("FCR_GLM_NLDAS_010113_123119_GMTadjusted.csv", 
+         data.table = c("FCR_GLM_NLDAS_010113_123119_GMTadjusted.csv", 
                         "FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv",
                         "FCR_SSS_inflow_2013_2019_20200701_allfractions_2DOCpools.csv",
                         "FCR_weir_inflow_2013_2019_20220104_allfractions_2poolsDOC.csv",
                         "FCR_wetland_inflow_2013_2019_20220104_allfractions_2DOCpools.csv"),
-         data.files.description = c('Meteorological driver data',
+         data.table.name = c("FCR_GLM_NLDAS_010113_123119_GMTadjusted.csv", 
+                        "FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv",
+                        "FCR_SSS_inflow_2013_2019_20200701_allfractions_2DOCpools.csv",
+                        "FCR_weir_inflow_2013_2019_20220104_allfractions_2poolsDOC.csv",
+                        "FCR_wetland_inflow_2013_2019_20220104_allfractions_2DOCpools.csv"),
+         data.table.description = c('Meteorological driver data',
                                     'Outflow driver data',
                                     'Oxygenation system submerged inflow driver data',
                                     'Tunnel Branch stream inflow driver data',
                                     'Falling Creek stream inflow driver data'),
-         zip.dir = c("model_configuration_nml_files.zip"),
-         zip.dir.description =c("GLM-AED nml configuration files"),
+         other.entity = c("model_configuration_nml_files.zip"),
+         other.entity.name = c("model_configuration_nml_files.zip"),
+         other.entity.description =c("GLM-AED nml configuration files"),
          temporal.coverage = c("2013-05-13", "2019-12-31"),
          #geographic.description = c("Falling Creek Reservoir, Vinton, Virginia, USA"),
          #geographic.coordinates = c('37.309589', '-79.836009', '37.302660', '-79.839249'), #N, E, S, W
          maintenance.description = "completed", 
          user.id = "ccarey",
-         affiliation = 'EDI',
-         package.id = "edi.471.3") # Put your package.id here, followed by .1 (for 1st version)
+         user.domain = 'EDI',
+         package.id = "edi.1127.1") # Put your package.id here, followed by .1 (for 1st version)
 
 #note: once the EML is validated, THEN need to edit to add in abstract, keywords, and methods.
 #see edi.456.3.xml (Ice at FCR- as an example!)

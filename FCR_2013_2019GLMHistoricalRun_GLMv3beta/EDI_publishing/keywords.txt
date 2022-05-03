@@ -12,4 +12,7 @@ model	cuahsi controlled vocabulary
 hydrodynamic	cuahsi controlled vocabulary
 biogeochemistry	cuahsi controlled vocabulary
 anoxia	cuahsi controlled vocabulary
+carbon	cuahsi controlled vocabulary
+nitrogen	cuahsi controlled vocabulary
+phosphorus	cuahsi controlled vocabulary
 lake	lter controlled vocabulary
