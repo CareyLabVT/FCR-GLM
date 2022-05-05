@@ -2,7 +2,7 @@
 #* TITLE:   Run GLM-AED for FCR
 #* AUTHORS:  C.C. Carey                    
 #* DATE:   Originally developed by CCC on 16 July 2018; 
-#*         Last modified by CCC in 9 Sept 2021                            
+#*         Last modified by CCC in May 2022                           
 #* NOTES:  CCC modified the original script in 2019 for FCR modeling, 
 #*        with subsequent tweaks to annotation in summer 2021. 
 #*        Code compares modeled output vs. observations for all focal
@@ -11,6 +11,8 @@
 
 remotes::install_github("CareyLabVT/GLMr", force = T)
 remotes::install_github("CareyLabVT/glmtools", force = T)
+#note: these are the Carey Lab's versions of these packages (not the USGS versions!), 
+# and will give different output
 
 # Load packages, set sim folder, load nml file ####
 if (!require('pacman')) install.packages('pacman'); library('pacman')
@@ -54,6 +56,7 @@ plot(volume$time, volume$Tot_V)
 plot(evap$time, evap$evap)
 plot(precip$time, precip$precip)
 
+#let's calculate the water budget
 outflow<-read.csv("inputs/FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv", header=T)
 inflow_weir<-read.csv("inputs/FCR_weir_inflow_2013_2019_20220104_allfractions_2poolsDOC.csv", header=T)
 inflow_wetland<-read.csv("inputs/FCR_wetland_inflow_2013_2019_20220104_allfractions_2DOCpools.csv", header=T)
@@ -65,6 +68,7 @@ plot(inflow_weir$time,inflow_weir$FLOW)
 lines(inflow_wetland$time, inflow_wetland$FLOW, col="red")
 sum(inflow_weir$FLOW)/(sum(inflow_weir$FLOW) + sum(inflow_wetland$FLOW))#proportion of wetland:weir inflows over time
 
+#gut-check of the HRT
 volume$time<-as.POSIXct(strptime(volume$time, "%Y-%m-%d", tz="EST"))
 wrt<-merge(volume, outflow, by='time')
 wrt$wrt <- ((wrt$Tot_V)/(wrt$FLOW))*(1/60)*(1/60)*(1/24) #residence time in days
@@ -1142,4 +1146,4 @@ points(time_1,(ch4flux[,1]+sample(rnorm(1,mean=0.3,sd=0.3))), col="red")
 legend("topleft", c("Baseline","+2 degrees"), fill=c("black","red"))
 nc_close(nc)
 
-#Mary & Cayelan say: congrats! you now get a cookie!
+#congrats! you now get a cookie!
