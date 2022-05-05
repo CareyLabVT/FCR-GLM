@@ -15,10 +15,11 @@ library(zoo)
 fcr_area <- 0.119       #km2
 fcr_start <- 1898       # year constructed
 fcr_age <- 2021-1898
-dams <- read_csv("./FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/NID2013_YearCompleted_SurfaceArea_State.csv")
+dams <- read_csv("./FCR_2013_2019GLMHistoricalRun_GLMv3beta/field_data/NID_YearCompleted_SurfaceArea_State.csv") %>% 
+  rename(SURFACE_AREA = "SURFACE_AREA (acres)") %>% 
+  filter(SURFACE_AREA != 0)
 
 dam_facts <- dams %>%
-  filter(SURFACE_AREA != 0)%>%
   summarize(med_start_year = median(YEAR_COMPLETED, na.rm = T),
             mean_start_year = mean(YEAR_COMPLETED, na.rm = T),
             med_area_km2 = median(SURFACE_AREA/247, na.rm = T),              # dividing by 247 converts from acres to km2
@@ -27,6 +28,9 @@ dam_facts <- dams %>%
             min_start_year = min(YEAR_COMPLETED, na.rm = T),
             max_area_km2 = max(SURFACE_AREA/247, na.rm = T),
             min_area_km2 = min(SURFACE_AREA/247, na.rm = T))
+
+quantile(dams$SURFACE_AREA/247, probs=seq(0.7,0.75,0.01))
+#72% of dams in the US are 0.117km2 or smaller
 
 
 #What is the median age of all dams in the 2013 NID?
@@ -47,8 +51,8 @@ num_older_100 <- dams %>%
   filter(YEAR_COMPLETED <= 1921)%>%
   summarize(number = count(.,))
 
-num_older_100$number/87359   # 87359 == the number of dams in the 2013 NID database
-# about 8.5%
+num_older_100$number/62856   # 62,856 == the number of dams in the 2013 NID database
+# about 10.2%
 
 #what percent of dams over 100 years old are less than 0.5 km2?
 num_older_100_less_0.5 <- dams %>%
@@ -57,8 +61,8 @@ num_older_100_less_0.5 <- dams %>%
   summarize(number = count(.,))
 
 num_older_100_less_0.5$number/num_older_100$number
-# about 65.3%
+# about 75.5%
 
 #what percent of dams less than 0.5 km2 are over 100 years old?
-num_older_100_less_0.5$number/87359
-# about 5.5%
+num_older_100_less_0.5$number/62856
+# about 7.7%
