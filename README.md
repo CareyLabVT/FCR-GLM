@@ -31,3 +31,6 @@ This directory contains the R script used to make data objects for visualization
 
 ## main directory
 Within the FCR-GLM directory contains the model executables and dynamic library files needed to run the GLM-AED model (v.3.2.0a3) **on mac computers only**, the GLM-AED binary file for this model version, and the three GLM configuration files: 1) "glm3.nml", to simulate observed conditions; 2) "glm3_anoxic.nml", the anoxic model scenario; and 3) "glm3_oxic.nml", the oxic model scenario. To run either scenario, the "_anoxic" or "_oxic" suffix would need to be removed first.
+
+## Questions?
+Please feel free to reach out to Cayelan @ vt.edu if you have any questions on this code, and have fun GLM-AED-ing!
